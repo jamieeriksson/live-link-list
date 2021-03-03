@@ -1,0 +1,24 @@
+# Local environment variables
+.env
+
+# Distribution / packaging
+build/
+
+### react ###
+node_modules
+
+# tailwind
+tailwind.output.css
+
+# IDE
+.vscode
+.idea
+
+# Cache
+__pycache__
+.pytest_cache/
+
+# Test coverage
+.coverage
+coverage.xml
+htmlcov/
