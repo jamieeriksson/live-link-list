@@ -380,7 +380,6 @@ export default function PostingPage() {
           removeHashtag={removeHashtag}
           setHashtags={setHashtags}
           addHashtag={addHashtag}
-          hashtagsList={hashtagsList}
           description={description}
           setDescription={setDescription}
           durationOptions={durationOptions}
