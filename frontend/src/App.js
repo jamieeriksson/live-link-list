@@ -18,7 +18,7 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <div className="relative max-w-screen w-full min-h-screen h-full flex flex-col overflow-x-hidden bg-gray-50">
+    <div className="relative max-w-screen w-full overflow-x-hidden bg-gray-50">
       <Router>
         <ScrollToTop />
         <Nav />

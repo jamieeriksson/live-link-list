@@ -2,7 +2,10 @@ import React, { useRef, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
+import {
+  faTimesCircle,
+  faClipboard,
+} from "@fortawesome/free-regular-svg-icons";
 import {
   faInstagram,
   faTiktok,
@@ -23,6 +26,7 @@ function LinkInput(props) {
   const handleUrlChange = props.handleUrlChange;
 
   const outsideClickPlatformRef = useRef(null);
+
   useOutsideAlerter(outsideClickPlatformRef, () => {
     setIsPlatformSelectOpen(false);
   });
@@ -32,6 +36,13 @@ function LinkInput(props) {
     setIsPlatformSelectOpen(!isPlatformSelectOpen);
     setUrlInput("");
   };
+
+  async function handlePaste(e) {
+    e.preventDefault();
+
+    const pasted = await navigator.clipboard.readText();
+    handleUrlChange(pasted);
+  }
 
   return (
     <div className="w-full flex flex-col justify-center place-items-center">
@@ -56,17 +67,33 @@ function LinkInput(props) {
         ))}
       </div>
 
-      <div className="px-3 max-w-xl w-full flex justify-center place-items-center flex-wrap text-xl md:text-2xl">
-        <span className="mr-2 mb-1 md:mb-0 font-semibold md:tracking-wide">
+      <div className="flex justify-center place-items-center">
+        <button
+          onClick={handlePaste}
+          className={`mb-5 px-4 py-1 flex justify-center place-items-center ring-1 ring-gray-200 rounded-md shadow-sm text-gray-200 hover:text-gray-100 bg-${selectedPlatform.color}-900 hover:bg-${selectedPlatform.color}-800 hover:shadow-md focus:outline-none`}
+        >
+          <FontAwesomeIcon icon={faClipboard} />
+
+          <span className="ml-3 uppercase font-semibold font-title tracking-widest">
+            Paste Link
+          </span>
+        </button>
+      </div>
+
+      <div className="px-3 max-w-xl w-full flex justify-center place-items-center flex-wrap md:flex-nowrap text-xl md:text-2xl">
+        <span className="md:whitespace-nowrap mr-2 mb-1 md:mb-0 font-semibold md:tracking-wide">
           {selectedPlatform.urlStart}
         </span>
         <div className="flex-grow inline px-2 py-1 rounded-md ring-1 ring-gray-200 shadow-sm bg-white">
           <input
             type="text"
             value={urlInput}
-            onChange={handleUrlChange}
+            onChange={(e) => {
+              const input = e.target.value;
+              handleUrlChange(input);
+            }}
             placeholder={selectedPlatform.placeholder}
-            className="w-36 bg-white focus:outline-none"
+            className="bg-white focus:outline-none"
           />
         </div>
       </div>
@@ -151,9 +178,11 @@ function LiveDetails(props) {
               e.preventDefault();
               setIsLinkDurationOpen(!isLinkDurationOpen);
             }}
-            className="w-32 px-3 py-1 flex place-items-center ring-1 ring-gray-200 rounded-md shadow-sm bg-white focus:outline-none"
+            className="w-48 px-3 py-1 flex place-items-center ring-1 ring-gray-200 rounded-md shadow-sm bg-white focus:outline-none"
           >
-            <span className="flex-grow text-lg">{linkDuration.duration}</span>
+            <span className="flex-grow text-left text-lg">
+              {linkDuration.duration}
+            </span>
             <span className="text-sm float-right">
               <FontAwesomeIcon icon={faChevronDown} color="#111111" />
             </span>
@@ -260,9 +289,9 @@ export default function PostingPage() {
   const [description, setDescription] = useState("");
   const [linkDuration, setLinkDuration] = useState(durationOptions[0]);
 
-  const handleUrlChange = (e) => {
-    const input = e.target.value;
+  const handleUrlChange = (url) => {
     const platform = selectedPlatform;
+    const input = url;
 
     if (input.includes(platform.urlStart)) {
       console.log(input.slice(platform.urlStart.length));
@@ -315,7 +344,7 @@ export default function PostingPage() {
 
   return (
     <div
-      className={`max-w-screen w-full h-full md:h-screen md:mt-5 px-1 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-${selectedPlatform.color}-300 to-gray-50`}
+      className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-1 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-${selectedPlatform.color}-300 to-gray-50`}
     >
       <form
         className={`max-w-3xl w-full mx-3 my-3 pb-9 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100`}
