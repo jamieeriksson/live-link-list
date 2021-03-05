@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -27,6 +27,12 @@ function LinkInput(props) {
 
   const outsideClickPlatformRef = useRef(null);
 
+  useEffect(() => {
+    checkPaste();
+
+    return () => {};
+  }, []);
+
   useOutsideAlerter(outsideClickPlatformRef, () => {
     setIsPlatformSelectOpen(false);
   });
@@ -37,11 +43,17 @@ function LinkInput(props) {
     setUrlInput("");
   };
 
-  async function handlePaste(e) {
-    e.preventDefault();
-
+  async function checkPaste() {
     const pasted = await navigator.clipboard.readText();
-    handleUrlChange(pasted);
+
+    for (const platform of platformOptions) {
+      if (pasted.includes(platform.urlStart)) {
+        setSelectedPlatform(platform);
+        handleUrlChange(pasted, platform);
+      }
+    }
+
+    return;
   }
 
   return (
@@ -69,7 +81,10 @@ function LinkInput(props) {
 
       <div className="flex justify-center place-items-center">
         <button
-          onClick={handlePaste}
+          onClick={(e) => {
+            e.preventDefault();
+            checkPaste();
+          }}
           className={`mb-5 px-4 py-1 flex justify-center place-items-center ring-1 ring-gray-200 rounded-md shadow-sm text-gray-200 hover:text-gray-100 bg-${selectedPlatform.color}-900 hover:bg-${selectedPlatform.color}-800 hover:shadow-md focus:outline-none`}
         >
           <FontAwesomeIcon icon={faClipboard} />
@@ -90,10 +105,10 @@ function LinkInput(props) {
             value={urlInput}
             onChange={(e) => {
               const input = e.target.value;
-              handleUrlChange(input);
+              handleUrlChange(input, selectedPlatform);
             }}
             placeholder={selectedPlatform.placeholder}
-            className="bg-white focus:outline-none"
+            className="w-full bg-white focus:outline-none"
           />
         </div>
       </div>
@@ -106,6 +121,7 @@ function LiveDetails(props) {
 
   const hashtags = props.hashtags;
   const hashtagsList = props.hashtagsList;
+  const setHashtagsList = props.setHashtagsList;
   const removeHashtag = props.removeHashtag;
   const setHashtags = props.setHashtags;
   const addHashtag = props.addHashtag;
@@ -124,11 +140,11 @@ function LiveDetails(props) {
     <div className="px-3 max-w-2xl w-full flex flex-col justify-center place-items-center">
       <div className="w-full mt-8 flex flex-col">
         <span className="mb-1 text-xl uppercase">Hashtags</span>
-        <div className="flex-grow px-2 py-1 flex place-items-center ring-1 ring-gray-200 rounded-md shadow-sm bg-white">
+        <div className="flex-grow px-2 py-1 flex flex-wrap place-items-center ring-1 ring-gray-200 rounded-md shadow-sm bg-white">
           {hashtagsList.map((hashtag) => (
             <div
               key={hashtag}
-              className="px-2 mx-1 text-sm border border-gray-500 bg-gray-300 rounded-2xl text-gray-800"
+              className="flex flex-nowrap px-2 mx-1 text-sm border border-gray-500 bg-gray-300 rounded-2xl text-gray-800"
             >
               <span className="mr-1">{hashtag}</span>
               <button
@@ -155,6 +171,16 @@ function LiveDetails(props) {
             className="flex-grow bg-white focus:outline-none"
           />
         </div>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setHashtags("");
+            setHashtagsList([]);
+          }}
+          className="mt-1 self-end hover:underline text-sm text-primary-blue focus:outline-none"
+        >
+          Clear Hashtags
+        </button>
       </div>
 
       <div className="w-full mt-8 flex flex-col">
@@ -245,14 +271,14 @@ export default function PostingPage() {
     {
       name: "Facebook",
       icon: faFacebook,
-      urlStart: "https://fb.watch.com/",
+      urlStart: "https://fb.watch/",
       placeholder: "3WERq5mV2x",
       color: "blue",
     },
     {
       name: "Twitch",
       icon: faTwitch,
-      urlStart: "https://www.twitch.tv.com/",
+      urlStart: "https://www.twitch.tv/",
       placeholder: "username",
       color: "purple",
     },
@@ -289,8 +315,11 @@ export default function PostingPage() {
   const [description, setDescription] = useState("");
   const [linkDuration, setLinkDuration] = useState(durationOptions[0]);
 
-  const handleUrlChange = (url) => {
-    const platform = selectedPlatform;
+  const handleUrlChange = (url, platform) => {
+    if (platform === null) {
+      const platform = selectedPlatform;
+    }
+    console.log(platform);
     const input = url;
 
     if (input.includes(platform.urlStart)) {
@@ -363,6 +392,7 @@ export default function PostingPage() {
         <LiveDetails
           hashtags={hashtags}
           hashtagsList={hashtagsList}
+          setHashtagsList={setHashtagsList}
           removeHashtag={removeHashtag}
           setHashtags={setHashtags}
           addHashtag={addHashtag}
