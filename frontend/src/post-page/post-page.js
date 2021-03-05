@@ -358,10 +358,10 @@ export default function PostingPage() {
 
   return (
     <div
-      className={`flex-grow max-w-screen bg w-full max-h-screen pb-6 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-${selectedPlatform.color}-300 to-gray-50`}
+      className={`flex-grow max-w-screen bg w-full max-h-screen h-screen -mt-24 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-${selectedPlatform.color}-300 to-gray-50`}
     >
       <form
-        className={`max-w-3xl w-full mx-3 my-3 pb-12 flex flex-col justify-center place-items-center border-transparent rounded-2xl bg-gray-100`}
+        className={`max-w-3xl w-full mx-3 my-3 pb-9 flex flex-col justify-center place-items-center border-transparent rounded-2xl bg-gray-100`}
       >
         <h1 className="w-full mb-7 pb-7 pt-7 px-3 bg-gray-700 rounded-t-2xl text-gray-100 text-center font-title tracking-wider text-3xl shadow-md">
           Pick your platform and enter the url for your live stream
@@ -390,9 +390,9 @@ export default function PostingPage() {
         <div className="flex justify-center place-items-center">
           <button
             onClick={handleSubmit}
-            className="mt-9 px-5 py-2 ring-1 ring-gray-200 rounded-md shadow-sm bg-primary-red focus:outline-none"
+            className="mt-10 px-5 py-2 ring-1 ring-gray-200 rounded-md shadow-sm bg-primary-red focus:outline-none"
           >
-            <span className="uppercase font-medium text-xl text-gray-100">
+            <span className="uppercase font-semibold font-title tracking-widest text-lg text-gray-100">
               Post Your Live
             </span>
           </button>

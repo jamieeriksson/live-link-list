@@ -6,7 +6,7 @@ export default function NavBar() {
   const { pathname } = useLocation();
 
   return (
-    <div className="max-w-screen w-full px-10 pt-2 pb-8 flex flex-col justify-center place-items-center">
+    <div className="z-50 max-w-screen w-full h-32 px-10 pt-2 pb-8 flex flex-col justify-center place-items-center">
       <div className="w-full h-12">
         <img src={logo} alt="live link list logo" className="" />
       </div>
