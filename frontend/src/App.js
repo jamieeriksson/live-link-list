@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import PostingPage from "./post-page/post-page.js";
+import BrowsePage from "./browse-page/browse-page.js";
+import Footer from "./footer.js";
+import Nav from "./nav-bar.js";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -15,10 +18,13 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <div className="max-w-screen w-full min-h-screen h-full overflow-x-hidden bg-gradient-to-b from-gray-200 to-red-100">
+    <div className="max-w-screen w-full min-h-screen h-full flex flex-col overflow-x-hidden bg-gray-50">
       <Router>
         <ScrollToTop />
+        <Nav />
         <Route path="/" exact component={PostingPage} />
+        <Route path="/browse" component={BrowsePage} />
+        <Footer />
       </Router>
     </div>
   );
