@@ -35,50 +35,7 @@ function LinkInput(props) {
 
   return (
     <div className="w-full flex flex-col justify-center place-items-center">
-      {/* <div className="float-left">
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            setIsPlatformSelectOpen(!isPlatformSelectOpen);
-          }}
-          className="w-52 px-5 py-1 flex bg-primary-blue rounded-md text-gray-100 focus:outline-none"
-        >
-          <div className="flex-grow flex place-items-center text-left">
-            <span className="text-2xl">
-              <FontAwesomeIcon icon={selectedPlatform.icon} color="#f3f4f6" />
-            </span>
-            <span className="ml-3 text-xl font-semibold uppercase tracking-wide">
-              {selectedPlatform.name}
-            </span>
-          </div>
-          <span className="self-center text-sm">
-            <FontAwesomeIcon icon={faChevronDown} color="#f3f4f6" />
-          </span>
-        </button>
-        <div
-          ref={outsideClickPlatformRef}
-          className={`absolute z-10 flex flex-col ${
-            isPlatformSelectOpen ? "block" : "hidden"
-          }`}
-        >
-          {platformOptions.map((platform) => (
-            <button
-              key={platform.name}
-              onClick={(e) => {
-                e.preventDefault();
-                handlePlatformSelect(platform);
-              }}
-              className="w-52 px-3 py-1 bg-blue-400 hover:bg-primary-blue font-light hover:font-normal text-gray-100 focus:outline-none"
-            >
-              <span className="text-xl">
-                <FontAwesomeIcon icon={platform.icon} color="#f3f4f6" />
-              </span>
-              <span className="ml-3 text-xl">{platform.name}</span>
-            </button>
-          ))}
-        </div>
-      </div> */}
-      <div className="max-w-lg w-full mb-10 flex justify-center place-items-center flex-wrap">
+      <div className="max-w-xs md:max-w-sm lg:max-w-md xl:max-w-lg w-full mb-5 md:mb-10 flex justify-center place-items-center flex-wrap">
         {platformOptions.map((platform) => (
           <button
             key={platform.name}
@@ -99,8 +56,8 @@ function LinkInput(props) {
         ))}
       </div>
 
-      <div className="max-w-xl w-full flex justify-center place-items-center text-2xl">
-        <span className="mr-2 font-semibold tracking-wide">
+      <div className="px-3 max-w-xl w-full flex justify-center place-items-center flex-wrap text-xl md:text-2xl">
+        <span className="mr-2 mb-1 md:mb-0 font-semibold md:tracking-wide">
           {selectedPlatform.urlStart}
         </span>
         <div className="flex-grow inline px-2 py-1 rounded-md ring-1 ring-gray-200 shadow-sm bg-white">
@@ -137,7 +94,7 @@ function LiveDetails(props) {
   });
 
   return (
-    <div className="max-w-2xl w-full flex flex-col justify-center place-items-center">
+    <div className="px-3 max-w-2xl w-full flex flex-col justify-center place-items-center">
       <div className="w-full mt-8 flex flex-col">
         <span className="mb-1 text-xl uppercase">Hashtags</span>
         <div className="flex-grow px-2 py-1 flex place-items-center ring-1 ring-gray-200 rounded-md shadow-sm bg-white">
@@ -358,12 +315,12 @@ export default function PostingPage() {
 
   return (
     <div
-      className={`flex-grow max-w-screen bg w-full max-h-screen h-screen -mt-24 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-${selectedPlatform.color}-300 to-gray-50`}
+      className={`max-w-screen w-full h-full md:h-screen md:mt-5 px-1 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-${selectedPlatform.color}-300 to-gray-50`}
     >
       <form
-        className={`max-w-3xl w-full mx-3 my-3 pb-9 flex flex-col justify-center place-items-center border-transparent rounded-2xl bg-gray-100`}
+        className={`max-w-3xl w-full mx-3 my-3 pb-9 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100`}
       >
-        <h1 className="w-full mb-7 pb-7 pt-7 px-3 bg-gray-700 rounded-t-2xl text-gray-100 text-center font-title tracking-wider text-3xl shadow-md">
+        <h1 className="w-full mb-7 pb-7 pt-7 px-3 bg-gray-700 rounded-t-lg md:rounded-t-2xl text-gray-100 text-center font-title tracking-wider text-2xl md:text-3xl shadow-md">
           Pick your platform and enter the url for your live stream
         </h1>
         <LinkInput
