@@ -13,6 +13,12 @@ module.exports = {
         "primary-blue": "#3354A9",
         "primary-red": "#C75151",
         gray: colors.gray,
+        indigo: {
+          300: "#A5B4FC",
+          700: "#4338CA",
+          800: "#3730A3",
+          900: "#312E81",
+        },
       },
     },
   },
