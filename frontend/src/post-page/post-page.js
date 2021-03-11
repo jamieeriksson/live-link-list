@@ -25,17 +25,11 @@ function LinkInput(props) {
   const setUrlInput = props.setUrlInput;
   const handleUrlChange = props.handleUrlChange;
 
-  const outsideClickPlatformRef = useRef(null);
-
   useEffect(() => {
     checkPaste();
 
     return () => {};
   }, []);
-
-  useOutsideAlerter(outsideClickPlatformRef, () => {
-    setIsPlatformSelectOpen(false);
-  });
 
   const handlePlatformSelect = (platform) => {
     setSelectedPlatform(platform);
@@ -200,6 +194,7 @@ function LiveDetails(props) {
         <span className="mr-4 mb-1 text-xl uppercase">Link Duration:</span>
         <div>
           <button
+            ref={outsideClickDurationRef}
             onClick={(e) => {
               e.preventDefault();
               setIsLinkDurationOpen(!isLinkDurationOpen);
@@ -215,7 +210,6 @@ function LiveDetails(props) {
           </button>
 
           <div
-            ref={outsideClickDurationRef}
             className={`absolute z-10 flex flex-col ${
               isLinkDurationOpen ? "block" : "hidden"
             }`}
@@ -248,7 +242,7 @@ function LiveDetails(props) {
 export default function PostingPage() {
   const platformOptions = [
     {
-      name: "Tiktok",
+      name: "TikTok",
       icon: faTiktok,
       urlStart: "https://vm.tiktok.com/",
       placeholder: "xxxxxxxxx",
@@ -316,15 +310,16 @@ export default function PostingPage() {
   const [linkDuration, setLinkDuration] = useState(durationOptions[0]);
 
   const handleUrlChange = (url, platform) => {
-    if (platform === null) {
-      const platform = selectedPlatform;
+    let urlPlatform = selectedPlatform;
+
+    if (platform !== null) {
+      urlPlatform = platform;
     }
-    console.log(platform);
     const input = url;
 
-    if (input.includes(platform.urlStart)) {
-      console.log(input.slice(platform.urlStart.length));
-      setUrlInput(input.slice(platform.urlStart.length));
+    if (input.includes(urlPlatform.urlStart)) {
+      console.log(input.slice(urlPlatform.urlStart.length));
+      setUrlInput(input.slice(urlPlatform.urlStart.length));
     } else {
       setUrlInput(input);
     }
