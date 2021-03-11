@@ -67,12 +67,18 @@ class LiveSerializer(serializers.ModelSerializer):
 
     hashtags = HashtagSerializer(many=True)
     duration = serializers.DurationField()
+    end_date = serializers.DateTimeField()
 
     class Meta:
         model = Live
         fields = [
+            "id",
+            "created_at",
+            "modified_at",
+            "owner",
             "platform",
             "link",
+            "username",
             "description",
             "duration",
             "is_expired",
@@ -80,6 +86,7 @@ class LiveSerializer(serializers.ModelSerializer):
             "clicks",
             "owner",
             "hashtags",
+            "end_date",
         ]
 
     # def clean(self):

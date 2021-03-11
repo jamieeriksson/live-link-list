@@ -40,17 +40,23 @@ class Command(BaseCommand):
         for i in range(15):
             user = UserFactory()
             if random.choice([True, False]):
-                LiveFactory.create(hashtags=(get_string_hashtags()), owner=user)
+                LiveFactory.create(
+                    hashtags=(get_string_hashtags()), owner=user, username=None
+                )
         for i in range(15):
             username = fake.user_name()
             user = UserFactory(tiktok_username=username)
             if random.choice([True, False]):
-                LiveFactory.create(hashtags=(get_string_hashtags()), owner=user)
+                LiveFactory.create(
+                    hashtags=(get_string_hashtags()), owner=user, username=username
+                )
         for i in range(15):
             username = fake.user_name()
             user = UserFactory(tiktok_username=username, youtube_username=username)
             if random.choice([True, False]):
-                LiveFactory.create(hashtags=(get_string_hashtags()), owner=user)
+                LiveFactory.create(
+                    hashtags=(get_string_hashtags()), owner=user, username=username
+                )
         for i in range(15):
             username = fake.user_name()
             user = UserFactory(
@@ -59,7 +65,9 @@ class Command(BaseCommand):
                 twitch_username=username,
             )
             if random.choice([True, False]):
-                LiveFactory.create(hashtags=(get_string_hashtags()), owner=user)
+                LiveFactory.create(
+                    hashtags=(get_string_hashtags()), owner=user, username=None
+                )
         for i in range(15):
             username = fake.user_name()
             user = UserFactory(
@@ -69,7 +77,9 @@ class Command(BaseCommand):
                 twitch_username=username,
             )
             if random.choice([True, False]):
-                LiveFactory.create(hashtags=(get_string_hashtags()), owner=user)
+                LiveFactory.create(
+                    hashtags=(get_string_hashtags()), owner=user, username=None
+                )
         for i in range(15):
             username = fake.user_name()
             user = UserFactory(
@@ -80,7 +90,9 @@ class Command(BaseCommand):
                 twitch_username=username,
             )
             if random.choice([True, False]):
-                LiveFactory.create(hashtags=(get_string_hashtags()), owner=user)
+                LiveFactory.create(
+                    hashtags=(get_string_hashtags()), owner=user, username=username
+                )
         for i in range(50):
             LiveFactory.create(hashtags=(get_string_hashtags()))
 

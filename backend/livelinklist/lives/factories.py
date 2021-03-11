@@ -83,11 +83,9 @@ class LiveFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Live
 
-    # owner = factory.SubFactory(UserFactory)
     platform = factory.Iterator(Platform.objects.all())
-
     link = factory.LazyAttribute(lambda o: get_live_url(o.platform))
-
+    username = factory.Faker("user_name")
     description = factory.Faker("text", max_nb_chars=75)
     duration = factory.LazyFunction(get_duration)
     is_expired = factory.Faker("boolean", chance_of_getting_true=30)

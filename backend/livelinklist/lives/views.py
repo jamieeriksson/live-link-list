@@ -1,3 +1,5 @@
+from django.db.models import DateTimeField, F
+from django.db.models.expressions import ExpressionWrapper
 from rest_framework import mixins, permissions, viewsets
 
 from livelinklist.lives.models import Hashtag, Live, Platform
@@ -13,6 +15,13 @@ class LiveViewSet(viewsets.ModelViewSet):
     queryset = Live.objects.all()
     serializer_class = LiveSerializer
     permission_classes = [LivePermissions]
+
+    def get_queryset(self):
+        return Live.objects.annotate(
+            end_date=ExpressionWrapper(
+                F("created_at") + F("duration"), output_field=DateTimeField()
+            ),
+        )
 
 
 class HashtagViewSet(viewsets.ModelViewSet):

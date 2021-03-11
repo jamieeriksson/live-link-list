@@ -19,6 +19,7 @@ class Hashtag(BaseModel):
 
 class Live(BaseModel):
     link = models.URLField()
+    username = models.TextField(blank=True, null=True)
     description = models.TextField(max_length=75, blank=True, null=True)
     duration = models.DurationField(default=datetime.timedelta(seconds=300))
     is_expired = models.BooleanField(default=False)
