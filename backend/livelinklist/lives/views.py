@@ -1,7 +1,9 @@
 from django.db.models import DateTimeField, F
 from django.db.models.expressions import ExpressionWrapper
-from rest_framework import mixins, permissions, viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, permissions, viewsets
 
+from livelinklist.lives.filters import LiveFilter
 from livelinklist.lives.models import Hashtag, Live, Platform
 from livelinklist.lives.permissions import LivePermissions
 from livelinklist.lives.serializers import (
@@ -15,6 +17,9 @@ class LiveViewSet(viewsets.ModelViewSet):
     queryset = Live.objects.all()
     serializer_class = LiveSerializer
     permission_classes = [LivePermissions]
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    search_fields = ["hashtags__name", "username"]
+    filterset_class = LiveFilter
 
     def get_queryset(self):
         return Live.objects.annotate(

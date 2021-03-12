@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import useOutsideAlerter from "../hooks/outside-alerter.js";
 import useDataApi from "../hooks/data-api.js";
+import queryString from "query-string";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCaretDown,
@@ -18,7 +19,7 @@ import {
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 
-function SearchBar() {
+function SearchBar(props) {
   const dropdownCategories = [
     "All Platforms",
     "TikTok",
@@ -35,9 +36,11 @@ function SearchBar() {
     <FontAwesomeIcon icon={faFacebook} />,
     <FontAwesomeIcon icon={faTwitch} />,
   ];
+  const setQuery = props.setQuery;
 
   const [hashtags, setHashtags] = useState("");
   const [hashtagsList, setHashtagsList] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(
     window.innerWidth <= 768
       ? mobileDropdownCategories[0]
@@ -107,8 +110,31 @@ function SearchBar() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // let queryHashtags = [];
 
-    alert(`Search for hashtags: ${[...hashtagsList]}`);
+    // for (const hashtag of hashtagsList) {
+    //   queryHashtags.push(hashtag.slice(1));
+    // }
+    let search = searchInput;
+
+    if (searchInput.slice(0, 1) === "@" || searchInput.slice(0, 1) === "#") {
+      search = searchInput.slice(1);
+    }
+
+    if (selectedCategory !== "All" && selectedCategory !== "All Platforms") {
+      setQuery({
+        search: search,
+        // search: queryHashtags,
+        platform: selectedCategory,
+      });
+    } else {
+      setQuery({
+        search: search,
+        // search: queryHashtags,
+      });
+    }
+
+    // alert(`Search for hashtags: ${[...hashtagsList]}`);
   };
 
   return (
@@ -117,7 +143,14 @@ function SearchBar() {
         <div className="hidden px-6 md:flex place-items-center bg-gray-800 rounded-l-md font-body font-semibold text-lg text-gray-200">
           Search
         </div>
-        <div className="px-4 py-2 flex-grow flex place-items-center flex-wrap bg-gray-50 border-t border-b border-l md:border-l-0 rounded-l-md md:rounded-l-none border-gray-200 font-body font-semibold text-gray-800 focus:outline-none">
+        <input
+          type="text"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          placeholder="enter a hashtag or username"
+          className="px-4 py-2 flex place-items-center flex-grow bg-gray-50 focus:outline-none"
+        />
+        {/* <div className="px-4 py-2 flex-grow flex place-items-center flex-wrap bg-gray-50 border-t border-b border-l md:border-l-0 rounded-l-md md:rounded-l-none border-gray-200 font-body font-semibold text-gray-800 focus:outline-none">
           {hashtagsList.map((hashtag) => (
             <div
               key={hashtag}
@@ -147,7 +180,7 @@ function SearchBar() {
             }`}
             className="flex-grow bg-gray-50 focus:outline-none"
           />
-        </div>
+        </div> */}
         <div className="float-right font-body" ref={outsideClickRef}>
           <button
             onClick={(e) => {
@@ -321,6 +354,7 @@ function LivesSection(props) {
 }
 
 export default function BrowsePage() {
+  const [query, setQuery] = useState({});
   const [querySearchString, setQuerySearchString] = useState("");
   const [lives, setLives] = useState([]);
   const [featuredLives, setFeaturedLives] = useState([]);
@@ -331,7 +365,7 @@ export default function BrowsePage() {
     console.log(state.data);
     let featuredLives = [];
 
-    if (state.data) {
+    if (state.data && state.data.length > 0) {
       setLives([...state.data]);
 
       for (const live of state.data) {
@@ -343,11 +377,37 @@ export default function BrowsePage() {
     return () => {};
   }, [state, setLives]);
 
+  useEffect(() => {
+    console.log("[useEffect] SEARCH PAGE: parse url query");
+    if (window.location.search) {
+      const initialQuery = queryString.parse(window.location.search);
+      setQuery(initialQuery);
+    }
+    return () => {
+      console.log("[useEffect] SEARCH PAGE: clean up parse url query");
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log("[useEffect] SEARCH PAGE: set url query");
+    const newQuerySearchString = queryString.stringify(query);
+
+    setQuerySearchString(newQuerySearchString);
+
+    const { protocol, pathname, host } = window.location;
+    const newUrl = `${protocol}//${host}${pathname}?${newQuerySearchString}`;
+    window.history.pushState({}, "", newUrl);
+
+    return () => {
+      console.log("[useEffect] SEARCH PAGE: clean up set url query");
+    };
+  }, [query]);
+
   return (
     <div
       className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-1 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-red-100 via-gray-50 to-gray-50`}
     >
-      <SearchBar />
+      <SearchBar setQuery={setQuery} />
       <FeaturedSection featuredLives={featuredLives} />
       <LivesSection lives={lives} />
     </div>
