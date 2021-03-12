@@ -45,6 +45,10 @@ module.exports = {
         "primary-red": "#C75151",
         gray: colors.gray,
       },
+      maxWidth: {
+        "8xl": "88rem",
+        "9xl": "96rem",
+      },
     },
   },
   variants: {

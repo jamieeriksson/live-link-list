@@ -9,7 +9,7 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
-import FeaturedLive from "./featured-live.js";
+import Live from "./individual-live.js";
 
 function SearchBar() {
   const dropdownCategories = [
@@ -78,13 +78,13 @@ function SearchBar() {
         <div className="px-6 flex place-items-center bg-gray-800 rounded-l-md font-body font-semibold text-lg text-gray-200">
           Search
         </div>
-        <div className="px-4 py-2 flex-grow flex place-items-center bg-gray-50 border-t border-b border-gray-200 font-body font-semibold text-gray-800 focus:outline-none">
+        <div className="px-4 py-2 flex-grow flex place-items-center flex-wrap bg-gray-50 border-t border-b border-gray-200 font-body font-semibold text-gray-800 focus:outline-none">
           {hashtagsList.map((hashtag) => (
             <div
               key={hashtag}
               className="flex flex-nowrap px-2 mx-1 text-sm border border-gray-500 bg-gray-300 rounded-2xl text-gray-800"
             >
-              <span className="mr-1">{hashtag}</span>
+              <span className="mr-1 whitespace-nowrap">{hashtag}</span>
               <button
                 onClick={(e) => {
                   e.preventDefault();
@@ -115,9 +115,9 @@ function SearchBar() {
               e.preventDefault();
               setIsDropdownOpen(!isDropdownOpen);
             }}
-            className="w-44 pr-4 py-2 flex place-items-center bg-gray-50 border-t border-b border-gray-200 font-semibold tracking-wide text-gray-800 focus:outline-none"
+            className="w-44 h-full pr-4 py-2 flex place-items-center justify-center bg-gray-50 border-t border-b border-gray-200 font-semibold tracking-wide text-gray-800 focus:outline-none"
           >
-            <span className="flex-grow pl-5 py-1 border-l border-gray-500 text-left">
+            <span className="flex-grow h-full flex place-items-center pl-5 py-1 border-l border-gray-500 text-left">
               {selectedCategory}
             </span>
             <span className="float-right ml-2">
@@ -169,7 +169,11 @@ function FeaturedSection(props) {
   const numberOfShownLives = 5;
 
   featuredLives.forEach((featuredLive) => {
-    allFeaturedLiveComponents.push(<FeaturedLive live={featuredLive} />);
+    allFeaturedLiveComponents.push(
+      <div className="mx-3">
+        <Live live={featuredLive} />
+      </div>
+    );
   });
 
   function handleForwardClick(e) {
@@ -187,8 +191,8 @@ function FeaturedSection(props) {
   }
 
   return (
-    <div className="w-full">
-      <h1 className="mb-10 uppercase text-center tracking-wide font-semibold font-body text-2xl">
+    <div className="mb-16 pb-16 px-4 border-b border-gray-400">
+      <h1 className="mb-8 uppercase text-center tracking-wide font-semibold font-body text-2xl">
         Featured
       </h1>
       <div className="flex justify-center place-items-center">
@@ -210,6 +214,25 @@ function FeaturedSection(props) {
         >
           <FontAwesomeIcon icon={faChevronRight} className="ml-3" />
         </button>
+      </div>
+    </div>
+  );
+}
+
+function LivesSection(props) {
+  const lives = props.lives;
+
+  return (
+    <div className="max-w-8xl w-full">
+      <h1 className="mb-8 uppercase text-center tracking-wide font-semibold font-body text-2xl">
+        All Lives
+      </h1>
+      <div className="flex flex-wrap justify-center place-items-center">
+        {lives.map((live) => (
+          <div className="mx-8 mb-5 pb-5 border-b border-gray-200">
+            <Live live={live} />
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -240,10 +263,11 @@ export default function BrowsePage() {
 
   return (
     <div
-      className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-1 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-red-100 to-gray-50`}
+      className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-1 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-red-100 via-gray-50 to-gray-50`}
     >
       <SearchBar />
       <FeaturedSection featuredLives={featuredLives} />
+      <LivesSection lives={lives} />
     </div>
   );
 }

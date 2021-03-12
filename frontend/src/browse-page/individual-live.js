@@ -70,7 +70,7 @@ function Timer(props) {
   );
 }
 
-export default function FeaturedLive(props) {
+export default function Live(props) {
   const platformOptions = [
     {
       name: "TikTok",
@@ -132,12 +132,12 @@ export default function FeaturedLive(props) {
 
   if (live) {
     return (
-      <div className="mx-3 my-3 w-72">
+      <div className="w-72">
         <div key={live.id} className="flex h-20 place-items-center">
           <div className="relative w-16 h-16">
             {isLiveExpired ? (
               <div
-                className={`h-16 w-16 flex justify-center place-items-center rounded-full border-4 border-${livePlatform.color}-200 text-gray-800`}
+                className={`h-16 w-16 flex justify-center place-items-center rounded-full bg-gray-50 border-4 border-${livePlatform.color}-200 text-gray-800`}
               >
                 <FontAwesomeIcon icon={livePlatform.icon} size="2x" />
               </div>
@@ -146,7 +146,7 @@ export default function FeaturedLive(props) {
                 href={live.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`h-16 w-16 flex justify-center place-items-center rounded-full border-4 border-${livePlatform.color}-200 hover:shadow-md hover:bg-${livePlatform.color}-100 hover:border-${livePlatform.color}-400 transition duration-200 text-gray-800 hover:text-gray-900`}
+                className={`h-16 w-16 flex justify-center place-items-center rounded-full bg-gray-50 border-4 border-${livePlatform.color}-200 hover:shadow-md hover:bg-${livePlatform.color}-100 hover:border-${livePlatform.color}-400 transition duration-200 text-gray-800 hover:text-gray-900`}
               >
                 <FontAwesomeIcon icon={livePlatform.icon} size="2x" />
               </a>
@@ -169,86 +169,90 @@ export default function FeaturedLive(props) {
               {live.description}
             </p>
 
-            <div className="flex leading-none">
-              <div className="w-40 mr-1 overflow-x-hidden overflow-ellipsis">
-                {hashtags[0] ? (
-                  <Link
-                    to="/"
-                    className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
-                  >
-                    #{hashtags[0].name}
-                  </Link>
-                ) : (
-                  ""
-                )}
-                {hashtags[1] ? (
-                  <Link
-                    to="/"
-                    className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
-                  >
-                    #{hashtags[1].name}
-                  </Link>
-                ) : (
-                  ""
-                )}
-                {hashtags[2] ? (
-                  <Link
-                    to="/"
-                    className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
-                  >
-                    #{hashtags[2].name}
-                  </Link>
-                ) : (
-                  ""
-                )}
-                {hashtags[3] ? (
-                  <Link
-                    to="/"
-                    className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
-                  >
-                    #{hashtags[3].name}
-                  </Link>
-                ) : (
-                  ""
-                )}
-                {hashtags[4] ? (
-                  <Link
-                    to="/"
-                    className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
-                  >
-                    #{hashtags[4].name}
-                  </Link>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div ref={outsideClickRef}>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setIsHashtagsOpen(!isHashtagsOpen);
-                  }}
-                  className="text-xs text-left text-gray-700 focus:outline-none"
-                >
-                  <span className="mr-1">See All</span>
-                  <FontAwesomeIcon icon={faCaretDown} />
-                </button>
-                <div
-                  className={`${
-                    isHashtagsOpen ? "block" : "hidden"
-                  } absolute z-10 w-48 -ml-36 px-2 py-2 flex flex-wrap bg-gray-50 border border-gray-200 rounded-md text-sm font-body leading-tight text-gray-600`}
-                >
-                  {hashtags.map((hashtag) => (
+            {hashtags.length > 0 ? (
+              <div className="flex leading-none">
+                <div className="w-40 mr-1 overflow-x-hidden overflow-ellipsis">
+                  {hashtags[0] ? (
                     <Link
                       to="/"
-                      className="mr-1.5 hover:text-gray-800 hover:underline"
+                      className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
                     >
-                      #{hashtag.name}
+                      #{hashtags[0].name}
                     </Link>
-                  ))}
+                  ) : (
+                    ""
+                  )}
+                  {hashtags[1] ? (
+                    <Link
+                      to="/"
+                      className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                    >
+                      #{hashtags[1].name}
+                    </Link>
+                  ) : (
+                    ""
+                  )}
+                  {hashtags[2] ? (
+                    <Link
+                      to="/"
+                      className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                    >
+                      #{hashtags[2].name}
+                    </Link>
+                  ) : (
+                    ""
+                  )}
+                  {hashtags[3] ? (
+                    <Link
+                      to="/"
+                      className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                    >
+                      #{hashtags[3].name}
+                    </Link>
+                  ) : (
+                    ""
+                  )}
+                  {hashtags[4] ? (
+                    <Link
+                      to="/"
+                      className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                    >
+                      #{hashtags[4].name}
+                    </Link>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                <div ref={outsideClickRef}>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setIsHashtagsOpen(!isHashtagsOpen);
+                    }}
+                    className="text-xs text-left text-gray-700 focus:outline-none"
+                  >
+                    <span className="mr-1">See All</span>
+                    <FontAwesomeIcon icon={faCaretDown} />
+                  </button>
+                  <div
+                    className={`${
+                      isHashtagsOpen ? "block" : "hidden"
+                    } absolute z-10 w-48 -ml-36 px-2 py-2 flex flex-wrap bg-gray-50 border border-gray-200 rounded-md text-sm font-body leading-tight text-gray-600`}
+                  >
+                    {hashtags.map((hashtag) => (
+                      <Link
+                        to="/"
+                        className="mr-1.5 hover:text-gray-800 hover:underline"
+                      >
+                        #{hashtag.name}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              ""
+            )}
 
             {isLiveExpired ? (
               <p className="text-xs text-red-500 font-body">Expired</p>

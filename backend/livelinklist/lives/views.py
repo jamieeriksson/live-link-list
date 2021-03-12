@@ -21,7 +21,7 @@ class LiveViewSet(viewsets.ModelViewSet):
             end_date=ExpressionWrapper(
                 F("created_at") + F("duration"), output_field=DateTimeField()
             ),
-        )
+        ).order_by("end_date")
 
 
 class HashtagViewSet(viewsets.ModelViewSet):
