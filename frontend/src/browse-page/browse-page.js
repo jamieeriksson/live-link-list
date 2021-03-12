@@ -10,6 +10,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import Live from "./individual-live.js";
+import {
+  faFacebook,
+  faInstagram,
+  faTiktok,
+  faTwitch,
+  faYoutube,
+} from "@fortawesome/free-brands-svg-icons";
 
 function SearchBar() {
   const dropdownCategories = [
@@ -20,11 +27,21 @@ function SearchBar() {
     "Facebook",
     "Twitch",
   ];
+  const mobileDropdownCategories = [
+    "All",
+    <FontAwesomeIcon icon={faTiktok} />,
+    <FontAwesomeIcon icon={faInstagram} />,
+    <FontAwesomeIcon icon={faYoutube} />,
+    <FontAwesomeIcon icon={faFacebook} />,
+    <FontAwesomeIcon icon={faTwitch} />,
+  ];
 
   const [hashtags, setHashtags] = useState("");
   const [hashtagsList, setHashtagsList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(
-    dropdownCategories[0]
+    window.innerWidth <= 768
+      ? mobileDropdownCategories[0]
+      : dropdownCategories[0]
   );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -32,6 +49,28 @@ function SearchBar() {
 
   useOutsideAlerter(outsideClickRef, () => {
     setIsDropdownOpen(false);
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      let categoryIndex = 0;
+
+      if (selectedCategory in dropdownCategories) {
+        categoryIndex = dropdownCategories.indexOf(selectedCategory);
+      } else {
+        categoryIndex = mobileDropdownCategories.indexOf(selectedCategory);
+      }
+
+      if (window.innerWidth <= 768) {
+        setSelectedCategory(mobileDropdownCategories[categoryIndex]);
+      } else {
+        setSelectedCategory(dropdownCategories[categoryIndex]);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   });
 
   const addHashtag = (e) => {
@@ -75,10 +114,10 @@ function SearchBar() {
   return (
     <div className="max-w-4xl w-full mt-4 mb-24 shadow-lg">
       <form onSubmit={handleSubmit} className="flex">
-        <div className="px-6 flex place-items-center bg-gray-800 rounded-l-md font-body font-semibold text-lg text-gray-200">
+        <div className="hidden px-6 md:flex place-items-center bg-gray-800 rounded-l-md font-body font-semibold text-lg text-gray-200">
           Search
         </div>
-        <div className="px-4 py-2 flex-grow flex place-items-center flex-wrap bg-gray-50 border-t border-b border-gray-200 font-body font-semibold text-gray-800 focus:outline-none">
+        <div className="px-4 py-2 flex-grow flex place-items-center flex-wrap bg-gray-50 border-t border-b border-l md:border-l-0 rounded-l-md md:rounded-l-none border-gray-200 font-body font-semibold text-gray-800 focus:outline-none">
           {hashtagsList.map((hashtag) => (
             <div
               key={hashtag}
@@ -115,9 +154,9 @@ function SearchBar() {
               e.preventDefault();
               setIsDropdownOpen(!isDropdownOpen);
             }}
-            className="w-44 h-full pr-4 py-2 flex place-items-center justify-center bg-gray-50 border-t border-b border-gray-200 font-semibold tracking-wide text-gray-800 focus:outline-none"
+            className="md:w-44 h-full pr-4 py-2 flex place-items-center justify-center bg-gray-50 border-t border-b border-gray-200 font-semibold tracking-wide text-gray-800 focus:outline-none"
           >
-            <span className="flex-grow h-full flex place-items-center pl-5 py-1 border-l border-gray-500 text-left">
+            <span className="flex-grow h-full flex place-items-center pl-3 md:pl-5 py-1 border-l border-gray-500 text-left">
               {selectedCategory}
             </span>
             <span className="float-right ml-2">
@@ -125,11 +164,34 @@ function SearchBar() {
             </span>
           </button>
           <div
-            className={`absolute z-10 w-44 py-1 px-1 flex flex-col ${
-              isDropdownOpen ? "block" : "hidden"
+            className={`absolute hidden z-10 w-44 py-1 px-1 flex-col ${
+              isDropdownOpen ? "md:flex" : ""
             } bg-gray-50 rounded-b-md shadow-inner border border-gray-200`}
           >
             {dropdownCategories.map((category) => (
+              <button
+                key={category}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSelectedCategory(category);
+                  setIsDropdownOpen(!isDropdownOpen);
+                }}
+                className={`text-left my-px px-4 py-2 ${
+                  selectedCategory === category
+                    ? "bg-gray-600 text-gray-100"
+                    : "text-gray-800"
+                } hover:bg-gray-600 hover:text-gray-100 rounded-md font-semibold tracking-wide focus:outline-none`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+          <div
+            className={`absolute md:hidden z-10 py-1 px-1 flex flex-col ${
+              isDropdownOpen ? "flex" : "hidden"
+            } bg-gray-50 rounded-b-md shadow-inner border border-gray-200`}
+          >
+            {mobileDropdownCategories.map((category) => (
               <button
                 key={category}
                 onClick={(e) => {
@@ -166,11 +228,31 @@ function FeaturedSection(props) {
   // const [shownFeaturedLiveComponents, setFeaturedLiveComponents] = useState([]);
   const [startingIndex, setStartingIndex] = useState(0);
   const allFeaturedLiveComponents = [];
-  const numberOfShownLives = 5;
+  const [numberOfShownLives, setNumberOfShownLives] = useState(
+    window.innerWidth <= 768 ? 1 : 3
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setNumberOfShownLives(1);
+      } else if (window.innerWidth > 768 && window.innerWidth <= 1330) {
+        setNumberOfShownLives(3);
+      } else if (window.innerWidth > 1330 && window.innerWidth <= 1667) {
+        setNumberOfShownLives(4);
+      } else {
+        setNumberOfShownLives(5);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  });
 
   featuredLives.forEach((featuredLive) => {
     allFeaturedLiveComponents.push(
-      <div className="mx-3">
+      <div className="mx-1 md:mx-3">
         <Live live={featuredLive} />
       </div>
     );
