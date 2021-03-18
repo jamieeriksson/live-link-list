@@ -1,5 +1,8 @@
+from datetime import datetime
+
 from django.db.models import DateTimeField, F
 from django.db.models.expressions import ExpressionWrapper
+from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, permissions, viewsets
 
@@ -22,11 +25,17 @@ class LiveViewSet(viewsets.ModelViewSet):
     filterset_class = LiveFilter
 
     def get_queryset(self):
-        return Live.objects.annotate(
-            end_date=ExpressionWrapper(
-                F("created_at") + F("duration"), output_field=DateTimeField()
-            ),
-        ).order_by("-end_date")
+        today = timezone.now()
+
+        return (
+            Live.objects.annotate(
+                expires_at=ExpressionWrapper(
+                    F("created_at") + F("duration"), output_field=DateTimeField()
+                )
+            )
+            .filter(expires_at__gt=today)
+            .order_by("expires_at")
+        )
 
 
 class HashtagViewSet(viewsets.ModelViewSet):

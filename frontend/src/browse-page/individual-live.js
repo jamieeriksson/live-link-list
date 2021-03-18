@@ -20,9 +20,6 @@ function Timer(props) {
   const calculateTimeLeft = () => {
     const now = +Date.now();
     const difference = endTime - now;
-    console.log("now: ", now);
-    console.log("end time: ", endTime);
-    console.log("difference: ", difference);
     let timeLeft = {};
 
     if (difference > 0) {
@@ -36,7 +33,6 @@ function Timer(props) {
       setIsLiveExpired(true);
       // Send post to set live to expired
     }
-    console.log("time left: ", timeLeft);
 
     return timeLeft;
   };
@@ -259,7 +255,7 @@ export default function Live(props) {
             ) : (
               <Timer
                 setIsLiveExpired={setIsLiveExpired}
-                liveEnd={live.end_date}
+                liveEnd={live.expires_at}
               />
             )}
           </div>

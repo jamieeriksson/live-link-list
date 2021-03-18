@@ -70,7 +70,7 @@ class LiveSerializer(serializers.ModelSerializer):
 
     hashtags = HashtagSerializer(many=True)
     duration = serializers.DurationField()
-    end_date = serializers.DateTimeField(read_only=True)
+    expires_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Live
@@ -84,12 +84,12 @@ class LiveSerializer(serializers.ModelSerializer):
             "username",
             "description",
             "duration",
-            "is_expired",
+            # "is_expired",
             "is_featured",
             "clicks",
             "owner",
             "hashtags",
-            "end_date",
+            "expires_at",
         ]
 
     # def clean(self):
