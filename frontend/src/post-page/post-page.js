@@ -140,7 +140,7 @@ function LiveDetails(props) {
         <div className="flex-grow px-2 py-1 flex flex-wrap place-items-center ring-1 ring-gray-200 rounded-md shadow-sm bg-white">
           {hashtagsList.map((hashtag) => (
             <div
-              key={hashtag}
+              key={hashtag.id}
               className="flex flex-nowrap px-2 mx-1 text-sm border border-gray-500 bg-gray-300 rounded-2xl text-gray-800"
             >
               <span className="mr-1">{hashtag}</span>

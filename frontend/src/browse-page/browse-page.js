@@ -8,6 +8,7 @@ import {
   faSearch,
   faChevronLeft,
   faChevronRight,
+  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import Live from "./individual-live.js";
 import {
@@ -20,33 +21,21 @@ import {
 
 function SearchBar(props) {
   const dropdownCategories = [
-    "All Platforms",
-    "TikTok",
-    "Instagram",
-    "Youtube",
-    "Facebook",
-    "Twitch",
+    { name: "All Platforms", mobile: "All" },
+    { name: "TikTok", mobile: <FontAwesomeIcon icon={faTiktok} /> },
+    { name: "Instagram", mobile: <FontAwesomeIcon icon={faInstagram} /> },
+    { name: "Youtube", mobile: <FontAwesomeIcon icon={faYoutube} /> },
+    { name: "Facebook", mobile: <FontAwesomeIcon icon={faFacebook} /> },
+    { name: "Twitch", mobile: <FontAwesomeIcon icon={faTwitch} /> },
   ];
-  const mobileDropdownCategories = [
-    "All",
-    <FontAwesomeIcon icon={faTiktok} />,
-    <FontAwesomeIcon icon={faInstagram} />,
-    <FontAwesomeIcon icon={faYoutube} />,
-    <FontAwesomeIcon icon={faFacebook} />,
-    <FontAwesomeIcon icon={faTwitch} />,
-  ];
+  const query = props.query;
   const setQuery = props.setQuery;
-
-  const [hashtags, setHashtags] = useState("");
-  const [hashtagsList, setHashtagsList] = useState([]);
-  const [searchInput, setSearchInput] = useState("");
+  const searchInput = props.searchInput;
+  const setSearchInput = props.setSearchInput;
   const [selectedCategory, setSelectedCategory] = useState(
-    window.innerWidth <= 768
-      ? mobileDropdownCategories[0]
-      : dropdownCategories[0]
+    dropdownCategories[0]
   );
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const outsideClickRef = useRef(null);
 
   useOutsideAlerter(outsideClickRef, () => {
@@ -54,58 +43,14 @@ function SearchBar(props) {
   });
 
   useEffect(() => {
-    const handleResize = () => {
-      let categoryIndex = 0;
-
-      if (selectedCategory in dropdownCategories) {
-        categoryIndex = dropdownCategories.indexOf(selectedCategory);
-      } else {
-        categoryIndex = mobileDropdownCategories.indexOf(selectedCategory);
-      }
-
-      if (window.innerWidth <= 768) {
-        setSelectedCategory(mobileDropdownCategories[categoryIndex]);
-      } else {
-        setSelectedCategory(dropdownCategories[categoryIndex]);
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  });
-
-  const addHashtag = (e) => {
-    let existingHashtags = [...hashtagsList];
-
-    if (e.keyCode === 32) {
-      const text = e.target.value;
-      console.log(`adding hashtag ${text}`);
-
-      if (text.slice(0, 1) === "#") {
-        existingHashtags.push(text.slice(0, -1));
-      } else {
-        existingHashtags.push("#" + text.slice(0, -1));
-      }
-      setHashtagsList([...existingHashtags]);
-      setHashtags("");
+    if (query.platform) {
+      setSelectedCategory(
+        dropdownCategories.find((category) => category.name === query.platform)
+      );
     }
 
-    if (e.keyCode === 8 && hashtags === "") {
-      console.log("removing last hashtag");
-      existingHashtags.pop();
-      setHashtagsList([...existingHashtags]);
-    }
-  };
-
-  const removeHashtag = (hashtag) => {
-    console.log(`removing ${hashtag}`);
-    let existingHashtags = [...hashtagsList];
-    const index = existingHashtags.indexOf(hashtag);
-    console.log(index);
-    existingHashtags.splice(index, 1);
-    setHashtagsList([...existingHashtags]);
-  };
+    return () => {};
+  }, [query]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -115,10 +60,10 @@ function SearchBar(props) {
       search = searchInput.slice(1);
     }
 
-    if (selectedCategory !== "All" && selectedCategory !== "All Platforms") {
+    if (selectedCategory.name !== "All Platforms") {
       setQuery({
         search: search,
-        platform: selectedCategory,
+        platform: selectedCategory.name,
       });
     } else {
       setQuery({
@@ -138,7 +83,7 @@ function SearchBar(props) {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           placeholder="enter a hashtag or username"
-          className="px-4 py-2 flex place-items-center flex-grow bg-gray-50 focus:outline-none"
+          className="px-4 py-2 flex place-items-center flex-grow bg-gray-50 border-t border-b border-gray-200 focus:outline-none"
         />
 
         <div className="float-right font-body" ref={outsideClickRef}>
@@ -149,21 +94,24 @@ function SearchBar(props) {
             }}
             className="md:w-44 h-full pr-4 py-2 flex place-items-center justify-center bg-gray-50 border-t border-b border-gray-200 font-semibold tracking-wide text-gray-800 focus:outline-none"
           >
-            <span className="flex-grow h-full flex place-items-center pl-3 md:pl-5 py-1 border-l border-gray-500 text-left">
-              {selectedCategory}
+            <span className="hidden flex-grow h-full md:flex place-items-center pl-3 md:pl-5 py-1 border-l border-gray-500 text-left">
+              {selectedCategory.name}
+            </span>
+            <span className="flex-grow h-full flex md:hidden place-items-center pl-3 md:pl-5 py-1 border-l border-gray-500 text-left">
+              {selectedCategory.mobile}
             </span>
             <span className="float-right ml-2">
               <FontAwesomeIcon icon={faCaretDown} color="#2C363F" />
             </span>
           </button>
           <div
-            className={`absolute hidden z-10 w-44 py-1 px-1 flex-col ${
-              isDropdownOpen ? "md:flex" : ""
+            className={`absolute z-10 md:w-44 py-1 px-1 flex-col ${
+              isDropdownOpen ? "flex" : "hidden"
             } bg-gray-50 rounded-b-md shadow-inner border border-gray-200`}
           >
             {dropdownCategories.map((category) => (
               <button
-                key={category}
+                key={category.name}
                 onClick={(e) => {
                   e.preventDefault();
                   setSelectedCategory(category);
@@ -175,33 +123,36 @@ function SearchBar(props) {
                     : "text-gray-800"
                 } hover:bg-gray-600 hover:text-gray-100 rounded-md font-semibold tracking-wide focus:outline-none`}
               >
-                {category}
+                <span className="hidden md:inline-block">{category.name}</span>
+                <span className="inline-block md:hidden">
+                  {category.mobile}
+                </span>
               </button>
             ))}
           </div>
-          <div
+          {/* <div
             className={`absolute md:hidden z-10 py-1 px-1 flex flex-col ${
               isDropdownOpen ? "flex" : "hidden"
             } bg-gray-50 rounded-b-md shadow-inner border border-gray-200`}
           >
             {mobileDropdownCategories.map((category) => (
               <button
-                key={category}
+                key={`mobile-${category.name}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  setSelectedCategory(category);
+                  setSelectedCategory(category.name);
                   setIsDropdownOpen(!isDropdownOpen);
                 }}
                 className={`text-left my-px px-4 py-2 ${
-                  selectedCategory === category
+                  selectedCategory === category.name
                     ? "bg-gray-600 text-gray-100"
                     : "text-gray-800"
                 } hover:bg-gray-600 hover:text-gray-100 rounded-md font-semibold tracking-wide focus:outline-none`}
               >
-                {category}
+                {category.icon}
               </button>
             ))}
-          </div>
+          </div> */}
         </div>
 
         <button
@@ -217,8 +168,6 @@ function SearchBar(props) {
 
 function FeaturedSection(props) {
   const featuredLives = props.featuredLives;
-  // const [featuredIdList, setFeaturedIdList] = useState([]);
-  // const [shownFeaturedLiveComponents, setFeaturedLiveComponents] = useState([]);
   const [startingIndex, setStartingIndex] = useState(0);
   const allFeaturedLiveComponents = [];
   const [numberOfShownLives, setNumberOfShownLives] = useState(
@@ -296,19 +245,40 @@ function FeaturedSection(props) {
 
 function LivesSection(props) {
   const lives = props.lives;
+  const query = props.query;
 
   return (
-    <div className="max-w-8xl w-full">
-      <h1 className="mb-8 uppercase text-center tracking-wide font-semibold font-body text-2xl">
-        All Lives
-      </h1>
-      <div className="flex flex-wrap justify-center place-items-center">
-        {lives.map((live) => (
-          <div className="mx-8 mb-5 pb-5 border-b border-gray-200">
-            <Live live={live} />
-          </div>
-        ))}
-      </div>
+    <div>
+      {props.status === "fetching" ? (
+        <FontAwesomeIcon icon={faSpinner} size="2x" spin />
+      ) : (
+        <div className="max-w-8xl w-full">
+          <h1 className="mb-8 uppercase text-center tracking-wide font-semibold font-body text-2xl">
+            All Lives
+          </h1>
+          {lives.length > 0 ? (
+            <div className="flex flex-wrap justify-center place-items-center">
+              {lives.map((live) => (
+                <div
+                  key={live.id}
+                  className="mx-8 mb-5 pb-5 border-b border-gray-200"
+                >
+                  <Live
+                    setSearchInput={props.setSearchInput}
+                    setQuery={props.setQuery}
+                    live={live}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="flex flex-wrap justify-center place-items-center">
+              No lives are currently posted
+              {query.search ? ` for ${query.search}` : ""}.
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -318,6 +288,7 @@ export default function BrowsePage() {
   const [querySearchString, setQuerySearchString] = useState("");
   const [lives, setLives] = useState([]);
   const [featuredLives, setFeaturedLives] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
 
   const [state] = useDataApi(`/lives?${querySearchString}`);
 
@@ -325,7 +296,7 @@ export default function BrowsePage() {
     console.log(state.data);
     let featuredLives = [];
 
-    if (state.data && state.data.length > 0) {
+    if (state.data) {
       setLives([...state.data]);
 
       for (const live of state.data) {
@@ -363,13 +334,47 @@ export default function BrowsePage() {
     };
   }, [query]);
 
+  if (state.status === "error") {
+    return (
+      <div
+        className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-1 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-red-100 via-gray-50 to-gray-50`}
+      >
+        <SearchBar
+          query={query}
+          searchInput={searchInput}
+          setSearchInput={setSearchInput}
+          setQuery={setQuery}
+        />
+        <p className="mb-16 px-4 text-body text-lg text-center font-semibold tracking-wide">
+          So sorry, there was an error retrieving lives.
+          <br />
+          Please try again.
+        </p>
+      </div>
+    );
+  }
   return (
     <div
       className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-1 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-red-100 via-gray-50 to-gray-50`}
     >
-      <SearchBar setQuery={setQuery} />
-      <FeaturedSection featuredLives={featuredLives} />
-      <LivesSection lives={lives} />
+      <SearchBar
+        query={query}
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
+        setQuery={setQuery}
+      />
+      {featuredLives.length > 0 ? (
+        <FeaturedSection featuredLives={featuredLives} />
+      ) : (
+        ""
+      )}
+      <LivesSection
+        status={state.status}
+        query={query}
+        setQuery={setQuery}
+        setSearchInput={setSearchInput}
+        lives={lives}
+      />
     </div>
   );
 }

@@ -105,6 +105,8 @@ export default function Live(props) {
     },
   ];
   const live = props.live;
+  const setQuery = props.setQuery;
+
   const [livePlatform, setLivePlatform] = useState("");
   const [isLiveExpired, setIsLiveExpired] = useState(false);
   const [hashtags, setHashtags] = useState([]);
@@ -169,52 +171,72 @@ export default function Live(props) {
               <div className="flex leading-none">
                 <div className="w-40 mr-1 overflow-x-hidden overflow-ellipsis">
                   {hashtags[0] ? (
-                    <Link
-                      to="/"
-                      className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                    <span
+                      onClick={() => {
+                        props.setQuery({ search: hashtags[0].name });
+                        props.setSearchInput(hashtags[0].name);
+                        window.scrollTo(0, 0);
+                      }}
+                      className="cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
                     >
                       #{hashtags[0].name}
-                    </Link>
+                    </span>
                   ) : (
                     ""
                   )}
                   {hashtags[1] ? (
-                    <Link
-                      to="/"
-                      className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                    <span
+                      onClick={() => {
+                        props.setQuery({ search: hashtags[1].name });
+                        props.setSearchInput(hashtags[1].name);
+                        window.scrollTo(0, 0);
+                      }}
+                      className="cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
                     >
                       #{hashtags[1].name}
-                    </Link>
+                    </span>
                   ) : (
                     ""
                   )}
                   {hashtags[2] ? (
-                    <Link
-                      to="/"
-                      className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                    <span
+                      onClick={() => {
+                        props.setQuery({ search: hashtags[2].name });
+                        props.setSearchInput(hashtags[2].name);
+                        window.scrollTo(0, 0);
+                      }}
+                      className="cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
                     >
                       #{hashtags[2].name}
-                    </Link>
+                    </span>
                   ) : (
                     ""
                   )}
                   {hashtags[3] ? (
-                    <Link
-                      to="/"
-                      className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                    <span
+                      onClick={() => {
+                        props.setQuery({ search: hashtags[3].name });
+                        props.setSearchInput(hashtags[3].name);
+                        window.scrollTo(0, 0);
+                      }}
+                      className="cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
                     >
                       #{hashtags[3].name}
-                    </Link>
+                    </span>
                   ) : (
                     ""
                   )}
                   {hashtags[4] ? (
-                    <Link
-                      to="/"
-                      className="mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                    <span
+                      onClick={() => {
+                        props.setQuery({ search: hashtags[4].name });
+                        props.setSearchInput(hashtags[4].name);
+                        window.scrollTo(0, 0);
+                      }}
+                      className="cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
                     >
                       #{hashtags[4].name}
-                    </Link>
+                    </span>
                   ) : (
                     ""
                   )}
@@ -236,12 +258,17 @@ export default function Live(props) {
                     } absolute z-10 w-48 -ml-36 px-2 py-2 flex flex-wrap bg-gray-50 border border-gray-200 rounded-md text-sm font-body leading-tight text-gray-600`}
                   >
                     {hashtags.map((hashtag) => (
-                      <Link
-                        to="/"
-                        className="mr-1.5 hover:text-gray-800 hover:underline"
+                      <div
+                        key={hashtag.id}
+                        onClick={() => {
+                          props.setQuery({ search: hashtags[4].name });
+                          props.setSearchInput(hashtags[4].name);
+                          window.scrollTo(0, 0);
+                        }}
+                        className="inline-block cursor-pointer mr-1.5 hover:text-gray-800 hover:underline"
                       >
                         #{hashtag.name}
-                      </Link>
+                      </div>
                     ))}
                   </div>
                 </div>
