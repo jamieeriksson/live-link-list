@@ -7,6 +7,7 @@ from django.db.models.fields import CharField
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from rest_framework.fields import CurrentUserDefault
 
 from livelinklist.lives.models import Hashtag, Live, Platform
 
@@ -27,8 +28,8 @@ class HashtagSerializer(serializers.ModelSerializer):
         fields = ["name"]
 
     def to_internal_value(self, data):
-        if not Hashtag.objects.filter(name=data).exists():
-            Hashtag.objects.create(name=data)
+        if Hashtag.objects.filter(name=data).exists():
+            return Hashtag.objects.get(name=data)
 
         errors = OrderedDict()
         fields = self._writable_fields
@@ -37,6 +38,7 @@ class HashtagSerializer(serializers.ModelSerializer):
             data_fields.append(field)
         try:
             validated_value = data_fields[0].run_validation(data)
+            Hashtag.objects.create(name=validated_value)
         except ValidationError as exc:
             errors[data_fields[0].field_name] = exc.detail
 
@@ -49,7 +51,7 @@ class OwnerDefault:
     def __call__(self, serializer_field):
         if serializer_field.context["request"].user.is_anonymous:
             return None
-
+        print(serializer_field.context["request"].user)
         return serializer_field.context["request"].user
 
     def __repr__(self):
@@ -58,6 +60,7 @@ class OwnerDefault:
 
 class LiveSerializer(serializers.ModelSerializer):
     owner = serializers.HiddenField(default=OwnerDefault())
+    # owner = serializers.HiddenField(default=CurrentUserDefault())
 
     platform = serializers.SlugRelatedField(
         queryset=Platform.objects.all(), slug_field="name"
@@ -67,7 +70,7 @@ class LiveSerializer(serializers.ModelSerializer):
 
     hashtags = HashtagSerializer(many=True)
     duration = serializers.DurationField()
-    end_date = serializers.DateTimeField()
+    end_date = serializers.DateTimeField(read_only=True)
 
     class Meta:
         model = Live

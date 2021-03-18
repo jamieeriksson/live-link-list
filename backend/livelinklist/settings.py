@@ -109,6 +109,9 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": dt.timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": dt.timedelta(days=14),
+    "ROTATE_REFRESH_TOKENS": True,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
 }
 
 
@@ -118,4 +121,14 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://livelinklist\.com$",
     r"^https://(deploy-preview-[\d]+--)?livelinklist\.netlify\.app$",
     r"^http://localhost:3000$",
+]
+
+CORS_ALLOW_HEADERS = [
+    "HTTP_AUTHORIZATION",
+    "AUTHORIZATION",
+    "http_authorization",
+    "Content-Type",
+    "Access-Control-Allow-Methods",
+    "Access-Control-Allow-Origin",
+    "Access-Control-Allow-Headers",
 ]

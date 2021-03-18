@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
+import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
@@ -14,6 +15,8 @@ import {
   faTwitch,
 } from "@fortawesome/free-brands-svg-icons";
 import useOutsideAlerter from "../hooks/outside-alerter";
+import { UserContext } from "../user-account/userContext";
+import axiosInstance from "../hooks/axiosApi.js";
 
 function LinkInput(props) {
   const [isPlatformSelectOpen, setIsPlatformSelectOpen] = useState(false);
@@ -192,9 +195,8 @@ function LiveDetails(props) {
 
       <div className="mt-8 flex justify-center place-items-center">
         <span className="mr-4 mb-1 text-xl uppercase">Link Duration:</span>
-        <div>
+        <div ref={outsideClickDurationRef}>
           <button
-            ref={outsideClickDurationRef}
             onClick={(e) => {
               e.preventDefault();
               setIsLinkDurationOpen(!isLinkDurationOpen);
@@ -281,33 +283,41 @@ export default function PostingPage() {
   const durationOptions = [
     {
       duration: "5 minutes",
+      postDuration: "00:05:00",
       cost: "Free",
     },
     {
       duration: "10 minutes",
+      postDuration: "00:10:00",
       cost: "$2",
     },
     {
       duration: "15 minutes",
+      postDuration: "00:15:00",
       cost: "$5",
     },
     {
       duration: "30 minutes",
+      postDuration: "00:30:00",
       cost: "$10",
     },
     {
       duration: "60 minutes",
+      postDuration: "00:60:00",
       cost: "$25",
     },
   ];
 
   const [selectedPlatform, setSelectedPlatform] = useState(platformOptions[0]);
+  const [username, setUsername] = useState("");
+  const [featured, setFeatured] = useState(false);
   const [urlInput, setUrlInput] = useState("");
   const [liveUrl, setLiveUrl] = useState("");
   const [hashtags, setHashtags] = useState("");
   const [hashtagsList, setHashtagsList] = useState([]);
   const [description, setDescription] = useState("");
   const [linkDuration, setLinkDuration] = useState(durationOptions[0]);
+  let user = useContext(UserContext);
 
   const handleUrlChange = (url, platform) => {
     let urlPlatform = selectedPlatform;
@@ -357,13 +367,99 @@ export default function PostingPage() {
     setHashtagsList([...existingHashtags]);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLiveUrl(`${selectedPlatform.urlStart} + ${urlInput}`);
+    const postHashtags = [];
 
-    alert(
-      `Platform: ${selectedPlatform.name}, Live URL: ${liveUrl}, Description: ${description}, Link Duration: ${linkDuration.duration}`
-    );
+    for (const hashtag of hashtagsList) {
+      postHashtags.push(hashtag.slice(1));
+    }
+
+    // let urlHost = "";
+
+    // if (process.env.NODE_ENV === "development") {
+    //   urlHost = "http://localhost:8000/";
+    // }
+
+    // if (process.env.NODE_ENV === "production") {
+    //   urlHost = "";
+    // }
+
+    // const url = new URL("/lives", urlHost);
+
+    const body = {
+      link: selectedPlatform.urlStart + urlInput,
+      username: username,
+      description: description,
+      duration: linkDuration.postDuration,
+      is_featured: featured,
+      platform: selectedPlatform.name,
+      hashtags: postHashtags,
+    };
+    console.log(body);
+
+    // let axiosConfig = {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+    //     "Access-Control-Allow-Origin": "*",
+    //     "Access-Control-Allow-Headers": "*",
+    //   },
+    // };
+    // if (user.user) {
+    //   axiosConfig["headers"][
+    //     "HTTP_AUTHORIZATION"
+    //   ] = `Bearer ${localStorage.getItem("access_token")}`;
+    // }
+
+    // console.log(axiosConfig);
+    if (user.user) {
+      try {
+        const response = await axiosInstance.post("/refresh-token", {
+          refresh: localStorage.getItem("refresh_token"),
+        });
+        console.log(response);
+        localStorage.setItem("access_token", response.data.access);
+        localStorage.setItem("refresh_token", response.data.refresh);
+        console.log("set new tokens");
+        const postResponse = await axios.post(
+          "http://localhost:8000/lives",
+          body,
+          {
+            headers: {
+              AUTHORIZATION: `Bearer ${response.data.access}`,
+              "Content-Type": "application/json",
+              accept: "application/json",
+              "Access-Control-Allow-Methods":
+                "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Headers": "*",
+            },
+          }
+        );
+        console.log(postResponse);
+      } catch (error) {
+        console.log(error);
+        console.log(error.message);
+        console.log(error.request);
+        console.log(error.config);
+        console.log(error.stack);
+      }
+    }
+    // try {
+    //   console.log("making post request for live");
+    //   const response = await axiosInstance.post("/lives", body);
+    //   console.log(response);
+    //   alert("Your live was posted!");
+    //   // window.location.reload();
+    // } catch (error) {
+    //   console.log(error);
+    //   console.log(error.message);
+    //   console.log(error.request);
+    //   console.log(error.config);
+    //   console.log(error.stack);
+    // }
   };
 
   return (
@@ -397,16 +493,15 @@ export default function PostingPage() {
           linkDuration={linkDuration}
           setLinkDuration={setLinkDuration}
         />
-        <div className="flex justify-center place-items-center">
-          <button
-            onClick={handleSubmit}
-            className="mt-10 px-5 py-2 ring-1 ring-gray-200 rounded-md shadow-sm bg-primary-red focus:outline-none"
-          >
-            <span className="uppercase font-semibold font-title tracking-widest text-lg text-gray-100">
-              Post Your Live
-            </span>
-          </button>
-        </div>
+        <div className="flex justify-center place-items-center"></div>
+        <button
+          onClick={handleSubmit}
+          className="mt-10 px-5 py-2 ring-1 ring-gray-200 rounded-md shadow-sm bg-primary-red focus:outline-none"
+        >
+          <span className="uppercase font-semibold font-title tracking-widest text-lg text-gray-100">
+            Post Your Live
+          </span>
+        </button>
       </form>
     </div>
   );

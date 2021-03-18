@@ -20,14 +20,40 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [UserPermission]
 
 
+class AuthenticationFailed:
+    pass
+
+
+# class InvalidToken(AuthenticationFailed):
+#     status_code = status.HTTP_401_UNAUTHORIZED
+#     default_detail = _("Token is invalid or expired")
+#     default_code = "token_not_valid"
+
+
 class LogInView(TokenObtainPairView):
     serializer_class = UserTokenObtainPairSerializer
     permission_classes = [permissions.AllowAny]
 
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
+    # def post(self, request, *args, **kwargs):
+    #     response = super().post(request, *args, **kwargs)
+    #     serializer = self.get_serializer(data=request.data)
 
-        return response
+    #     # try:
+    #     serializer.is_valid(raise_exception=True)
+    #     # except TokenError as e:
+    #     #     raise InvalidToken(e.args[0])
+
+    #     return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
+    #     print(response)
+    #     response.data["user"] = {
+    #         "user": {
+    #             "email": response.user.email,
+    #             "name": f"{response.user.first_name} {response.user.last_name}",
+    #         }
+    #     }
+
+    #     return response
 
 
 class RefreshTokenView(TokenRefreshView):
@@ -39,6 +65,7 @@ class LogOutView(views.APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request, *args, **kwargs):
+        print(request.data)
         serializer = LogOutSerializer(data=request.data)
 
         if not serializer.is_valid():

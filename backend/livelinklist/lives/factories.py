@@ -99,5 +99,8 @@ class LiveFactory(factory.django.DjangoModelFactory):
 
         if extracted:
             for hashtag in extracted:
-                hashtag_instance = HashtagFactory(name=hashtag)
+                if not Hashtag.objects.filter(name=hashtag).exists():
+                    hashtag_instance = HashtagFactory(name=hashtag)
+                else:
+                    hashtag_instance = Hashtag.objects.get(name=hashtag)
                 self.hashtags.add(hashtag_instance)

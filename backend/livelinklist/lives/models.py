@@ -8,13 +8,13 @@ from livelinklist.users.models import User
 
 
 class Platform(BaseModel):
-    name = models.TextField()
+    name = models.TextField(unique=True)
     platform_url = models.URLField()
     live_url = models.URLField()
 
 
 class Hashtag(BaseModel):
-    name = models.TextField()
+    name = models.TextField(unique=True)
 
 
 class Live(BaseModel):

@@ -9,7 +9,6 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import Live from "./individual-live.js";
 import {
   faFacebook,
@@ -110,11 +109,6 @@ function SearchBar(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // let queryHashtags = [];
-
-    // for (const hashtag of hashtagsList) {
-    //   queryHashtags.push(hashtag.slice(1));
-    // }
     let search = searchInput;
 
     if (searchInput.slice(0, 1) === "@" || searchInput.slice(0, 1) === "#") {
@@ -124,17 +118,13 @@ function SearchBar(props) {
     if (selectedCategory !== "All" && selectedCategory !== "All Platforms") {
       setQuery({
         search: search,
-        // search: queryHashtags,
         platform: selectedCategory,
       });
     } else {
       setQuery({
         search: search,
-        // search: queryHashtags,
       });
     }
-
-    // alert(`Search for hashtags: ${[...hashtagsList]}`);
   };
 
   return (
@@ -150,37 +140,7 @@ function SearchBar(props) {
           placeholder="enter a hashtag or username"
           className="px-4 py-2 flex place-items-center flex-grow bg-gray-50 focus:outline-none"
         />
-        {/* <div className="px-4 py-2 flex-grow flex place-items-center flex-wrap bg-gray-50 border-t border-b border-l md:border-l-0 rounded-l-md md:rounded-l-none border-gray-200 font-body font-semibold text-gray-800 focus:outline-none">
-          {hashtagsList.map((hashtag) => (
-            <div
-              key={hashtag}
-              className="flex flex-nowrap px-2 mx-1 text-sm border border-gray-500 bg-gray-300 rounded-2xl text-gray-800"
-            >
-              <span className="mr-1 whitespace-nowrap">{hashtag}</span>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  removeHashtag(hashtag);
-                }}
-                className="focus:outline-none"
-              >
-                <FontAwesomeIcon icon={faTimesCircle} color="#222222" />
-              </button>
-            </div>
-          ))}
-          <input
-            type="text"
-            value={hashtags}
-            onChange={(e) => setHashtags(e.target.value)}
-            onKeyUp={addHashtag}
-            placeholder={`${
-              hashtagsList.length > 0
-                ? ""
-                : "enter a hashtag, press space to enter another"
-            }`}
-            className="flex-grow bg-gray-50 focus:outline-none"
-          />
-        </div> */}
+
         <div className="float-right font-body" ref={outsideClickRef}>
           <button
             onClick={(e) => {

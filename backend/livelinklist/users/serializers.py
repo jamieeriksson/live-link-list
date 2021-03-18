@@ -32,11 +32,19 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
+    def validate(self, attrs):
+        data = super().validate(attrs)
 
-        return token
+        refresh = self.get_token(self.user)
+
+        data["refresh"] = str(refresh)
+        data["access"] = str(refresh.access_token)
+        data["user"] = {
+            "email": self.user.email,
+            "name": f"{self.user.first_name} {self.user.last_name}",
+        }
+
+        return data
 
 
 class LogOutSerializer(serializers.Serializer):

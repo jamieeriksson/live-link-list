@@ -28,7 +28,7 @@ const dataFetchReducer = (state, action) => {
   }
 };
 
-export default function useDataApi(urlPath) {
+export default function useDataApi(urlPath, body) {
   let urlHost = "";
   if (process.env.NODE_ENV === "development") {
     urlHost = "http://localhost:8000/";
@@ -59,7 +59,7 @@ export default function useDataApi(urlPath) {
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } else {
         try {
-          const response = await fetch(url);
+          const response = await fetch(url, body);
           const data = await response.json();
           cache[url] = data;
           if (!didCancel) {
