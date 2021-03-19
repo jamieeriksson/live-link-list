@@ -19,6 +19,9 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [UserPermission]
 
+    def get_queryset(self):
+        return User.objects.all().prefetch_related("lives")
+
 
 class AuthenticationFailed:
     pass

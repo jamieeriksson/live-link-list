@@ -10,6 +10,9 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
+            "id",
+            "created_at",
+            "modified_at",
             "first_name",
             "last_name",
             "email",
@@ -17,6 +20,11 @@ class UserSerializer(serializers.ModelSerializer):
             "password",
             "is_staff",
             "credits",
+            "tiktok_username",
+            "instagram_username",
+            "youtube_username",
+            "facebook_username",
+            "twitch_username",
         ]
         read_only_fields = ["is_staff", "credits"]
 
@@ -40,6 +48,7 @@ class UserTokenObtainPairSerializer(TokenObtainPairSerializer):
         data["refresh"] = str(refresh)
         data["access"] = str(refresh.access_token)
         data["user"] = {
+            "id": self.user.id,
             "email": self.user.email,
             "name": f"{self.user.first_name} {self.user.last_name}",
         }

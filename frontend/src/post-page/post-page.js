@@ -376,18 +376,6 @@ export default function PostingPage() {
       postHashtags.push(hashtag.slice(1));
     }
 
-    // let urlHost = "";
-
-    // if (process.env.NODE_ENV === "development") {
-    //   urlHost = "http://localhost:8000/";
-    // }
-
-    // if (process.env.NODE_ENV === "production") {
-    //   urlHost = "";
-    // }
-
-    // const url = new URL("/lives", urlHost);
-
     const body = {
       link: selectedPlatform.urlStart + urlInput,
       username: username,
@@ -399,21 +387,6 @@ export default function PostingPage() {
     };
     console.log(body);
 
-    // let axiosConfig = {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-    //     "Access-Control-Allow-Origin": "*",
-    //     "Access-Control-Allow-Headers": "*",
-    //   },
-    // };
-    // if (user.user) {
-    //   axiosConfig["headers"][
-    //     "HTTP_AUTHORIZATION"
-    //   ] = `Bearer ${localStorage.getItem("access_token")}`;
-    // }
-
-    // console.log(axiosConfig);
     if (user.user) {
       try {
         const response = await axiosInstance.post("/refresh-token", {
@@ -447,19 +420,6 @@ export default function PostingPage() {
         console.log(error.stack);
       }
     }
-    // try {
-    //   console.log("making post request for live");
-    //   const response = await axiosInstance.post("/lives", body);
-    //   console.log(response);
-    //   alert("Your live was posted!");
-    //   // window.location.reload();
-    // } catch (error) {
-    //   console.log(error);
-    //   console.log(error.message);
-    //   console.log(error.request);
-    //   console.log(error.config);
-    //   console.log(error.stack);
-    // }
   };
 
   return (

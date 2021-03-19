@@ -7,6 +7,7 @@ import Footer from "./footer.js";
 import Nav from "./nav-bar.js";
 import LoginPage from "./user-account/login.js";
 import RegisterPage from "./user-account/register.js";
+import UserAccountPage from "./user-account/account.js";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/browse" component={BrowsePage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage} />
+        <Route path="/account" component={UserAccountPage} />
         <Footer />
       </Router>
     </div>

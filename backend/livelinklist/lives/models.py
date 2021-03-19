@@ -27,6 +27,8 @@ class Live(BaseModel):
     clicks = models.IntegerField(default=0)
 
     platform = models.ForeignKey(Platform, on_delete=models.CASCADE)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, blank=True, null=True, related_name="lives"
+    )
 
     hashtags = models.ManyToManyField(Hashtag)

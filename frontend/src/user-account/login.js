@@ -36,10 +36,10 @@ export default function LoginPage() {
       const expiration = new Date(date);
       expiration.setDate(expiration.getDate() + 14);
 
-      user.setUser(response.data["user"].email);
+      user.setUser(response.data["user"].id);
       localStorage.setItem("refresh_token", response.data["refresh"]);
       localStorage.setItem("access_token", response.data["access"]);
-      localStorage.setItem("user", response.data["user"].email);
+      localStorage.setItem("user", response.data["user"].id);
       localStorage.setItem("expiration", expiration);
       history.push("/");
     } catch (error) {
