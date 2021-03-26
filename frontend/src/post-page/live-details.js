@@ -5,10 +5,6 @@ import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import useOutsideAlerter from "../utilities/outside-alerter";
 
 export default function LiveDetails(props) {
-  const [isLinkDurationOpen, setIsLinkDurationOpen] = useState(false);
-  const [descriptionChars, setDescriptionChars] = useState(0);
-  const descMaxLength = props.descMaxLength;
-
   const hashtags = props.hashtags;
   const hashtagsList = props.hashtagsList;
   const setHashtagsList = props.setHashtagsList;
@@ -20,6 +16,10 @@ export default function LiveDetails(props) {
   const durationOptions = props.durationOptions;
   const linkDuration = props.linkDuration;
   const setLinkDuration = props.setLinkDuration;
+  const descMaxLength = props.descMaxLength;
+
+  const [isLinkDurationOpen, setIsLinkDurationOpen] = useState(false);
+  const [descriptionChars, setDescriptionChars] = useState(description.length);
 
   const outsideClickDurationRef = useRef(null);
   useOutsideAlerter(outsideClickDurationRef, () => {

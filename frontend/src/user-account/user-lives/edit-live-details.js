@@ -4,8 +4,6 @@ import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import useOutsideAlerter from "../../utilities/outside-alerter";
 
 export default function LiveDetails(props) {
-  const [isLinkDurationOpen, setIsLinkDurationOpen] = useState(false);
-
   const hashtags = props.hashtags;
   const hashtagsList = props.hashtagsList;
   const setHashtagsList = props.setHashtagsList;
@@ -17,6 +15,10 @@ export default function LiveDetails(props) {
   const durationOptions = props.durationOptions;
   const linkDuration = props.linkDuration;
   const setLinkDuration = props.setLinkDuration;
+  const descMaxLength = props.descMaxLength;
+
+  const [isLinkDurationOpen, setIsLinkDurationOpen] = useState(false);
+  const [descriptionChars, setDescriptionChars] = useState(description.length);
 
   const outsideClickDurationRef = useRef(null);
   useOutsideAlerter(outsideClickDurationRef, () => {
@@ -72,15 +74,27 @@ export default function LiveDetails(props) {
 
       <div className="w-full mt-8 flex flex-col">
         <span className="mb-1">
-          <span className="uppercase text-xl">Description</span> (max 100
-          characters):
+          <span className="uppercase text-xl">Description</span>
+          <span
+            className={`ml-3 ${
+              descriptionChars > descMaxLength ? "text-red-500" : ""
+            }`}
+          >
+            {descriptionChars}/100
+          </span>
         </span>
         <textarea
           placeholder="enter short description for your live"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) => {
+            setDescription(e.target.value);
+            setDescriptionChars(e.target.value.length);
+          }}
           className="w-full h-24 px-2 py-1 ring-1 ring-gray-200 rounded-md shadow-sm bg-white focus:outline-none"
         />
+        <p className="mt-1 text-right text-sm font-body text-red-500">
+          {props.errors.description}
+        </p>
       </div>
 
       {/* <div className="mt-8 flex justify-center place-items-center">

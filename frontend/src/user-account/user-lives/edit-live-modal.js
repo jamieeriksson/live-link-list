@@ -125,6 +125,7 @@ function EditLiveModal(props) {
           urlInput={props.urlInput}
           setUrlInput={props.setUrlInput}
           handleUrlChange={props.handleUrlChange}
+          errors={props.errors}
         />
         <LiveDetails
           hashtags={props.hashtags}
@@ -138,6 +139,8 @@ function EditLiveModal(props) {
           durationOptions={props.durationOptions}
           addDuration={props.addDuration}
           setAddDuration={props.setAddDuration}
+          errors={props.errors}
+          descMaxLength={props.descMaxLength}
         />
         <div className="flex justify-center place-items-center"></div>
         <div className="flex mt-10">
@@ -191,6 +194,8 @@ export default function EditLiveModalContainer(props) {
   const [description, setDescription] = useState(live.description);
   const [addDuration, setAddDuration] = useState(durationOptions[0]);
   let user = useContext(UserContext);
+  const [errors, setErrors] = useState({});
+  const descMaxLength = 100;
 
   const handleUrlChange = (url, platform) => {
     let urlPlatform = selectedPlatform;
@@ -280,10 +285,32 @@ export default function EditLiveModalContainer(props) {
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    const accessToken = await getUserAccessToken();
-    await updateLive(accessToken);
+    setErrors({});
+    let errors = {};
 
-    window.location.reload();
+    if (!urlInput) {
+      errors = {
+        urlInput: "You must enter a link",
+        ...errors,
+      };
+    }
+
+    if (description.length > descMaxLength) {
+      errors = {
+        description: `Must be less than ${descMaxLength} characters`,
+        ...errors,
+      };
+    }
+
+    if (Object.keys(errors).length === 0) {
+      const accessToken = await getUserAccessToken();
+      await updateLive(accessToken);
+
+      window.location.reload();
+    } else {
+      setErrors({ ...errors });
+      window.scrollTo(0, 0);
+    }
   };
 
   return (
@@ -308,6 +335,8 @@ export default function EditLiveModalContainer(props) {
       durationOptions={durationOptions}
       addDuration={addDuration}
       setAddDuration={setAddDuration}
+      errors={errors}
+      descMaxLength={descMaxLength}
     />
   );
 }
