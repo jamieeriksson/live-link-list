@@ -15,6 +15,8 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import useOutsideAlerter from "../../hooks/outside-alerter.js";
 import EditLiveModalContainer from "./edit-live-modal.js";
+import axiosInstance from "../../hooks/axiosApi.js";
+import DeleteLiveModal from "./delete-live.js";
 
 function Timer(props) {
   const setIsLiveExpired = props.setIsLiveExpired;
@@ -308,8 +310,7 @@ function Live(props) {
 
 export default function EditLive(props) {
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
-
-  const handleDelete = () => {};
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
 
   return (
     <div key={props.live.id} className="relative flex place-items-start">
@@ -324,7 +325,10 @@ export default function EditLive(props) {
         <FontAwesomeIcon icon={faEdit} />
       </button>
       <button
-        onClick={handleDelete}
+        onClick={(e) => {
+          e.preventDefault();
+          setIsConfirmDeleteOpen(true);
+        }}
         className="ml-2 text-lg text-gray-500 hover:text-primary-red focus:outline-none"
       >
         <FontAwesomeIcon icon={faTimesCircle} />
@@ -333,6 +337,11 @@ export default function EditLive(props) {
         live={props.live}
         editModalIsOpen={editModalIsOpen}
         setEditModalIsOpen={setEditModalIsOpen}
+      />
+      <DeleteLiveModal
+        live={props.live}
+        isConfirmDeleteOpen={isConfirmDeleteOpen}
+        setIsConfirmDeleteOpen={setIsConfirmDeleteOpen}
       />
     </div>
   );
