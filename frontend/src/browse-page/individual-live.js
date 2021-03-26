@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -9,7 +8,7 @@ import {
   faYoutube,
   faTwitch,
 } from "@fortawesome/free-brands-svg-icons";
-import useOutsideAlerter from "../hooks/outside-alerter.js";
+import useOutsideAlerter from "../utilities/outside-alerter.js";
 
 function Timer(props) {
   const setIsLiveExpired = props.setIsLiveExpired;

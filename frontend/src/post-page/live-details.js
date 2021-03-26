@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
-import useOutsideAlerter from "../../utilities/outside-alerter";
+import useOutsideAlerter from "../utilities/outside-alerter";
 
 export default function LiveDetails(props) {
   const [isLinkDurationOpen, setIsLinkDurationOpen] = useState(false);
@@ -83,7 +84,7 @@ export default function LiveDetails(props) {
         />
       </div>
 
-      {/* <div className="mt-8 flex justify-center place-items-center">
+      <div className="mt-8 flex justify-center place-items-center">
         <span className="mr-4 mb-1 text-xl uppercase">Link Duration:</span>
         <div ref={outsideClickDurationRef}>
           <button
@@ -126,7 +127,7 @@ export default function LiveDetails(props) {
             ))}
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

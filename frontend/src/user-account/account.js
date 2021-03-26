@@ -2,10 +2,9 @@ import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { UserContext } from "../user-account/userContext";
-import axiosInstance from "../hooks/axiosApi.js";
-import Live from "../browse-page/individual-live.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import getUserAccessToken from "../utilities/user-access-tokens.js";
 
 function EditAccountInfo(props) {
   const userData = props.userData;
@@ -25,20 +24,7 @@ function EditAccountInfo(props) {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errors, setErrors] = useState({});
 
-  const updateUser = async () => {
-    console.log("updating user");
-
-    // let body = {};
-    // if (firstName) body.first_name = firstName;
-    // if (lastName) body.last_name = lastName;
-    // if (email) body.email = email;
-    // if (phone) body.phone_number = phone;
-    // if (tikTok) body.tiktok_username = tikTok;
-    // if (instagram) body.instagram_username = instagram;
-    // if (youtube) body.youtube_username = youtube;
-    // if (facebook) body.facebook_username = facebook;
-    // if (twitch) body.twitch_username = twitch;
-
+  const updateUser = async (accessToken) => {
     let urlHost = "";
 
     if (process.env.NODE_ENV === "development") {
@@ -55,15 +41,7 @@ function EditAccountInfo(props) {
     );
 
     try {
-      const response = await axiosInstance.post("/refresh-token", {
-        refresh: localStorage.getItem("refresh_token"),
-      });
-      console.log(response);
-      localStorage.setItem("access_token", response.data.access);
-      localStorage.setItem("refresh_token", response.data.refresh);
-      console.log("set new tokens");
-
-      const updateResponse = await axios.patch(
+      const response = await axios.patch(
         updateUserUrl,
         {
           first_name: firstName,
@@ -78,7 +56,7 @@ function EditAccountInfo(props) {
         },
         {
           headers: {
-            AUTHORIZATION: `Bearer ${response.data.access}`,
+            AUTHORIZATION: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
             accept: "application/json",
             "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -88,15 +66,13 @@ function EditAccountInfo(props) {
         }
       );
 
-      console.log(response);
-      setUserData({ ...updateResponse.data });
+      setUserData({ ...response.data });
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleSubmit = async (e) => {
-    console.log("submitting");
     e.preventDefault();
 
     setErrors({});
@@ -141,10 +117,9 @@ function EditAccountInfo(props) {
     //     ...errors,
     //   };
 
-    console.log(errors);
     if (Object.keys(errors).length === 0) {
-      console.log("updating user info");
-      await updateUser();
+      const accessToken = await getUserAccessToken();
+      await updateUser(accessToken);
       setEditAccount(false);
     } else {
       setErrors({ ...errors });
@@ -410,20 +385,14 @@ export default function UserAccountPage() {
 
   const getUserAccountData = async () => {
     if (user.user) {
-      try {
-        const response = await axiosInstance.post("/refresh-token", {
-          refresh: localStorage.getItem("refresh_token"),
-        });
-        console.log(response);
-        localStorage.setItem("access_token", response.data.access);
-        localStorage.setItem("refresh_token", response.data.refresh);
-        console.log("set new tokens");
+      const accessToken = await getUserAccessToken();
 
+      try {
         const getResponse = await axios.get(
           `http://localhost:8000/users/${localStorage.getItem("user")}`,
           {
             headers: {
-              AUTHORIZATION: `Bearer ${response.data.access}`,
+              AUTHORIZATION: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
               accept: "application/json",
               "Access-Control-Allow-Methods":
@@ -433,7 +402,6 @@ export default function UserAccountPage() {
             },
           }
         );
-        console.log(getResponse);
         setUserData({ ...getResponse.data });
       } catch (error) {
         console.log(error);

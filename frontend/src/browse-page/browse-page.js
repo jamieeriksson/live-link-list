@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import useOutsideAlerter from "../hooks/outside-alerter.js";
-import useDataApi from "../hooks/data-api.js";
+import useOutsideAlerter from "../utilities/outside-alerter.js";
+import useDataApi from "../utilities/data-api.js";
 import queryString from "query-string";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -293,7 +293,6 @@ export default function BrowsePage() {
   const [state] = useDataApi(`/lives?${querySearchString}`);
 
   useEffect(() => {
-    console.log(state.data);
     let featuredLives = [];
 
     if (state.data) {
@@ -309,18 +308,14 @@ export default function BrowsePage() {
   }, [state, setLives]);
 
   useEffect(() => {
-    console.log("[useEffect] SEARCH PAGE: parse url query");
     if (window.location.search) {
       const initialQuery = queryString.parse(window.location.search);
       setQuery(initialQuery);
     }
-    return () => {
-      console.log("[useEffect] SEARCH PAGE: clean up parse url query");
-    };
+    return () => {};
   }, []);
 
   useEffect(() => {
-    console.log("[useEffect] SEARCH PAGE: set url query");
     const newQuerySearchString = queryString.stringify(query);
 
     setQuerySearchString(newQuerySearchString);
@@ -329,9 +324,7 @@ export default function BrowsePage() {
     const newUrl = `${protocol}//${host}${pathname}?${newQuerySearchString}`;
     window.history.pushState({}, "", newUrl);
 
-    return () => {
-      console.log("[useEffect] SEARCH PAGE: clean up set url query");
-    };
+    return () => {};
   }, [query]);
 
   if (state.status === "error") {

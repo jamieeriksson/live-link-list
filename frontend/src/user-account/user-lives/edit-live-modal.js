@@ -15,7 +15,7 @@ import {
   faTwitch,
 } from "@fortawesome/free-brands-svg-icons";
 import { UserContext } from "../userContext.js";
-import axiosInstance from "../../hooks/axiosApi.js";
+import getUserAccessToken from "../../utilities/user-access-tokens.js";
 
 import LiveDetails from "./edit-live-details.js";
 import LinkInput from "./edit-live-link-input.js";
@@ -201,7 +201,6 @@ export default function EditLiveModalContainer(props) {
     const input = url;
 
     if (input.includes(urlPlatform.urlStart)) {
-      console.log(input.slice(urlPlatform.urlStart.length));
       setUrlInput(input.slice(urlPlatform.urlStart.length));
     } else {
       setUrlInput(input);
@@ -213,7 +212,6 @@ export default function EditLiveModalContainer(props) {
 
     if (e.keyCode === 32) {
       const text = e.target.value;
-      console.log(`adding hashtag ${text}`);
 
       if (text.slice(0, 1) === "#") {
         existingHashtags.push(text.slice(0, -1));
@@ -225,37 +223,16 @@ export default function EditLiveModalContainer(props) {
     }
 
     if (e.keyCode === 8 && hashtags === "") {
-      console.log("removing last hashtag");
       existingHashtags.pop();
       setHashtagsList([...existingHashtags]);
     }
   };
 
   const removeHashtag = (hashtag) => {
-    console.log(`removing ${hashtag}`);
     let existingHashtags = [...hashtagsList];
     const index = existingHashtags.indexOf(hashtag);
-    console.log(index);
     existingHashtags.splice(index, 1);
     setHashtagsList([...existingHashtags]);
-  };
-
-  const getNewTokens = async () => {
-    try {
-      const response = await axiosInstance.post("/refresh-token", {
-        refresh: localStorage.getItem("refresh_token"),
-      });
-      localStorage.setItem("access_token", response.data.access);
-      localStorage.setItem("refresh_token", response.data.refresh);
-      console.log("set new tokens");
-      return response.data.access;
-    } catch (error) {
-      console.log(error);
-      console.log(error.message);
-      console.log(error.request);
-      console.log(error.config);
-      console.log(error.stack);
-    }
   };
 
   const updateLive = async (accessToken) => {
@@ -291,7 +268,6 @@ export default function EditLiveModalContainer(props) {
           },
         }
       );
-      console.log(response);
     } catch (error) {
       console.log(error);
       console.log(error.message);
@@ -304,7 +280,7 @@ export default function EditLiveModalContainer(props) {
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    const accessToken = await getNewTokens();
+    const accessToken = await getUserAccessToken();
     await updateLive(accessToken);
 
     window.location.reload();

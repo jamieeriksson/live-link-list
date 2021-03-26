@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCaretDown,
@@ -13,9 +12,8 @@ import {
   faYoutube,
   faTwitch,
 } from "@fortawesome/free-brands-svg-icons";
-import useOutsideAlerter from "../../hooks/outside-alerter.js";
+import useOutsideAlerter from "../../utilities/outside-alerter.js";
 import EditLiveModalContainer from "./edit-live-modal.js";
-import axiosInstance from "../../hooks/axiosApi.js";
 import DeleteLiveModal from "./delete-live.js";
 
 function Timer(props) {

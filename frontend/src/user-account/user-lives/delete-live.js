@@ -1,29 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import axiosInstance from "../../hooks/axiosApi.js";
+import getUserAccessToken from "../../utilities/user-access-tokens.js";
 
 export default function DeleteLiveModal(props) {
   const live = props.live;
   const setIsConfirmDeleteOpen = props.setIsConfirmDeleteOpen;
   const isConfirmDeleteOpen = props.isConfirmDeleteOpen;
-
-  const getNewTokens = async () => {
-    try {
-      const response = await axiosInstance.post("/refresh-token", {
-        refresh: localStorage.getItem("refresh_token"),
-      });
-      localStorage.setItem("access_token", response.data.access);
-      localStorage.setItem("refresh_token", response.data.refresh);
-      console.log("set new tokens");
-      return response.data.access;
-    } catch (error) {
-      console.log(error);
-      console.log(error.message);
-      console.log(error.request);
-      console.log(error.config);
-      console.log(error.stack);
-    }
-  };
 
   const deleteLive = async (accessToken) => {
     try {
@@ -40,7 +22,6 @@ export default function DeleteLiveModal(props) {
           },
         }
       );
-      console.log(response);
     } catch (error) {
       console.log(error);
       console.log(error.message);
@@ -53,7 +34,7 @@ export default function DeleteLiveModal(props) {
   const handleDelete = async (e) => {
     e.preventDefault();
 
-    const accessToken = await getNewTokens();
+    const accessToken = await getUserAccessToken();
     await deleteLive(accessToken);
 
     window.location.reload();

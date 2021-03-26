@@ -22,7 +22,6 @@ export default function RegisterPage() {
   const history = useHistory();
 
   const createUser = async () => {
-    console.log("creating user");
     let urlHost = "";
 
     if (process.env.NODE_ENV === "development") {
@@ -48,8 +47,6 @@ export default function RegisterPage() {
         facebook_username: facebook,
         twitch_username: twitch,
       });
-
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -73,8 +70,6 @@ export default function RegisterPage() {
         email: email,
         password: password,
       });
-
-      console.log(response);
 
       const date = Date.now();
       const expiration = new Date(date);

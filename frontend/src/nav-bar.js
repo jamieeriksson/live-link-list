@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
@@ -6,19 +6,9 @@ import logo from "./assets/logo.svg";
 import { UserContext } from "./user-account/userContext";
 
 export default function NavBar() {
-  // const [user, setUser] = useState();
   let user = useContext(UserContext);
 
   const { pathname } = useLocation();
-
-  // useEffect(() => {
-  //   const loggedInUser = localStorage.getItem("user");
-
-  //   if (loggedInUser) {
-  //     console.log(loggedInUser);
-  //     setUser(loggedInUser);
-  //   }
-  // }, []);
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -40,7 +30,6 @@ export default function NavBar() {
         refresh: localStorage.getItem("refresh_token"),
       });
 
-      console.log(response.data);
       user.setUser();
       localStorage.clear();
     } catch (error) {

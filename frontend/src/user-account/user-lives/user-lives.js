@@ -2,15 +2,14 @@ import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { UserContext } from "../userContext.js";
-import axiosInstance from "../../hooks/axiosApi.js";
+import axiosInstance from "../../utilities/axiosApi.js";
 import EditLive from "./user-individual-live.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import getUserAccessToken from "../../utilities/user-access-tokens.js";
 
 function UserLives(props) {
   const userData = props.userData;
-  console.log(userData);
-  console.log(userData.lives);
 
   if ("lives" in userData) {
     return (
@@ -47,20 +46,14 @@ export default function UserLivesPage() {
 
   const getUserAccountData = async () => {
     if (user.user) {
-      try {
-        const response = await axiosInstance.post("/refresh-token", {
-          refresh: localStorage.getItem("refresh_token"),
-        });
-        console.log(response);
-        localStorage.setItem("access_token", response.data.access);
-        localStorage.setItem("refresh_token", response.data.refresh);
-        console.log("set new tokens");
+      const accessToken = await getUserAccessToken();
 
-        const getResponse = await axios.get(
+      try {
+        const response = await axios.get(
           `http://localhost:8000/users/${localStorage.getItem("user")}`,
           {
             headers: {
-              AUTHORIZATION: `Bearer ${response.data.access}`,
+              AUTHORIZATION: `Bearer ${accessToken}`,
               "Content-Type": "application/json",
               accept: "application/json",
               "Access-Control-Allow-Methods":
@@ -70,9 +63,7 @@ export default function UserLivesPage() {
             },
           }
         );
-        console.log(getResponse);
-        console.log(getResponse.data);
-        setUserData({ ...getResponse.data });
+        setUserData({ ...response.data });
       } catch (error) {
         console.log(error);
         console.log(error.message);

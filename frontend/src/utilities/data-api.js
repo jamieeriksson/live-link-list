@@ -49,7 +49,6 @@ export default function useDataApi(urlPath, body) {
   useEffect(() => {
     let didCancel = false;
     if (!url) return;
-    console.log(url);
 
     const fetchData = async () => {
       dispatch({ type: "FETCHING" });
