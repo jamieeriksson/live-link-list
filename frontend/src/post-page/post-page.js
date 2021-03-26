@@ -411,6 +411,7 @@ export default function PostingPage() {
             },
           }
         );
+        window.location.reload();
         console.log(postResponse);
       } catch (error) {
         console.log(error);

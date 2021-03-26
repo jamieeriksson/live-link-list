@@ -64,12 +64,26 @@ export default function NavBar() {
           </Link>
         )}
         {user.user ? (
-          <button
-            onClick={handleLogout}
-            className="ml-6 font-body uppercase text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline focus:outline-none"
-          >
-            Logout
-          </button>
+          <div>
+            <Link
+              to="/account"
+              className="ml-6 font-body uppercase text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline"
+            >
+              Account
+            </Link>
+            <Link
+              to="/user-lives"
+              className="ml-6 font-body uppercase text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline"
+            >
+              Your Lives
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="ml-6 font-body uppercase text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline focus:outline-none"
+            >
+              Logout
+            </button>
+          </div>
         ) : (
           <Link
             to="/login"

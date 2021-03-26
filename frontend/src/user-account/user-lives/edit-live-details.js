@@ -1,0 +1,133 @@
+import React, { useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
+import useOutsideAlerter from "../../hooks/outside-alerter";
+
+export default function LiveDetails(props) {
+  const [isLinkDurationOpen, setIsLinkDurationOpen] = useState(false);
+
+  const hashtags = props.hashtags;
+  const hashtagsList = props.hashtagsList;
+  const setHashtagsList = props.setHashtagsList;
+  const removeHashtag = props.removeHashtag;
+  const setHashtags = props.setHashtags;
+  const addHashtag = props.addHashtag;
+  const description = props.description;
+  const setDescription = props.setDescription;
+  const durationOptions = props.durationOptions;
+  const linkDuration = props.linkDuration;
+  const setLinkDuration = props.setLinkDuration;
+
+  const outsideClickDurationRef = useRef(null);
+  useOutsideAlerter(outsideClickDurationRef, () => {
+    setIsLinkDurationOpen(false);
+  });
+
+  return (
+    <div className="px-3 max-w-2xl w-full flex flex-col justify-center place-items-center">
+      <div className="w-full mt-8 flex flex-col">
+        <span className="mb-1 text-xl uppercase">Hashtags</span>
+        <div className="flex-grow px-2 py-1 flex flex-wrap place-items-center ring-1 ring-gray-200 rounded-md shadow-sm bg-white">
+          {hashtagsList.map((hashtag) => (
+            <div
+              key={hashtag.id}
+              className="flex flex-nowrap px-2 mx-1 text-sm border border-gray-500 bg-gray-300 rounded-2xl text-gray-800"
+            >
+              <span className="mr-1">{hashtag}</span>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  removeHashtag(hashtag);
+                }}
+                className="focus:outline-none"
+              >
+                <FontAwesomeIcon icon={faTimesCircle} color="#222222" />
+              </button>
+            </div>
+          ))}
+          <input
+            type="text"
+            value={hashtags}
+            onChange={(e) => setHashtags(e.target.value)}
+            onKeyUp={addHashtag}
+            placeholder={`${
+              hashtagsList.length > 0
+                ? ""
+                : "enter a hashtag, press space to enter another"
+            }`}
+            className="flex-grow bg-white focus:outline-none"
+          />
+        </div>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setHashtags("");
+            setHashtagsList([]);
+          }}
+          className="mt-1 self-end hover:underline text-sm text-primary-blue focus:outline-none"
+        >
+          Clear Hashtags
+        </button>
+      </div>
+
+      <div className="w-full mt-8 flex flex-col">
+        <span className="mb-1">
+          <span className="uppercase text-xl">Description</span> (max 100
+          characters):
+        </span>
+        <textarea
+          placeholder="enter short description for your live"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full h-24 px-2 py-1 ring-1 ring-gray-200 rounded-md shadow-sm bg-white focus:outline-none"
+        />
+      </div>
+
+      {/* <div className="mt-8 flex justify-center place-items-center">
+        <span className="mr-4 mb-1 text-xl uppercase">Link Duration:</span>
+        <div ref={outsideClickDurationRef}>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setIsLinkDurationOpen(!isLinkDurationOpen);
+            }}
+            className="w-48 px-3 py-1 flex place-items-center ring-1 ring-gray-200 rounded-md shadow-sm bg-white focus:outline-none"
+          >
+            <span className="flex-grow text-left text-lg">
+              {linkDuration.duration}
+            </span>
+            <span className="text-sm float-right">
+              <FontAwesomeIcon icon={faChevronDown} color="#111111" />
+            </span>
+          </button>
+
+          <div
+            className={`absolute z-10 flex flex-col ${
+              isLinkDurationOpen ? "block" : "hidden"
+            }`}
+          >
+            {durationOptions.map((option) => (
+              <button
+                key={option.duration}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLinkDuration(option);
+                  setIsLinkDurationOpen(!isLinkDurationOpen);
+                }}
+                className="w-48 px-3 py-1 bg-gray-600 hover:bg-gray-700 text-gray-100 focus:outline-none"
+              >
+                <span className="float-left text-xl font-light">
+                  {option.duration}
+                </span>
+                <span className="float-right text-xl font-medium">
+                  {option.cost}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div> */}
+    </div>
+  );
+}

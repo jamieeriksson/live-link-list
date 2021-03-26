@@ -123,3 +123,18 @@ class LiveSerializer(serializers.ModelSerializer):
         live.hashtags.set(hashtags)
 
         return live
+
+    def update(self, instance, validated_data):
+        hashtags_data = validated_data.pop("hashtags")
+        instance.hashtags.set(hashtags_data)
+        # hashtags = instance.hashtags
+
+        instance.platform = validated_data.get("platform", instance.platform)
+        instance.link = validated_data.get("link", instance.link)
+        instance.description = validated_data.get("description", instance.description)
+        instance.username = validated_data.get("username", instance.username)
+        instance.is_featured = validated_data.get("is_featured", instance.is_featured)
+
+        instance.save()
+
+        return instance

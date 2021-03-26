@@ -1,11 +1,13 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from livelinklist.lives.serializers import LiveSerializer
 from livelinklist.users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=False)
+    lives = LiveSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
@@ -25,6 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
             "youtube_username",
             "facebook_username",
             "twitch_username",
+            "lives",
         ]
         read_only_fields = ["is_staff", "credits"]
 
