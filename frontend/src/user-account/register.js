@@ -131,7 +131,6 @@ export default function RegisterPage() {
         ...errors,
       };
 
-    console.log(errors);
     if (Object.keys(errors).length === 0) {
       await createUser();
       loginUser();

@@ -93,6 +93,9 @@ export default function LinkInput(props) {
           />
         </div>
       </div>
+      <p className="max-w-xl w-full mt-1 mr-6 text-right text-sm font-body text-red-500">
+        {props.errors.urlInput}
+      </p>
     </div>
   );
 }

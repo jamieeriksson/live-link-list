@@ -88,7 +88,9 @@ export default function PostingPage() {
   const [hashtagsList, setHashtagsList] = useState([]);
   const [description, setDescription] = useState("");
   const [linkDuration, setLinkDuration] = useState(durationOptions[0]);
+  const [errors, setErrors] = useState({});
   let user = useContext(UserContext);
+  const descMaxLength = 100;
 
   const handleUrlChange = (url, platform) => {
     let urlPlatform = selectedPlatform;
@@ -174,14 +176,36 @@ export default function PostingPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (user.user) {
-      const accessToken = await getUserAccessToken();
-      await postLive(accessToken);
-    } else {
-      await postLive();
+    setErrors({});
+    let errors = {};
+
+    if (!urlInput) {
+      errors = {
+        urlInput: "You must enter a link",
+        ...errors,
+      };
     }
 
-    window.location.reload();
+    if (description.length > descMaxLength) {
+      errors = {
+        description: `Must be less than ${descMaxLength} characters`,
+        ...errors,
+      };
+    }
+
+    if (Object.keys(errors).length === 0) {
+      if (user.user) {
+        const accessToken = await getUserAccessToken();
+        await postLive(accessToken);
+      } else {
+        await postLive();
+      }
+
+      window.location.reload();
+    } else {
+      setErrors({ ...errors });
+      window.scrollTo(0, 0);
+    }
   };
 
   return (
@@ -201,6 +225,7 @@ export default function PostingPage() {
           urlInput={urlInput}
           setUrlInput={setUrlInput}
           handleUrlChange={handleUrlChange}
+          errors={errors}
         />
         <LiveDetails
           hashtags={hashtags}
@@ -214,6 +239,8 @@ export default function PostingPage() {
           durationOptions={durationOptions}
           linkDuration={linkDuration}
           setLinkDuration={setLinkDuration}
+          descMaxLength={descMaxLength}
+          errors={errors}
         />
         <div className="flex justify-center place-items-center"></div>
         <button
