@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from livelinklist.lives.views import HashtagViewSet, LiveViewSet
+from livelinklist.lives.views import HashtagViewSet, LiveViewSet, PlatformViewSet
 from livelinklist.users.views import (
     LogInView,
     LogOutView,
@@ -11,6 +11,7 @@ from livelinklist.users.views import (
 
 router = DefaultRouter(trailing_slash=False)
 router.register("lives", LiveViewSet)
+router.register("platforms", PlatformViewSet)
 router.register("hashtags", HashtagViewSet)
 router.register("users", UserViewSet)
 

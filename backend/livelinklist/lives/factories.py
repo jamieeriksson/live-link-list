@@ -88,7 +88,6 @@ class LiveFactory(factory.django.DjangoModelFactory):
     username = factory.Faker("user_name")
     description = factory.Faker("text", max_nb_chars=75)
     duration = factory.LazyFunction(get_duration)
-    # is_expired = factory.Faker("boolean", chance_of_getting_true=30)
     is_featured = factory.Faker("boolean", chance_of_getting_true=15)
     clicks = factory.Faker("random_number", digits=3, fix_len=False)
 

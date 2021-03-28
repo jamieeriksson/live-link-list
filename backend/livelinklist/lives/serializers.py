@@ -1,13 +1,10 @@
-import datetime
 from collections import OrderedDict
 
-from django.core import validators
-from django.core.validators import URLValidator
-from django.db.models.fields import CharField
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from rest_framework.fields import CurrentUserDefault
+from rest_framework.relations import PrimaryKeyRelatedField
 
 from livelinklist.lives.models import Hashtag, Live, Platform
 
@@ -16,6 +13,7 @@ class PlatformSerializer(serializers.ModelSerializer):
     class Meta:
         model = Platform
         fields = [
+            "id",
             "name",
             "platform_url",
             "live_url",
@@ -58,15 +56,26 @@ class OwnerDefault:
         return "%s()" % self.__class__.__name__
 
 
+class PrimaryKeyIdRelatedField(PrimaryKeyRelatedField):
+    """
+    Name primary key related fields as e.g. "organization_id" instead of "organization"
+    """
+
+    def to_internal_value(self, data):
+        if self.pk_field is not None:  # pragma: no cover
+            data = self.pk_field.to_internal_value(data).id
+        try:
+            return self.get_queryset().get(pk=data).id
+        except ObjectDoesNotExist:
+            self.fail("does_not_exist", pk_value=data)
+        except (TypeError, ValueError, ValidationError):
+            self.fail("incorrect_type", data_type=type(data).__name__)
+
+
 class LiveSerializer(serializers.ModelSerializer):
     owner = serializers.HiddenField(default=OwnerDefault())
-    # owner = serializers.HiddenField(default=CurrentUserDefault())
 
-    platform = serializers.SlugRelatedField(
-        queryset=Platform.objects.all(), slug_field="name"
-    )
-
-    # link = LinkField()
+    platform_id = PrimaryKeyIdRelatedField(queryset=Platform.objects.all())
 
     hashtags = HashtagSerializer(many=True)
     duration = serializers.DurationField()
@@ -79,12 +88,11 @@ class LiveSerializer(serializers.ModelSerializer):
             "created_at",
             "modified_at",
             "owner",
-            "platform",
+            "platform_id",
             "link",
             "username",
             "description",
             "duration",
-            # "is_expired",
             "is_featured",
             "clicks",
             "owner",
@@ -92,21 +100,10 @@ class LiveSerializer(serializers.ModelSerializer):
             "expires_at",
         ]
 
-    # def clean(self):
-    #     if self.platform.live_url not in self.link:
-    #         raise serializers.ValidationError(
-    #             {
-    #                 "link": "Link must be a proper live url for {}".format(
-    #                     self.platform.name
-    #                 )
-    #             },
-    #             code=400,
-    #         )
-
     def validate_link(self, value):
         data = self.get_initial()
-        if Platform.objects.filter(name=data["platform"]).exists():
-            platform = Platform.objects.get(name=data["platform"])
+        if Platform.objects.filter(id=data["platform_id"]).exists():
+            platform = Platform.objects.get(id=data["platform_id"])
         else:
             return
 
@@ -127,13 +124,13 @@ class LiveSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         hashtags_data = validated_data.pop("hashtags")
         instance.hashtags.set(hashtags_data)
-        # hashtags = instance.hashtags
 
-        instance.platform = validated_data.get("platform", instance.platform)
+        instance.platform_id = validated_data.get("platform_id", instance.platform_id)
         instance.link = validated_data.get("link", instance.link)
         instance.description = validated_data.get("description", instance.description)
         instance.username = validated_data.get("username", instance.username)
         instance.is_featured = validated_data.get("is_featured", instance.is_featured)
+        instance.duration = validated_data.get("duration") + instance.duration
 
         instance.save()
 

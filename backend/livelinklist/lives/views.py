@@ -8,7 +8,7 @@ from rest_framework import filters, permissions, viewsets
 
 from livelinklist.lives.filters import LiveFilter
 from livelinklist.lives.models import Hashtag, Live, Platform
-from livelinklist.lives.permissions import LivePermissions
+from livelinklist.lives.permissions import IsAdminUserOrReadOnly, LivePermissions
 from livelinklist.lives.serializers import (
     HashtagSerializer,
     LiveSerializer,
@@ -33,6 +33,7 @@ class LiveViewSet(viewsets.ModelViewSet):
                     F("created_at") + F("duration"), output_field=DateTimeField()
                 )
             )
+            .prefetch_related("hashtags")
             .filter(expires_at__gt=today)
             .order_by("expires_at")
         )
@@ -47,4 +48,4 @@ class HashtagViewSet(viewsets.ModelViewSet):
 class PlatformViewSet(viewsets.ModelViewSet):
     queryset = Platform.objects.all()
     serializer_class = PlatformSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [IsAdminUserOrReadOnly]

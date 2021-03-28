@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { UserContext } from "../userContext.js";
+import { UserContext } from "../../utilities/userContext.js";
 import axiosInstance from "../../utilities/axiosApi.js";
 import EditLive from "./user-individual-live.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

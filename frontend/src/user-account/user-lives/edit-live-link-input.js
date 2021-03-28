@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboard } from "@fortawesome/free-regular-svg-icons";
+import { PlatformContext } from "../../utilities/platformContext";
 
 export default function LinkInput(props) {
   const [isPlatformSelectOpen, setIsPlatformSelectOpen] = useState(false);
 
+  const platformOptions = useContext(PlatformContext);
+
   const selectedPlatform = props.selectedPlatform;
   const setSelectedPlatform = props.setSelectedPlatform;
-  const platformOptions = props.platformOptions;
   const urlInput = props.urlInput;
   const setUrlInput = props.setUrlInput;
   const handleUrlChange = props.handleUrlChange;

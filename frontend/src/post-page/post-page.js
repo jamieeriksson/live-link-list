@@ -7,48 +7,11 @@ import {
   faYoutube,
   faTwitch,
 } from "@fortawesome/free-brands-svg-icons";
-import { UserContext } from "../user-account/userContext";
+import { UserContext } from "../utilities/userContext";
 import getUserAccessToken from "../utilities/user-access-tokens.js";
 import LinkInput from "./link-input.js";
 import LiveDetails from "./live-details.js";
-
-const platformOptions = [
-  {
-    name: "TikTok",
-    icon: faTiktok,
-    urlStart: "https://vm.tiktok.com/",
-    placeholder: "xxxxxxxxx",
-    color: "indigo",
-  },
-  {
-    name: "Instagram",
-    icon: faInstagram,
-    urlStart: "https://www.instagram.com/",
-    placeholder: "username/live",
-    color: "pink",
-  },
-  {
-    name: "Youtube",
-    icon: faYoutube,
-    urlStart: "https://www.youtube.com/watch?v=",
-    placeholder: "5qap5aO4i9A",
-    color: "red",
-  },
-  {
-    name: "Facebook",
-    icon: faFacebook,
-    urlStart: "https://fb.watch/",
-    placeholder: "3WERq5mV2x",
-    color: "blue",
-  },
-  {
-    name: "Twitch",
-    icon: faTwitch,
-    urlStart: "https://www.twitch.tv/",
-    placeholder: "username",
-    color: "purple",
-  },
-];
+import { PlatformContext } from "../utilities/platformContext";
 
 const durationOptions = [
   {
@@ -79,6 +42,9 @@ const durationOptions = [
 ];
 
 export default function PostingPage() {
+  const platformOptions = useContext(PlatformContext);
+  let user = useContext(UserContext);
+
   const [selectedPlatform, setSelectedPlatform] = useState(platformOptions[0]);
   const [username, setUsername] = useState("");
   const [featured, setFeatured] = useState(false);
@@ -89,7 +55,6 @@ export default function PostingPage() {
   const [description, setDescription] = useState("");
   const [linkDuration, setLinkDuration] = useState(durationOptions[0]);
   const [errors, setErrors] = useState({});
-  let user = useContext(UserContext);
   const descMaxLength = 100;
 
   const handleUrlChange = (url, platform) => {
@@ -149,7 +114,7 @@ export default function PostingPage() {
       description: description,
       duration: linkDuration.postDuration,
       is_featured: featured,
-      platform: selectedPlatform.name,
+      platform: selectedPlatform.id,
       hashtags: postHashtags,
     };
 
@@ -221,10 +186,12 @@ export default function PostingPage() {
         <LinkInput
           selectedPlatform={selectedPlatform}
           setSelectedPlatform={setSelectedPlatform}
-          platformOptions={platformOptions}
           urlInput={urlInput}
           setUrlInput={setUrlInput}
           handleUrlChange={handleUrlChange}
+          username={username}
+          setUsername={setUsername}
+          user={user}
           errors={errors}
         />
         <LiveDetails

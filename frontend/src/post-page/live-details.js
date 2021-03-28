@@ -75,7 +75,7 @@ export default function LiveDetails(props) {
 
       <div className="w-full mt-8 flex flex-col">
         <span className="mb-1">
-          <span className="uppercase text-xl">Description:</span>
+          <span className="uppercase text-xl">Description</span>
           <span
             className={`ml-3 ${
               descriptionChars > descMaxLength ? "text-red-500" : ""
@@ -99,7 +99,7 @@ export default function LiveDetails(props) {
       </div>
 
       <div className="mt-8 flex justify-center place-items-center">
-        <span className="mr-4 mb-1 text-xl uppercase">Link Duration:</span>
+        <span className="mr-4 mb-1 text-xl uppercase">Link Duration</span>
         <div ref={outsideClickDurationRef}>
           <button
             onClick={(e) => {

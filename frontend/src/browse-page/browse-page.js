@@ -130,29 +130,6 @@ function SearchBar(props) {
               </button>
             ))}
           </div>
-          {/* <div
-            className={`absolute md:hidden z-10 py-1 px-1 flex flex-col ${
-              isDropdownOpen ? "flex" : "hidden"
-            } bg-gray-50 rounded-b-md shadow-inner border border-gray-200`}
-          >
-            {mobileDropdownCategories.map((category) => (
-              <button
-                key={`mobile-${category.name}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setSelectedCategory(category.name);
-                  setIsDropdownOpen(!isDropdownOpen);
-                }}
-                className={`text-left my-px px-4 py-2 ${
-                  selectedCategory === category.name
-                    ? "bg-gray-600 text-gray-100"
-                    : "text-gray-800"
-                } hover:bg-gray-600 hover:text-gray-100 rounded-md font-semibold tracking-wide focus:outline-none`}
-              >
-                {category.icon}
-              </button>
-            ))}
-          </div> */}
         </div>
 
         <button

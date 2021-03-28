@@ -9,6 +9,7 @@ import LoginPage from "./user-account/login.js";
 import RegisterPage from "./user-account/register.js";
 import UserAccountPage from "./user-account/account.js";
 import UserLivesPage from "./user-account/user-lives/user-lives.js";
+import useDataApi from "./utilities/data-api.js";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -21,6 +22,8 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const [state] = useDataApi("platforms");
+
   return (
     <div className="relative max-w-screen w-full overflow-x-hidden bg-gray-50">
       <Router>

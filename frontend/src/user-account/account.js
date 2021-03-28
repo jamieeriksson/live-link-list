@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { UserContext } from "../user-account/userContext";
+import { UserContext } from "../utilities/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import getUserAccessToken from "../utilities/user-access-tokens.js";

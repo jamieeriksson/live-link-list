@@ -14,97 +14,12 @@ import {
   faYoutube,
   faTwitch,
 } from "@fortawesome/free-brands-svg-icons";
-import { UserContext } from "../userContext.js";
+import { UserContext } from "../../utilities/userContext.js";
 import getUserAccessToken from "../../utilities/user-access-tokens.js";
 
 import LiveDetails from "./edit-live-details.js";
 import LinkInput from "./edit-live-link-input.js";
-
-const platformOptions = [
-  {
-    name: "TikTok",
-    icon: faTiktok,
-    urlStart: "https://vm.tiktok.com/",
-    placeholder: "xxxxxxxxx",
-    color: "indigo",
-  },
-  {
-    name: "Instagram",
-    icon: faInstagram,
-    urlStart: "https://www.instagram.com/",
-    placeholder: "username/live",
-    color: "pink",
-  },
-  {
-    name: "Youtube",
-    icon: faYoutube,
-    urlStart: "https://www.youtube.com/watch?v=",
-    placeholder: "5qap5aO4i9A",
-    color: "red",
-  },
-  {
-    name: "Facebook",
-    icon: faFacebook,
-    urlStart: "https://fb.watch/",
-    placeholder: "3WERq5mV2x",
-    color: "blue",
-  },
-  {
-    name: "Twitch",
-    icon: faTwitch,
-    urlStart: "https://www.twitch.tv/",
-    placeholder: "username",
-    color: "purple",
-  },
-];
-
-const durationOptions = [
-  {
-    duration: "5 minutes",
-    postDuration: "00:05:00",
-    cost: "Free",
-  },
-  {
-    duration: "10 minutes",
-    postDuration: "00:10:00",
-    cost: "$2",
-  },
-  {
-    duration: "15 minutes",
-    postDuration: "00:15:00",
-    cost: "$5",
-  },
-  {
-    duration: "30 minutes",
-    postDuration: "00:30:00",
-    cost: "$10",
-  },
-  {
-    duration: "5 minutes",
-    postDuration: "00:05:00",
-    cost: "Free",
-  },
-  {
-    duration: "10 minutes",
-    postDuration: "00:10:00",
-    cost: "$2",
-  },
-  {
-    duration: "15 minutes",
-    postDuration: "00:15:00",
-    cost: "$5",
-  },
-  {
-    duration: "30 minutes",
-    postDuration: "00:30:00",
-    cost: "$10",
-  },
-  {
-    duration: "60 minutes",
-    postDuration: "00:60:00",
-    cost: "$25",
-  },
-];
+import { PlatformContext } from "../../utilities/platformContext";
 
 function EditLiveModal(props) {
   const setEditModalIsOpen = props.setEditModalIsOpen;
@@ -121,7 +36,6 @@ function EditLiveModal(props) {
         <LinkInput
           selectedPlatform={props.selectedPlatform}
           setSelectedPlatform={props.setSelectedPlatform}
-          platformOptions={props.platformOptions}
           urlInput={props.urlInput}
           setUrlInput={props.setUrlInput}
           handleUrlChange={props.handleUrlChange}
@@ -136,7 +50,6 @@ function EditLiveModal(props) {
           addHashtag={props.addHashtag}
           description={props.description}
           setDescription={props.setDescription}
-          durationOptions={props.durationOptions}
           addDuration={props.addDuration}
           setAddDuration={props.setAddDuration}
           errors={props.errors}
@@ -173,10 +86,11 @@ export default function EditLiveModalContainer(props) {
   const live = props.live;
   const editModalIsOpen = props.editModalIsOpen;
   const setEditModalIsOpen = props.setEditModalIsOpen;
+  const platformOptions = useContext(PlatformContext);
 
   const [selectedPlatform, setSelectedPlatform] = useState(
     platformOptions.find((obj) => {
-      return obj.name === live.platform;
+      return obj.id === live.platform_id;
     })
   );
   const [username, setUsername] = useState("");
@@ -192,7 +106,11 @@ export default function EditLiveModalContainer(props) {
     })
   );
   const [description, setDescription] = useState(live.description);
-  const [addDuration, setAddDuration] = useState(durationOptions[0]);
+  const [addDuration, setAddDuration] = useState({
+    label: "0 minutes",
+    duration: "00:00:00",
+    cost: "",
+  });
   let user = useContext(UserContext);
   const [errors, setErrors] = useState({});
   const descMaxLength = 100;
@@ -252,9 +170,9 @@ export default function EditLiveModalContainer(props) {
       link: selectedPlatform.urlStart + urlInput,
       username: username,
       description: description,
-      // duration: addDuration.postDuration,
+      duration: addDuration.duration,
       is_featured: featured,
-      platform: selectedPlatform.name,
+      platform: selectedPlatform.id,
       hashtags: postHashtags,
     };
 
@@ -320,7 +238,6 @@ export default function EditLiveModalContainer(props) {
       handleUpdate={handleUpdate}
       selectedPlatform={selectedPlatform}
       setSelectedPlatform={setSelectedPlatform}
-      platformOptions={platformOptions}
       urlInput={urlInput}
       setUrlInput={setUrlInput}
       handleUrlChange={handleUrlChange}
@@ -332,7 +249,6 @@ export default function EditLiveModalContainer(props) {
       addHashtag={addHashtag}
       description={description}
       setDescription={setDescription}
-      durationOptions={durationOptions}
       addDuration={addDuration}
       setAddDuration={setAddDuration}
       errors={errors}

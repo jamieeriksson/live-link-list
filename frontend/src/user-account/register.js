@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { UserContext } from "./userContext";
+import { UserContext } from "../utilities/userContext";
 import axios from "axios";
 
 export default function RegisterPage() {

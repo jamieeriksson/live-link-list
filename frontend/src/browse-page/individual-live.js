@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -9,6 +9,7 @@ import {
   faTwitch,
 } from "@fortawesome/free-brands-svg-icons";
 import useOutsideAlerter from "../utilities/outside-alerter.js";
+import { PlatformContext } from "../utilities/platformContext";
 
 function Timer(props) {
   const setIsLiveExpired = props.setIsLiveExpired;
@@ -66,45 +67,8 @@ function Timer(props) {
 }
 
 export default function Live(props) {
-  const platformOptions = [
-    {
-      name: "TikTok",
-      icon: faTiktok,
-      urlStart: "https://vm.tiktok.com/",
-      placeholder: "xxxxxxxxx",
-      color: "indigo",
-    },
-    {
-      name: "Instagram",
-      icon: faInstagram,
-      urlStart: "https://www.instagram.com/",
-      placeholder: "username/live",
-      color: "pink",
-    },
-    {
-      name: "Youtube",
-      icon: faYoutube,
-      urlStart: "https://www.youtube.com/watch?v=",
-      placeholder: "5qap5aO4i9A",
-      color: "red",
-    },
-    {
-      name: "Facebook",
-      icon: faFacebook,
-      urlStart: "https://fb.watch/",
-      placeholder: "3WERq5mV2x",
-      color: "blue",
-    },
-    {
-      name: "Twitch",
-      icon: faTwitch,
-      urlStart: "https://www.twitch.tv/",
-      placeholder: "username",
-      color: "purple",
-    },
-  ];
   const live = props.live;
-  const setQuery = props.setQuery;
+  const platformOptions = useContext(PlatformContext);
 
   const [livePlatform, setLivePlatform] = useState("");
   const [isLiveExpired, setIsLiveExpired] = useState(false);
@@ -119,7 +83,7 @@ export default function Live(props) {
   useEffect(() => {
     if (live) {
       for (const platform of platformOptions) {
-        live.platform === platform.name && setLivePlatform(platform);
+        live.platform_id === platform.id && setLivePlatform(platform);
       }
       setIsLiveExpired(live.is_expired);
       setHashtags([...live.hashtags]);

@@ -2,13 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import { UserProvider } from "./user-account/userContext";
+import { UserProvider } from "./utilities/userContext";
+import { PlatformProvider } from "./utilities/platformContext";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
     <UserProvider>
-      <App />
+      <PlatformProvider>
+        <App />
+      </PlatformProvider>
     </UserProvider>
   </React.StrictMode>,
   document.getElementById("root")

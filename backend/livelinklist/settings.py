@@ -92,6 +92,30 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Logging
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "propagate": True,
+        },
+        "django.db.backends": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": True,
+        },
+    },
+}
+
 # Django REST Framework
 
 REST_FRAMEWORK = {

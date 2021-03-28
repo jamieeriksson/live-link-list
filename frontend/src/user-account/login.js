@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import axios from "axios";
 import { useHistory } from "react-router";
-import { UserContext } from "./userContext";
+import { UserContext } from "../utilities/userContext";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

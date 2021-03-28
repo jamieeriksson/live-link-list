@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClipboard } from "@fortawesome/free-regular-svg-icons";
+import { PlatformContext } from "../utilities/platformContext";
 
 export default function LinkInput(props) {
   const [isPlatformSelectOpen, setIsPlatformSelectOpen] = useState(false);
 
+  const platformOptions = useContext(PlatformContext);
   const selectedPlatform = props.selectedPlatform;
   const setSelectedPlatform = props.setSelectedPlatform;
-  const platformOptions = props.platformOptions;
   const urlInput = props.urlInput;
   const setUrlInput = props.setUrlInput;
   const handleUrlChange = props.handleUrlChange;
+
+  const username = props.username;
+  const setUsername = props.setUsername;
+  const user = props.user;
 
   useEffect(() => {
     checkPaste();
@@ -18,10 +23,23 @@ export default function LinkInput(props) {
     return () => {};
   }, []);
 
+  useEffect(() => {
+    if (user.user) {
+      console.log(user.user[`${selectedPlatform.name.toLowerCase()}_username`]);
+      setUsername(user.user[`${selectedPlatform.name.toLowerCase()}_username`]);
+    }
+
+    return () => {};
+  }, [user]);
+
   const handlePlatformSelect = (platform) => {
     setSelectedPlatform(platform);
     setIsPlatformSelectOpen(!isPlatformSelectOpen);
     setUrlInput("");
+    if (user.user) {
+      console.log(user.user[`${platform.name.toLowerCase()}_username`]);
+      setUsername(user.user[`${platform.name.toLowerCase()}_username`]);
+    }
   };
 
   async function checkPaste() {
@@ -96,6 +114,21 @@ export default function LinkInput(props) {
       <p className="max-w-xl w-full mt-1 mr-6 text-right text-sm font-body text-red-500">
         {props.errors.urlInput}
       </p>
+
+      <div className="mt-8 max-w-sm w-full flex">
+        <span className="mr-3 text-xl uppercase">Username</span>
+        <div className="flex-grow inline px-2 py-1 rounded-md ring-1 ring-gray-200 shadow-sm bg-white">
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+            placeholder="optional"
+            className="w-full bg-white focus:outline-none"
+          />
+        </div>
+      </div>
     </div>
   );
 }

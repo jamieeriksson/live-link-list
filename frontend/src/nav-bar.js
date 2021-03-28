@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import logo from "./assets/logo.svg";
-import { UserContext } from "./user-account/userContext";
+import { UserContext } from "./utilities/userContext";
 
 export default function NavBar() {
   let user = useContext(UserContext);

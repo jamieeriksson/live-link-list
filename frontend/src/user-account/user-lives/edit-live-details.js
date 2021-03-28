@@ -2,6 +2,40 @@ import React, { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import useOutsideAlerter from "../../utilities/outside-alerter";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+
+const durationOptions = [
+  {
+    label: "0 minutes",
+    duration: "00:00:00",
+    cost: "",
+  },
+  {
+    label: "5 minutes",
+    duration: "00:05:00",
+    cost: "$2",
+  },
+  {
+    label: "10 minutes",
+    duration: "00:10:00",
+    cost: "$5",
+  },
+  {
+    label: "15 minutes",
+    duration: "00:15:00",
+    cost: "$10",
+  },
+  {
+    label: "30 minutes",
+    duration: "00:30:00",
+    cost: "$15",
+  },
+  {
+    label: "60 minutes",
+    duration: "00:60:00",
+    cost: "$20",
+  },
+];
 
 export default function LiveDetails(props) {
   const hashtags = props.hashtags;
@@ -12,9 +46,8 @@ export default function LiveDetails(props) {
   const addHashtag = props.addHashtag;
   const description = props.description;
   const setDescription = props.setDescription;
-  const durationOptions = props.durationOptions;
-  const linkDuration = props.linkDuration;
-  const setLinkDuration = props.setLinkDuration;
+  const addDuration = props.addDuration;
+  const setAddDuration = props.setAddDuration;
   const descMaxLength = props.descMaxLength;
 
   const [isLinkDurationOpen, setIsLinkDurationOpen] = useState(false);
@@ -97,8 +130,8 @@ export default function LiveDetails(props) {
         </p>
       </div>
 
-      {/* <div className="mt-8 flex justify-center place-items-center">
-        <span className="mr-4 mb-1 text-xl uppercase">Link Duration:</span>
+      <div className="mt-8 flex justify-center place-items-center">
+        <span className="mr-4 mb-1 text-xl uppercase">Add Time to link:</span>
         <div ref={outsideClickDurationRef}>
           <button
             onClick={(e) => {
@@ -108,7 +141,7 @@ export default function LiveDetails(props) {
             className="w-48 px-3 py-1 flex place-items-center ring-1 ring-gray-200 rounded-md shadow-sm bg-white focus:outline-none"
           >
             <span className="flex-grow text-left text-lg">
-              {linkDuration.duration}
+              {addDuration.label}
             </span>
             <span className="text-sm float-right">
               <FontAwesomeIcon icon={faChevronDown} color="#111111" />
@@ -125,13 +158,13 @@ export default function LiveDetails(props) {
                 key={option.duration}
                 onClick={(e) => {
                   e.preventDefault();
-                  setLinkDuration(option);
+                  setAddDuration(option);
                   setIsLinkDurationOpen(!isLinkDurationOpen);
                 }}
                 className="w-48 px-3 py-1 bg-gray-600 hover:bg-gray-700 text-gray-100 focus:outline-none"
               >
                 <span className="float-left text-xl font-light">
-                  {option.duration}
+                  {option.label}
                 </span>
                 <span className="float-right text-xl font-medium">
                   {option.cost}
@@ -140,7 +173,7 @@ export default function LiveDetails(props) {
             ))}
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
