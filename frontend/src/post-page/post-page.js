@@ -207,6 +207,8 @@ export default function PostingPage() {
           linkDuration={linkDuration}
           setLinkDuration={setLinkDuration}
           descMaxLength={descMaxLength}
+          featured={featured}
+          setFeatured={setFeatured}
           errors={errors}
         />
         <div className="flex justify-center place-items-center"></div>
