@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { UserContext } from "../utilities/userContext";
+import { getUserAccountData, UserContext } from "../utilities/userContext";
 import axios from "axios";
 
 export default function RegisterPage() {
@@ -75,7 +75,7 @@ export default function RegisterPage() {
       const expiration = new Date(date);
       expiration.setDate(expiration.getDate() + 14);
 
-      user.setUser(response.data["user"].id);
+      user.setUser({ ...getUserAccountData() });
       localStorage.setItem("refresh_token", response.data["refresh"]);
       localStorage.setItem("access_token", response.data["access"]);
       localStorage.setItem("user", response.data["user"].id);
@@ -140,6 +140,34 @@ export default function RegisterPage() {
     }
   };
 
+  const handleLogout = async (e) => {
+    e.preventDefault();
+
+    let urlHost = "";
+
+    if (process.env.NODE_ENV === "development") {
+      urlHost = "http://localhost:8000/";
+    }
+
+    if (process.env.NODE_ENV === "production") {
+      urlHost = "";
+    }
+
+    const url = new URL("/log-out", urlHost);
+
+    try {
+      const response = await axios.post(url, {
+        refresh: localStorage.getItem("refresh_token"),
+      });
+
+      user.setUser();
+      localStorage.clear();
+      window.location.href = "/login";
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (user.user) {
     return (
       <div
@@ -148,17 +176,24 @@ export default function RegisterPage() {
         <div
           className={`max-w-xl w-full mx-3 my-3 pb-14 pt-14 md:-mt-44 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100 shadow-lg border border-gray-200`}
         >
-          <h1 className="w-full mb-14 text-center font-title tracking-wider text-2xl md:text-3xl">
-            {user.name} is logged in
+          <h1 className="w-full text-center font-title tracking-wider text-2xl md:text-3xl">
+            You are already logged in as {user.name}.
           </h1>
+          <p
+            onClick={handleLogout}
+            className="mt-5 cursor-pointer text-primary-blue hover:underline"
+          >
+            Logout to switch accounts
+          </p>
         </div>
       </div>
     );
   } else {
     return (
       <div
-        className={`max-w-screen w-full h-screen md:mt-5 px-1 pb-20 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-red-100 via-red-100 to-gray-50`}
+        className={`max-w-screen w-full min-h-screen md:mt-5 px-1 pb-20 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-red-100 via-red-100 to-gray-50`}
       >
+        <div className="h-36 w-full"></div>
         <div
           className={`max-w-xl w-full mx-3 my-3 pb-14 pt-14 md:-mt-44 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100 shadow-lg border border-gray-200`}
         >
