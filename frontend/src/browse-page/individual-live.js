@@ -68,6 +68,7 @@ function Timer(props) {
 
 export default function Live(props) {
   const live = props.live;
+  const setQuery = props.setQuery;
   const platformOptions = useContext(PlatformContext);
 
   const [livePlatform, setLivePlatform] = useState("");
@@ -134,72 +135,72 @@ export default function Live(props) {
               <div className="flex leading-none">
                 <div className="w-40 mr-1 overflow-x-hidden overflow-ellipsis">
                   {hashtags[0] ? (
-                    <span
+                    <div
                       onClick={() => {
-                        props.setQuery({ search: hashtags[0].name });
+                        setQuery({ search: hashtags[0].name });
                         props.setSearchInput(hashtags[0].name);
                         window.scrollTo(0, 0);
                       }}
-                      className="cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                      className="inline cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
                     >
                       #{hashtags[0].name}
-                    </span>
+                    </div>
                   ) : (
                     ""
                   )}
                   {hashtags[1] ? (
-                    <span
+                    <div
                       onClick={() => {
-                        props.setQuery({ search: hashtags[1].name });
+                        setQuery({ search: hashtags[1].name });
                         props.setSearchInput(hashtags[1].name);
                         window.scrollTo(0, 0);
                       }}
-                      className="cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                      className="inline cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
                     >
                       #{hashtags[1].name}
-                    </span>
+                    </div>
                   ) : (
                     ""
                   )}
                   {hashtags[2] ? (
-                    <span
+                    <div
                       onClick={() => {
-                        props.setQuery({ search: hashtags[2].name });
+                        setQuery({ search: hashtags[2].name });
                         props.setSearchInput(hashtags[2].name);
                         window.scrollTo(0, 0);
                       }}
-                      className="cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                      className="inline cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
                     >
                       #{hashtags[2].name}
-                    </span>
+                    </div>
                   ) : (
                     ""
                   )}
                   {hashtags[3] ? (
-                    <span
+                    <div
                       onClick={() => {
-                        props.setQuery({ search: hashtags[3].name });
+                        setQuery({ search: hashtags[3].name });
                         props.setSearchInput(hashtags[3].name);
                         window.scrollTo(0, 0);
                       }}
-                      className="cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                      className="inline cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
                     >
                       #{hashtags[3].name}
-                    </span>
+                    </div>
                   ) : (
                     ""
                   )}
                   {hashtags[4] ? (
-                    <span
+                    <div
                       onClick={() => {
-                        props.setQuery({ search: hashtags[4].name });
+                        setQuery({ search: hashtags[4].name });
                         props.setSearchInput(hashtags[4].name);
                         window.scrollTo(0, 0);
                       }}
-                      className="cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
+                      className="inline cursor-pointer mr-1 text-xs font-body leading-tight text-gray-600 hover:text-gray-800 hover:underline"
                     >
                       #{hashtags[4].name}
-                    </span>
+                    </div>
                   ) : (
                     ""
                   )}
@@ -224,7 +225,7 @@ export default function Live(props) {
                       <div
                         key={hashtag.id}
                         onClick={() => {
-                          props.setQuery({ search: hashtag.name });
+                          setQuery({ search: hashtag.name });
                           props.setSearchInput(hashtag.name);
                           window.scrollTo(0, 0);
                         }}
