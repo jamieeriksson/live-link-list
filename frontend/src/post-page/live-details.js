@@ -137,7 +137,7 @@ export default function LiveDetails(props) {
                   {option.duration}
                 </span>
                 <span className="float-right text-xl font-medium">
-                  {option.cost}
+                  {option.cost === 0 ? "Free" : "$" + option.cost}
                 </span>
               </button>
             ))}

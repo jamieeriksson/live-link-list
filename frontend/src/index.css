@@ -27,4 +27,7 @@
   .blur-md {
     backdrop-filter: blur(3px);
   }
+  .blur-lg {
+    backdrop-filter: blur(7px);
+  }
 }
