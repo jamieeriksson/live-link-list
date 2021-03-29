@@ -224,8 +224,8 @@ export default function Live(props) {
                       <div
                         key={hashtag.id}
                         onClick={() => {
-                          props.setQuery({ search: hashtags[4].name });
-                          props.setSearchInput(hashtags[4].name);
+                          props.setQuery({ search: hashtag.name });
+                          props.setSearchInput(hashtag.name);
                           window.scrollTo(0, 0);
                         }}
                         className="inline-block cursor-pointer mr-1.5 hover:text-gray-800 hover:underline"
