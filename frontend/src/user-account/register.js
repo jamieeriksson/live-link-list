@@ -48,7 +48,32 @@ export default function RegisterPage() {
         twitch_username: twitch,
       });
     } catch (error) {
+      if (error.response.data) {
+        let errorObj = {};
+
+        for (const [key, value] of Object.entries(error.response.data)) {
+          if (
+            key === "email" &&
+            value[0] === "user with this email already exists."
+          ) {
+            errorObj.register =
+              "A user account with this email already exists.";
+          } else {
+            errorObj[key] = value[0];
+          }
+        }
+        setErrors({ ...errorObj });
+        window.scrollTo(0, 0);
+      }
+
+      console.log(error.response.data);
+      console.log(error.response.data["detail"]);
+      console.log(error.response.data.detail);
       console.log(error);
+      console.log(error.message);
+      console.log(error.request);
+      console.log(error.config);
+      console.log(error.stack);
     }
   };
 
@@ -89,56 +114,56 @@ export default function RegisterPage() {
     }
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    setErrors({});
-    let errors = {};
+  const handleLogin = async () => {
+    let newErrors = {};
 
     if (!firstName) {
-      errors = {
+      newErrors = {
         firstName: "Enter a first name.",
-        ...errors,
+        ...newErrors,
       };
     }
 
     if (!lastName) {
-      errors = {
+      newErrors = {
         lastName: "Enter a last name.",
-        ...errors,
+        ...newErrors,
       };
     }
 
     if (!email) {
-      errors = {
+      newErrors = {
         email: "Enter an email.",
-        ...errors,
+        ...newErrors,
       };
     }
 
     if (!password) {
-      errors = {
+      newErrors = {
         password: "Enter a password.",
-        ...errors,
+        ...newErrors,
       };
     }
 
     if (!passwordConfirm) {
-      errors = {
+      newErrors = {
         passwordConfirm: "Confirm your password.",
-        ...errors,
+        ...newErrors,
       };
-    } else if (password !== passwordConfirm)
-      errors = {
+    } else if (password !== passwordConfirm) {
+      newErrors = {
         passwordConfirm: "Passwords do not match.",
-        ...errors,
+        ...newErrors,
       };
+    }
 
-    if (Object.keys(errors).length === 0) {
+    console.log(newErrors);
+    setErrors({ ...newErrors });
+
+    if (Object.keys(newErrors).length === 0) {
       await createUser();
       loginUser();
     } else {
-      setErrors({ ...errors });
       window.scrollTo(0, 0);
     }
   };
@@ -205,6 +230,19 @@ export default function RegisterPage() {
             Sign Up
           </h1>
           <form className="max-w-md w-full">
+            {"register" in errors ? (
+              <p className="mb-14 px-5 py-4 self-center border border-red-300 shadow-md rounded-md bg-red-100 text-center font-body">
+                {errors.register}
+                <a
+                  href="/login"
+                  className="mt-1 block text-blue-800 hover:text-blue-700 hover:underline"
+                >
+                  Login here
+                </a>
+              </p>
+            ) : (
+              ""
+            )}
             <div className="mb-5">
               <div className="flex place-items-center">
                 <p className="w-32 mr-5 font-title font-light tracking-wider text-lg text-right whitespace-nowrap">
@@ -234,10 +272,10 @@ export default function RegisterPage() {
                   onChange={(e) => setLastName(e.target.value)}
                   className="py-2 px-3 shadow-inner border border-gray-200 flex-grow rounded-md focus:outline-none"
                 />
-                <p className="mt-1 text-right text-sm font-body text-red-500">
-                  {errors.lastName}
-                </p>
               </div>
+              <p className="mt-1 text-right text-sm font-body text-red-500">
+                {errors.lastName}
+              </p>
             </div>
             <div className="mb-5">
               <div className="flex place-items-center">
@@ -251,21 +289,26 @@ export default function RegisterPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="py-2 px-3 shadow-inner border border-gray-200 flex-grow rounded-md focus:outline-none"
                 />
-                <p className="mt-1 text-right text-sm font-body text-red-500">
-                  {errors.email}
-                </p>
               </div>
-            </div>
-            <div className="flex place-items-center mb-5">
-              <p className="w-32 mr-5 font-title font-light tracking-wider text-lg text-right whitespace-nowrap">
-                Phone Number
+              <p className="mt-1 text-right text-sm font-body text-red-500">
+                {errors.email}
               </p>
-              <input
-                type="text"
-                placeholder="123-456-7890"
-                onChange={(e) => setPhone(e.target.value)}
-                className="py-2 px-3 shadow-inner border border-gray-200 flex-grow rounded-md focus:outline-none"
-              />
+            </div>
+            <div className="mb-5">
+              <div className="flex place-items-center">
+                <p className="w-32 mr-5 font-title font-light tracking-wider text-lg text-right whitespace-nowrap">
+                  Phone Number
+                </p>
+                <input
+                  type="text"
+                  placeholder="123-456-7890"
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="py-2 px-3 shadow-inner border border-gray-200 flex-grow rounded-md focus:outline-none"
+                />
+              </div>
+              <p className="mt-1 text-right text-sm font-body text-red-500">
+                {errors.phone_number}
+              </p>
             </div>
 
             <div className="flex flex-col my-7 pt-5 pb-3 border-t border-b border-gray-300">
@@ -371,10 +414,10 @@ export default function RegisterPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   className="py-2 px-3 shadow-inner border border-gray-200 flex-grow rounded-md focus:outline-none"
                 />
-                <p className="mt-1 text-right text-sm font-body text-red-500">
-                  {errors.password}
-                </p>
               </div>
+              <p className="mt-1 text-right text-sm font-body text-red-500">
+                {errors.password}
+              </p>
             </div>
             <div className="mb-5">
               <div className="flex place-items-center">
@@ -388,15 +431,21 @@ export default function RegisterPage() {
                   onChange={(e) => setPasswordConfirm(e.target.value)}
                   className="py-2 px-3 shadow-inner border border-gray-200 flex-grow rounded-md focus:outline-none"
                 />
-                <p className="mt-1 text-right text-sm font-body text-red-500">
-                  {errors.passwordConfirm}
-                </p>
               </div>
+              <p className="mt-1 text-right text-sm font-body text-red-500">
+                {errors.passwordConfirm}
+              </p>
             </div>
           </form>
+
           <button
             type="submit"
-            onClick={handleLogin}
+            onClick={(e) => {
+              e.preventDefault();
+              setErrors({});
+
+              handleLogin();
+            }}
             className="mt-10 px-5 py-2 ring-1 ring-gray-200 rounded-md shadow-sm bg-primary-blue focus:outline-none"
           >
             <span className="uppercase font-semibold font-title tracking-widest text-lg text-gray-100">
