@@ -1,12 +1,15 @@
 import { useState, useContext } from "react";
 import axios from "axios";
 import { useHistory } from "react-router";
-import { getUserAccountData, UserContext } from "../utilities/userContext";
+import { UserContext } from "../utilities/userContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [loggingIn, setLoggingIn] = useState(false);
 
   let user = useContext(UserContext);
 
@@ -43,14 +46,14 @@ export default function LoginPage() {
       // const userData = await getUserAccountData();
       // console.log(userData);
       // user.setUser({ ...userData });
-
-      history.push("/");
     } catch (error) {
       setErrors({
         login:
           "Account not found. Check that your email and password are correct.",
         ...errors,
       });
+      setLoggingIn(false);
+
       console.log(error.response.data);
       console.log(error.response.data["detail"]);
       console.log(error.response.data.detail);
@@ -62,9 +65,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
+  const handleLogin = async () => {
     setErrors({});
     let errors = {};
 
@@ -84,9 +85,13 @@ export default function LoginPage() {
 
     if (Object.keys(errors).length === 0) {
       await loginUser();
+      window.location.href = "/";
+      // history.push("/");
+      // window.location.reload();
     } else {
       setErrors({ ...errors });
       window.scrollTo(0, 0);
+      setLoggingIn(false);
     }
   };
 
@@ -193,11 +198,19 @@ export default function LoginPage() {
             )}
             <button
               type="submit"
-              onClick={handleLogin}
+              onClick={(e) => {
+                e.preventDefault();
+                setLoggingIn(true);
+                handleLogin();
+              }}
               className="mt-5 px-5 py-2 ring-1 ring-gray-200 rounded-md shadow-sm bg-primary-blue focus:outline-none"
             >
               <span className="uppercase font-semibold font-title tracking-widest text-lg text-gray-100">
-                Login
+                {loggingIn ? (
+                  <FontAwesomeIcon icon={faSpinner} size="2x" spin />
+                ) : (
+                  "Login"
+                )}
               </span>
             </button>
             <p className="mt-4 self-center text-sm">
