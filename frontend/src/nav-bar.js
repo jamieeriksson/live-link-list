@@ -1,12 +1,28 @@
-import { useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import logo from "./assets/logo.svg";
+import useOutsideAlerter from "./utilities/outside-alerter.js";
 import { UserContext } from "./utilities/userContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCaretDown,
+  faCircle,
+  faUser,
+  faUserCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import { faCircle as faCircleRegular } from "@fortawesome/free-regular-svg-icons";
 
 export default function NavBar() {
   let user = useContext(UserContext);
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+
+  const outsideClickRef = useRef(null);
+
+  useOutsideAlerter(outsideClickRef, () => {
+    setMenuIsOpen(false);
+  });
 
   const { pathname } = useLocation();
 
@@ -39,52 +55,76 @@ export default function NavBar() {
 
   return (
     <div className="z-50 max-w-screen w-full h-36 px-10 pt-1 pb-8 flex flex-col place-items-center">
-      <div className="h-8 w-full flex place-items-center">
+      <div ref={outsideClickRef} className="h-8 w-full flex place-items-center">
         <img src={logo} alt="live link list logo" className="w-auto h-7" />
         <div className="flex-grow"></div>
+        <div
+          onClick={() => setMenuIsOpen(!menuIsOpen)}
+          className="md:hidden flex place-items-center"
+        >
+          <div className="block fa-layers fa-fw text-sm">
+            <FontAwesomeIcon icon={faUserCircle} size="2x" color="#666666" />
+            <FontAwesomeIcon icon={faCircleRegular} size="2x" color="#444444" />
+          </div>
+          <div className="ml-5 text-sm">
+            <FontAwesomeIcon icon={faCaretDown} color="#444444" />
+          </div>
+        </div>
         {user.user ? (
-          <div></div>
-        ) : (
-          <Link
-            to="/register"
-            className="font-body uppercase text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline"
+          <div
+            className={`${
+              menuIsOpen ? "flex" : "hidden md:flex"
+            } absolute inset-0 mt-10 h-36 md:static md:mt-0 md:h-full flex-col place-items-center justify-center md:justify-end md:flex-row w-full bg-gray-100 md:bg-transparent border md:border-0 shadow-lg md:shadow-none`}
           >
-            Sign Up
-          </Link>
-        )}
-        {user.user ? (
-          <div>
             <Link
+              onClick={() => setMenuIsOpen(false)}
               to="/account"
-              className="ml-6 font-body uppercase text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline"
+              className="my-2 md:ml-6 font-body uppercase text-lg md:text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline"
             >
               Account
             </Link>
             <Link
+              onClick={() => setMenuIsOpen(false)}
               to="/user-lives"
-              className="ml-6 font-body uppercase text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline"
+              className="my-2 md:ml-6 font-body uppercase text-lg md:text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline"
             >
               Your Lives
             </Link>
             <button
               onClick={handleLogout}
-              className="ml-6 font-body uppercase text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline focus:outline-none"
+              className="my-2 md:ml-6 font-body uppercase text-lg md:text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline focus:outline-none"
             >
               Logout
             </button>
           </div>
         ) : (
-          <Link
-            to="/login"
-            className="ml-6 font-body uppercase text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline"
+          <div
+            className={`${
+              menuIsOpen ? "flex" : "hidden md:flex"
+            } absolute inset-0 mt-10 h-28 md:static md:mt-0 md:h-full flex-col place-items-center justify-center md:justify-end md:flex-row w-full bg-gray-100 md:bg-transparent border md:border-0 shadow-lg md:shadow-none`}
           >
-            Login
-          </Link>
+            <Link
+              onClick={() => setMenuIsOpen(false)}
+              to="/register"
+              className="my-2 font-body uppercase text-lg md:text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline"
+            >
+              Sign Up
+            </Link>
+            <Link
+              onClick={() => setMenuIsOpen(false)}
+              to="/login"
+              className="my-2 md:ml-6 font-body uppercase text-lg md:text-sm tracking-wide text-gray-600 hover:text-gray-800 hover:underline"
+            >
+              Login
+            </Link>
+          </div>
         )}
+        {/* </div> */}
       </div>
       <div className="flex-grow"></div>
       <div className="flex uppercase font-body text-gray-500 text-lg">
         <Link
+          onClick={() => setMenuIsOpen(false)}
           to="/"
           className={`mx-4 md:mx-8 my-1 border-b border-transparent text-center ${
             pathname === "/"
@@ -95,6 +135,7 @@ export default function NavBar() {
           Post a live
         </Link>
         <Link
+          onClick={() => setMenuIsOpen(false)}
           to="/browse"
           className={`mx-4 md:mx-8 my-1 border-b border-transparent text-center ${
             pathname === "/browse"
