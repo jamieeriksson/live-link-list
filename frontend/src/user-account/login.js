@@ -43,9 +43,7 @@ export default function LoginPage() {
       localStorage.setItem("user", response.data["user"].id);
       localStorage.setItem("expiration", expiration);
 
-      // const userData = await getUserAccountData();
-      // console.log(userData);
-      // user.setUser({ ...userData });
+      window.location.href = "/";
     } catch (error) {
       setErrors({
         login:
@@ -85,7 +83,6 @@ export default function LoginPage() {
 
     if (Object.keys(errors).length === 0) {
       await loginUser();
-      window.location.href = "/";
       // history.push("/");
       // window.location.reload();
     } else {

@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "django_filters",
     "phonenumber_field",
+    "django_rq",
     "livelinklist.users.apps.UsersConfig",
     "livelinklist.lives.apps.LivesConfig",
 ]
@@ -73,6 +74,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {
+            "min_length": 8,
+        },
     },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
@@ -156,3 +160,48 @@ CORS_ALLOW_HEADERS = [
     "Access-Control-Allow-Origin",
     "Access-Control-Allow-Headers",
 ]
+
+# Email Settings
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.localhost"
+EMAIL_PORT = "8000"
+EMAIL_HOST_USER = "noreply@livelinklist.com"
+EMAIL_HOST_PASSWORD = "password123"
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+
+# Django RQ
+
+RQ_QUEUES = {
+    "default": {
+        "HOST": "localhost",
+        "PORT": 6379,
+        "DB": 0,
+        "PASSWORD": "",
+        "DEFAULT_TIMEOUT": 360,
+    },
+    # "with-sentinel": {
+    #     "SENTINELS": [("localhost", 26736), ("localhost", 26737)],
+    #     "MASTER_NAME": "redismaster",
+    #     "DB": 0,
+    #     "PASSWORD": "secret",
+    #     "SOCKET_TIMEOUT": None,
+    #     "CONNECTION_KWARGS": {"socket_connect_timeout": 0.3},
+    # },
+    "high": {
+        "URL": os.getenv(
+            "REDISTOGO_URL", "redis://localhost:6379/0"
+        ),  # If you're on Heroku
+        "DEFAULT_TIMEOUT": 500,
+    },
+    "low": {
+        "HOST": "localhost",
+        "PORT": 6379,
+        "DB": 0,
+    },
+}
+
+# RQ_EXCEPTION_HANDLERS = ['path.to.my.handler'] # If you need custom exception handlers

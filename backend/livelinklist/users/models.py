@@ -23,7 +23,7 @@ class User(AbstractBaseUser, BaseModel):
     first_name = models.TextField()
     last_name = models.TextField()
     email = models.EmailField(unique=True)
-    phone_number = PhoneNumberField(blank=True, null=True)
+    phone_number = models.TextField(blank=True, null=True)
     password = models.TextField()
     is_staff = models.BooleanField(default=False)
     credits = models.IntegerField(default=0)

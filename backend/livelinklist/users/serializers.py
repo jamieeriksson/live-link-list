@@ -1,5 +1,8 @@
+from django.contrib.auth import password_validation
+from django.db.models.fields import EmailField
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from sendgrid.helpers.mail.email import Email
 
 from livelinklist.lives.serializers import LiveSerializer
 from livelinklist.users.models import User
@@ -61,3 +64,16 @@ class UserTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class LogOutSerializer(serializers.Serializer):
     refresh = serializers.CharField()
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class ConfirmedResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    token = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate_password(self, value):
+        password_validation.validate_password(value)

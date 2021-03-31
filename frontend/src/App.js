@@ -6,6 +6,8 @@ import BrowsePage from "./browse-page/browse-page.js";
 import Footer from "./footer.js";
 import Nav from "./nav-bar.js";
 import LoginPage from "./user-account/login.js";
+import ForgotPassword from "./user-account/forgot-password.js";
+import PasswordResetConfirmed from "./user-account/password-reset-confirmed.js";
 import RegisterPage from "./user-account/register.js";
 import UserAccountPage from "./user-account/account.js";
 import UserLivesPage from "./user-account/user-lives/user-lives.js";
@@ -32,6 +34,11 @@ export default function App() {
         <Route path="/" exact component={PostingPage} />
         <Route path="/browse" component={BrowsePage} />
         <Route path="/login" component={LoginPage} />
+        <Route path="/forgot-password" component={ForgotPassword} />
+        <Route
+          path="/password-reset-confirmed"
+          component={PasswordResetConfirmed}
+        />
         <Route path="/register" component={RegisterPage} />
         <Route path="/account" component={UserAccountPage} />
         <Route path="/user-lives" component={UserLivesPage} />
