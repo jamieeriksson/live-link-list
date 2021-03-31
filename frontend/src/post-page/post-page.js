@@ -117,7 +117,7 @@ export default function PostingPage() {
       description: description,
       duration: linkDuration.postDuration,
       is_featured: featured,
-      platform: selectedPlatform.id,
+      platform_id: selectedPlatform.id,
       hashtags: postHashtags,
     };
 
@@ -184,7 +184,7 @@ export default function PostingPage() {
 
   return (
     <div
-      className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-1 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-${selectedPlatform.color}-300 to-gray-50`}
+      className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-2 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-${selectedPlatform.color}-300 to-gray-50`}
     >
       <form
         className={`max-w-3xl w-full mx-3 my-3 pb-9 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100`}

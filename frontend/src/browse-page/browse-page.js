@@ -83,7 +83,7 @@ function SearchBar(props) {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           placeholder="enter a hashtag or username"
-          className="px-4 py-2 flex place-items-center flex-grow bg-gray-50 border-t border-b border-gray-200 focus:outline-none"
+          className="px-4 py-2 flex place-items-center flex-grow bg-gray-50 border-t border-b border-l rounded-l-md border-gray-200 focus:outline-none"
         />
 
         <div className="float-right font-body" ref={outsideClickRef}>
@@ -327,12 +327,14 @@ export default function BrowsePage() {
     <div
       className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-1 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-red-100 via-gray-50 to-gray-50`}
     >
-      <SearchBar
-        query={query}
-        searchInput={searchInput}
-        setSearchInput={setSearchInput}
-        setQuery={setQuery}
-      />
+      <div className="px-3">
+        <SearchBar
+          query={query}
+          searchInput={searchInput}
+          setSearchInput={setSearchInput}
+          setQuery={setQuery}
+        />
+      </div>
       {featuredLives.length > 0 ? (
         <FeaturedSection featuredLives={featuredLives} />
       ) : (

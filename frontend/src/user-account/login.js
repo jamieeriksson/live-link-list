@@ -126,12 +126,12 @@ export default function LoginPage() {
   if (user.user) {
     return (
       <div
-        className={`max-w-screen w-full min-h-screen md:mt-5 px-1 pb-20 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-red-100 via-red-100 to-gray-50`}
+        className={`max-w-screen w-full min-h-screen md:mt-5 px-4 pb-20 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-red-100 via-red-100 to-gray-50`}
       >
-        <div className="h-36 w-full"></div>
+        <div className="h-36 w-full hidden md:static"></div>
 
         <div
-          className={`max-w-xl w-full mx-3 my-3 pb-14 pt-14 md:-mt-44 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100 shadow-lg border border-gray-200`}
+          className={`max-w-xl w-full mx-3 my-3 pb-14 pt-14 px-3 md:-mt-44 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100 shadow-lg border border-gray-200`}
         >
           <h1 className="w-full text-center font-title tracking-wider text-2xl md:text-3xl">
             You are already logged in.
@@ -148,12 +148,12 @@ export default function LoginPage() {
   } else {
     return (
       <div
-        className={`max-w-screen w-full min-h-screen md:mt-5 px-1 pb-20 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-red-100 via-red-100 to-gray-50`}
+        className={`max-w-screen w-full md:min-h-screen md:mt-5 px-4 pb-20 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-red-100 via-red-100 to-gray-50`}
       >
-        <div className="h-36 w-full"></div>
+        {/* <div className="h-36 w-full"></div> */}
 
         <div
-          className={`max-w-lg w-full mx-3 my-3 pb-14 pt-14 md:-mt-44 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100 shadow-lg border border-gray-200`}
+          className={`max-w-lg w-full mx-3 my-3 pb-14 pt-14 px-3 md:-mt-44 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100 shadow-lg border border-gray-200`}
         >
           <h1 className="w-full mb-10 text-center font-title tracking-wider text-2xl md:text-3xl">
             Login

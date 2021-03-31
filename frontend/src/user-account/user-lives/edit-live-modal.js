@@ -28,7 +28,7 @@ function EditLiveModal(props) {
     <div
       className={`z-50 fixed ${
         props.editModalIsOpen ? "" : "hidden"
-      } inset-0 w-screen h-screen blur-md flex justify-center place-items-center`}
+      } inset-0 w-screen min-h-screen pt-24 pb-18 blur-md flex justify-center place-items-center overflow-y-scroll`}
     >
       <form
         className={`max-w-3xl w-full mx-3 my-3 py-14 flex flex-col justify-center place-items-center border border-gray-200 rounded-lg md:rounded-2xl bg-gray-100 shadow-xl`}

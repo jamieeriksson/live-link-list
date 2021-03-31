@@ -5,13 +5,6 @@ import {
   faEdit,
   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faInstagram,
-  faTiktok,
-  faFacebook,
-  faYoutube,
-  faTwitch,
-} from "@fortawesome/free-brands-svg-icons";
 import useOutsideAlerter from "../../utilities/outside-alerter.js";
 import EditLiveModalContainer from "./edit-live-modal.js";
 import DeleteLiveModal from "./delete-live.js";
@@ -101,7 +94,7 @@ function Live(props) {
 
   if (live) {
     return (
-      <div className="w-72">
+      <div className="w-48 md:w-72">
         <div key={live.id} className="flex h-20 place-items-center">
           <div className="relative w-16 h-16">
             {isLiveExpired ? (

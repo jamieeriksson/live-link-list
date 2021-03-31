@@ -51,6 +51,9 @@ export default function NavBar() {
     } catch (error) {
       console.log(error);
     }
+
+    setMenuIsOpen(false);
+    window.location.href = "/";
   };
 
   return (
@@ -62,7 +65,7 @@ export default function NavBar() {
           onClick={() => setMenuIsOpen(!menuIsOpen)}
           className="md:hidden flex place-items-center"
         >
-          <div className="block fa-layers fa-fw text-sm">
+          <div className="block fa-layers fa-fw text-sm opacity-80">
             <FontAwesomeIcon icon={faUserCircle} size="2x" color="#666666" />
             <FontAwesomeIcon icon={faCircleRegular} size="2x" color="#444444" />
           </div>

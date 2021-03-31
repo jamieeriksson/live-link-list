@@ -123,7 +123,7 @@ export default function UserLivesPage() {
   }
   return (
     <div
-      className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-1 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-pink-200 to-gray-50`}
+      className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-4 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-pink-200 to-gray-50`}
     >
       <div
         className={`max-w-3xl w-full mx-3 my-3 pb-9 flex flex-col justify-center place-items-center shadow-md rounded-lg md:rounded-2xl bg-gray-100`}

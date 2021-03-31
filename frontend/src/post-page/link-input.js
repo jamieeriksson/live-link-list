@@ -56,7 +56,7 @@ export default function LinkInput(props) {
   }
 
   return (
-    <div className="w-full flex flex-col justify-center place-items-center">
+    <div className="w-full px-3 flex flex-col justify-center place-items-center">
       <div className="max-w-xs md:max-w-sm lg:max-w-md xl:max-w-lg w-full mb-5 md:mb-10 flex justify-center place-items-center flex-wrap">
         {platformOptions.map((platform) => (
           <button
