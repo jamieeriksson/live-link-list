@@ -128,9 +128,9 @@ function EditAccountInfo(props) {
   };
 
   return (
-    <form className="mb-5">
+    <form className="px-3 mb-5 flex flex-col justify-center place-items-center md:block">
       <div className="mb-3">
-        <p className="inline-block w-40 mr-6 font-semibold">
+        <p className="md:inline-block w-40 mr-1 md:mr-6 font-semibold">
           First Name:
           <span className="ml-0.5 text-primary-red text-base">*</span>
         </p>
@@ -145,7 +145,7 @@ function EditAccountInfo(props) {
         </p>
       </div>
       <div className="mb-3">
-        <p className="inline-block w-40 mr-6 font-semibold">
+        <p className="md:inline-block w-40 mr-1 md:mr-6 font-semibold">
           Last Name:
           <span className="ml-0.5 text-primary-red text-base">*</span>
         </p>
@@ -160,7 +160,7 @@ function EditAccountInfo(props) {
         </p>
       </div>
       <div className="mb-3">
-        <p className="inline-block w-40 mr-6 font-semibold">
+        <p className="md:inline-block w-40 mr-1 md:mr-6 font-semibold">
           Email:<span className="ml-0.5 text-primary-red text-base">*</span>
         </p>
         <input
@@ -174,7 +174,9 @@ function EditAccountInfo(props) {
         </p>
       </div>
       <div className="mb-3">
-        <p className="inline-block w-40 mr-6 font-semibold">Phone Number:</p>
+        <p className="md:inline-block w-40 mr-1 md:mr-6 font-semibold">
+          Phone Number:
+        </p>
         <input
           type="text"
           value={phone}
@@ -184,7 +186,9 @@ function EditAccountInfo(props) {
       </div>
 
       <div className="mb-3">
-        <p className="inline-block w-40 mr-6 font-semibold">TikTok Username:</p>
+        <p className="md:inline-block w-40 mr-1 md:mr-6 font-semibold">
+          TikTok Username:
+        </p>
 
         <input
           type="text"
@@ -194,7 +198,7 @@ function EditAccountInfo(props) {
         />
       </div>
       <div className="mb-3">
-        <p className="inline-block w-40 mr-6 font-semibold">
+        <p className="md:inline-block w-40 mr-1 md:mr-6 font-semibold">
           Instagram Username:
         </p>
 
@@ -206,7 +210,7 @@ function EditAccountInfo(props) {
         />
       </div>
       <div className="mb-3">
-        <p className="inline-block w-40 mr-6 font-semibold">
+        <p className="md:inline-block w-40 mr-1 md:mr-6 font-semibold">
           Youtube Username:
         </p>
 
@@ -218,7 +222,7 @@ function EditAccountInfo(props) {
         />
       </div>
       <div className="mb-3">
-        <p className="inline-block w-40 mr-6 font-semibold">
+        <p className="md:inline-block w-40 mr-1 md:mr-6 font-semibold">
           Facebook Username:
         </p>
 
@@ -230,7 +234,9 @@ function EditAccountInfo(props) {
         />
       </div>
       <div className="mb-3">
-        <p className="inline-block w-40 mr-6 font-semibold">Twitch Username:</p>
+        <p className="md:inline-block w-40 mr-1 md:mr-6 font-semibold">
+          Twitch Username:
+        </p>
 
         <input
           type="text"
@@ -270,91 +276,99 @@ function AccountInfo(props) {
   const setEditAccount = props.setEditAccount;
 
   return (
-    <div>
+    <div className="px-5">
       {userData ? (
         <div className="mb-5">
           <div className="mb-3">
-            <p className="inline-block w-40 mr-6 font-semibold">First Name:</p>
-            <span className>{userData.first_name}</span>
+            <p className="inline-block w-40 mr-1 md:mr-6 font-semibold">
+              First Name:
+            </p>
+            <span>{userData.first_name}</span>
           </div>
           <div className="mb-3">
-            <p className="inline-block w-40 mr-6 font-semibold">Last Name:</p>
-            <span className>{userData.last_name}</span>
+            <p className="inline-block w-40 mr-1 md:mr-6 font-semibold">
+              Last Name:
+            </p>
+            <span>{userData.last_name}</span>
           </div>
           <div className="mb-3">
-            <p className="inline-block w-40 mr-6 font-semibold">Email:</p>
-            <span className>{userData.email}</span>
+            <p className="inline-block w-40 mr-1 md:mr-6 font-semibold">
+              Email:
+            </p>
+            <span>{userData.email}</span>
           </div>
           <div className="mb-3">
-            <p className="inline-block w-40 mr-6 font-semibold">
+            <p className="inline-block w-40 mr-1 md:mr-6 font-semibold">
               Phone Number:
             </p>
 
             {userData.phone_number ? (
-              <span className>{userData.phone_number}</span>
+              <span>{userData.phone_number}</span>
             ) : (
               <span className="text-gray-600">none</span>
             )}
           </div>
 
           <div className="mb-3">
-            <p className="inline-block w-40 mr-6 font-semibold">
+            <p className="inline-block w-40 mr-1 md:mr-6 font-semibold">
               TikTok Username:
             </p>
 
             {userData.tiktok_username ? (
-              <span className>{userData.tiktok_username}</span>
+              <span>{userData.tiktok_username}</span>
             ) : (
               <span className="text-gray-600">none</span>
             )}
           </div>
           <div className="mb-3">
-            <p className="inline-block w-40 mr-6 font-semibold">
+            <p className="inline-block w-40 mr-1 md:mr-6 font-semibold">
               Instagram Username:
             </p>
 
             {userData.instagram_username ? (
-              <span className>{userData.instagram_username}</span>
+              <span>{userData.instagram_username}</span>
             ) : (
               <span className="text-gray-600">none</span>
             )}
           </div>
           <div className="mb-3">
-            <p className="inline-block w-40 mr-6 font-semibold">
+            <p className="inline-block w-40 mr-1 md:mr-6 font-semibold">
               Youtube Username:
             </p>
 
             {userData.youtube_username ? (
-              <span className>{userData.youtube_username}</span>
+              <span>{userData.youtube_username}</span>
             ) : (
               <span className="text-gray-600">none</span>
             )}
           </div>
           <div className="mb-3">
-            <p className="inline-block w-40 mr-6 font-semibold">
+            <p className="inline-block w-40 mr-1 md:mr-6 font-semibold">
               Facebook Username:
             </p>
 
             {userData.facebook_username ? (
-              <span className>{userData.facebook_username}</span>
+              <span>{userData.facebook_username}</span>
             ) : (
               <span className="text-gray-600">none</span>
             )}
           </div>
           <div className="mb-3">
-            <p className="inline-block w-40 mr-6 font-semibold">
+            <p className="inline-block w-40 mr-1 md:mr-6 font-semibold">
               Twitch Username:
             </p>
 
             {userData.twitch_username ? (
-              <span className>{userData.twitch_username}</span>
+              <span>{userData.twitch_username}</span>
             ) : (
               <span className="text-gray-600">none</span>
             )}
           </div>
           <div className="mb-3">
-            <p className="inline-block w-40 mr-6 font-semibold">Credits:</p>
-            <span className>{userData.credits}</span>
+            <p className="inline-block w-40 mr-1 md:mr-6 font-semibold">
+              Credits:
+            </p>
+            <span>{userData.credits}</span>
           </div>
 
           <div className="flex justify-center">
@@ -445,10 +459,10 @@ export default function UserAccountPage() {
 
   return (
     <div
-      className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-1 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-blue-300 to-gray-50`}
+      className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-4 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-blue-300 to-gray-50`}
     >
       <div
-        className={`max-w-3xl w-full mx-3 my-3 pb-9 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100`}
+        className={`max-w-3xl w-full my-3 pb-9 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100`}
       >
         <h1 className="w-full mb-12 pb-7 pt-7 px-3 bg-gray-700 rounded-t-lg md:rounded-t-2xl text-gray-100 text-center font-title tracking-wider text-2xl md:text-3xl shadow-md">
           Your Account
