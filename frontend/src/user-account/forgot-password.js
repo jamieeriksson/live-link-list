@@ -8,7 +8,7 @@ export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
 
-  const checkEmail = async () => {
+  const sendEmail = async () => {
     let urlHost = "";
 
     if (process.env.NODE_ENV === "development") {
@@ -70,7 +70,7 @@ export default function ForgotPassword() {
     }
 
     if (Object.keys(newErrors).length === 0) {
-      await checkEmail();
+      await sendEmail();
     } else {
       setErrors({ ...newErrors });
       window.scrollTo(0, 0);

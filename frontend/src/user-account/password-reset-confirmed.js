@@ -11,6 +11,7 @@ export default function PasswordResetConfirmed() {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [errors, setErrors] = useState({});
   const [query, setQuery] = useState("");
+  const [resetComplete, setResetComplete] = useState(false);
 
   useEffect(() => {
     if (window.location.search) {
@@ -90,7 +91,7 @@ export default function PasswordResetConfirmed() {
       localStorage.setItem("user", response.data["user"].id);
       localStorage.setItem("expiration", expiration);
 
-      window.location.href = "/";
+      setResetComplete(true);
     } catch (error) {
       console.log(error.response.data);
       console.log(error.response.data["detail"]);
@@ -103,10 +104,7 @@ export default function PasswordResetConfirmed() {
     }
   };
 
-  const handleReset = async (e) => {
-    e.preventDefault();
-
-    setErrors({});
+  const handleReset = async () => {
     let newErrors = {};
 
     if (!email) {
@@ -143,53 +141,34 @@ export default function PasswordResetConfirmed() {
       window.scrollTo(0, 0);
     }
   };
-
-  if (user.user) {
-    return (
+  return (
+    <div
+      className={`max-w-screen w-full min-h-screen md:mt-5 px-1 pb-20 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-red-100 via-red-100 to-gray-50`}
+    >
       <div
-        className={`max-w-screen w-full min-h-screen md:mt-5 px-1 pb-20 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-red-100 via-red-100 to-gray-50`}
+        className={`max-w-lg w-full mx-3 my-3 pb-14 pt-14 md:-mt-44 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100 shadow-lg border border-gray-200`}
       >
-        {/* <div className="h-36 w-full"></div> */}
-
-        <div
-          className={`max-w-xl w-full mx-3 my-3 pb-14 pt-14 md:-mt-44 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100 shadow-lg border border-gray-200`}
-        >
-          <h1 className="w-full text-center font-title tracking-wider text-2xl md:text-3xl">
-            You are already logged in.
-          </h1>
-          <p className="mt-5 cursor-pointer text-primary-blue hover:underline">
-            <a href="/account">View account details</a>
-          </p>
-        </div>
-      </div>
-    );
-  } else {
-    return (
-      <div
-        className={`max-w-screen w-full min-h-screen md:mt-5 px-1 pb-20 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-red-100 via-red-100 to-gray-50`}
-      >
-        {/* <div className="h-36 w-full"></div> */}
-
-        <div
-          className={`max-w-lg w-full mx-3 my-3 pb-14 pt-14 md:-mt-44 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100 shadow-lg border border-gray-200`}
-        >
-          <h1 className="w-full mb-10 text-center font-title tracking-wider text-2xl md:text-3xl">
-            Reset Password
-          </h1>
+        <h1 className="w-full mb-10 text-center font-title tracking-wider text-2xl md:text-3xl">
+          Reset Password
+        </h1>
+        {resetComplete ? (
+          <div className="flex flex-col justify-center place-items-center">
+            <p className="text-center font-title font-light tracking-wider text-lg">
+              Your password is reset!
+            </p>
+            {/* <button
+              onClick={(e) => {
+                setPasswordChangeIsOpen(false);
+              }}
+              className="mt-8 mx-3 px-3 py-1.5 ring-1 ring-gray-200 rounded-md shadow-sm bg-primary-blue focus:outline-none"
+            >
+              <span className="uppercase font-semibold font-title tracking-widest text-gray-100">
+                Close
+              </span>
+            </button> */}
+          </div>
+        ) : (
           <form className="w-full px-10 flex flex-col">
-            {/* <div className="mb-5 self-start w-full flex flex-col">
-              <p>Account Email:</p>
-              <input
-                type="text"
-                placeholder="email"
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full py-2 px-3 shadow-inner border border-gray-200 flex-grow rounded-md focus:outline-none"
-              />
-              <p className="ml-2 mt-1 text-sm font-body text-red-500">
-                {errors.email}
-              </p>
-            </div> */}
-
             <div className="mb-5 self-start w-full">
               <div className="flex place-items-center">
                 <p className="w-32 mr-5 font-title font-light tracking-wider text-lg text-right whitespace-nowrap">
@@ -261,7 +240,11 @@ export default function PasswordResetConfirmed() {
 
             <button
               type="submit"
-              onClick={handleReset}
+              onClick={(e) => {
+                e.preventDefault();
+                setErrors({});
+                handleReset();
+              }}
               className="self-center mt-5 px-5 py-2 ring-1 ring-gray-200 rounded-md shadow-sm bg-primary-blue focus:outline-none"
             >
               <span className="uppercase font-semibold font-title tracking-widest text-lg text-gray-100">
@@ -269,8 +252,8 @@ export default function PasswordResetConfirmed() {
               </span>
             </button>
           </form>
-        </div>
+        )}
       </div>
-    );
-  }
+    </div>
+  );
 }

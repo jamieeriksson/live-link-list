@@ -83,8 +83,6 @@ export default function LoginPage() {
 
     if (Object.keys(errors).length === 0) {
       await loginUser();
-      // history.push("/");
-      // window.location.reload();
     } else {
       setErrors({ ...errors });
       window.scrollTo(0, 0);
