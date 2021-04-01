@@ -156,22 +156,12 @@ export default function PasswordResetConfirmed() {
             <p className="text-center font-title font-light tracking-wider text-lg">
               Your password is reset!
             </p>
-            {/* <button
-              onClick={(e) => {
-                setPasswordChangeIsOpen(false);
-              }}
-              className="mt-8 mx-3 px-3 py-1.5 ring-1 ring-gray-200 rounded-md shadow-sm bg-primary-blue focus:outline-none"
-            >
-              <span className="uppercase font-semibold font-title tracking-widest text-gray-100">
-                Close
-              </span>
-            </button> */}
           </div>
         ) : (
           <form className="w-full px-10 flex flex-col">
             <div className="mb-5 self-start w-full">
-              <div className="flex place-items-center">
-                <p className="w-32 mr-5 font-title font-light tracking-wider text-lg text-right whitespace-nowrap">
+              <div className="flex flex-col md:flex-row md:place-items-center">
+                <p className="md:w-32 ml-1 md:ml-0 mr-5 font-title font-light tracking-wider text-lg md:text-right whitespace-nowrap">
                   Email
                   <span className="ml-0.5 text-primary-red text-base">*</span>
                 </p>
@@ -188,8 +178,8 @@ export default function PasswordResetConfirmed() {
             </div>
 
             <div className="mb-5 self-start w-full">
-              <div className="flex place-items-center">
-                <p className="w-32 mr-5 font-title font-light tracking-wider text-lg text-right whitespace-nowrap">
+              <div className="flex flex-col md:flex-row md:place-items-center">
+                <p className="md:w-32 ml-1 md:ml-0 mr-5 font-title font-light tracking-wider text-lg md:text-right whitespace-nowrap">
                   New Password
                   <span className="ml-0.5 text-primary-red text-base">*</span>
                 </p>
@@ -205,8 +195,8 @@ export default function PasswordResetConfirmed() {
               </p>
             </div>
             <div className="mb-5 self-start w-full">
-              <div className="flex place-items-center">
-                <p className="w-32 mr-5 font-title font-light tracking-wider text-lg text-right whitespace-nowrap">
+              <div className="flex flex-col md:flex-row md:place-items-center">
+                <p className="md:w-32 ml-1 md:ml-0 mr-5 font-title font-light tracking-wider text-lg md:text-right whitespace-nowrap">
                   Confirm Password
                   <span className="ml-0.5 text-primary-red text-base">*</span>
                 </p>

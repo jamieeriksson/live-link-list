@@ -111,7 +111,9 @@ export default function ForgotPassword() {
           </h1>
           <form className="max-w-xs w-full flex flex-col">
             <div className="mb-5 flex flex-col">
-              <p>Account Email:</p>
+              <p className="ml-1 font-title font-light tracking-wider">
+                Account Email:
+              </p>
               <input
                 type="text"
                 placeholder="email"

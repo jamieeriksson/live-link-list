@@ -70,7 +70,7 @@ function ChangePasswordModal(props) {
           </div>
         ) : (
           <div className="flex flex-col justify-center place-items-center">
-            <p className="font-title font-light tracking-wider text-lg">
+            <p className="text-center font-title font-light tracking-wider text-lg">
               We will send a link to your email to reset your password.
             </p>
 
