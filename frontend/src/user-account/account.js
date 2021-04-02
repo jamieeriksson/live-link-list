@@ -5,7 +5,7 @@ import { UserContext } from "../utilities/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import getUserAccessToken from "../utilities/user-access-tokens.js";
-import EditAccountInfo from "./edit-account.js";
+import EditAccountInfo from "./edit-account/edit-account.js";
 
 function AccountInfo(props) {
   const userData = props.userData;
