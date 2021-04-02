@@ -12,7 +12,6 @@ export default function LinkInput(props) {
   const urlInput = props.urlInput;
   const setUrlInput = props.setUrlInput;
   const handleUrlChange = props.handleUrlChange;
-
   const username = props.username;
   const setUsername = props.setUsername;
   const user = props.user;

@@ -39,6 +39,8 @@ function EditLiveModal(props) {
           urlInput={props.urlInput}
           setUrlInput={props.setUrlInput}
           handleUrlChange={props.handleUrlChange}
+          username={props.username}
+          setUsername={props.setUsername}
           errors={props.errors}
         />
         <LiveDetails
@@ -107,9 +109,9 @@ export default function EditLiveModalContainer(props) {
   );
   const [description, setDescription] = useState(live.description);
   const [addDuration, setAddDuration] = useState({
-    label: "0 minutes",
-    duration: "00:00:00",
-    cost: "",
+    duration: "0 minutes",
+    postDuration: "00:00:00",
+    cost: 0,
   });
   let user = useContext(UserContext);
   const [errors, setErrors] = useState({});
@@ -172,7 +174,7 @@ export default function EditLiveModalContainer(props) {
       description: description,
       duration: addDuration.duration,
       is_featured: featured,
-      platform: selectedPlatform.id,
+      platform_id: selectedPlatform.id,
       hashtags: postHashtags,
     };
 
@@ -240,6 +242,8 @@ export default function EditLiveModalContainer(props) {
       setSelectedPlatform={setSelectedPlatform}
       urlInput={urlInput}
       setUrlInput={setUrlInput}
+      username={username}
+      setUsername={setUsername}
       handleUrlChange={handleUrlChange}
       hashtags={hashtags}
       hashtagsList={hashtagsList}

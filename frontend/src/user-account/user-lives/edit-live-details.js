@@ -6,34 +6,34 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 const durationOptions = [
   {
-    label: "0 minutes",
-    duration: "00:00:00",
-    cost: "",
+    duration: "0 minutes",
+    postDuration: "00:00:00",
+    cost: 0,
   },
   {
-    label: "5 minutes",
-    duration: "00:05:00",
-    cost: "$2",
+    duration: "5 minutes",
+    postDuration: "00:05:00",
+    cost: 0,
   },
   {
-    label: "10 minutes",
-    duration: "00:10:00",
-    cost: "$5",
+    duration: "10 minutes",
+    postDuration: "00:10:00",
+    cost: 0,
   },
   {
-    label: "15 minutes",
-    duration: "00:15:00",
-    cost: "$10",
+    duration: "15 minutes",
+    postDuration: "00:15:00",
+    cost: 0,
   },
   {
-    label: "30 minutes",
-    duration: "00:30:00",
-    cost: "$15",
+    duration: "30 minutes",
+    postDuration: "00:30:00",
+    cost: 0,
   },
   {
-    label: "60 minutes",
-    duration: "00:60:00",
-    cost: "$20",
+    duration: "60 minutes",
+    postDuration: "00:60:00",
+    cost: 0,
   },
 ];
 
@@ -141,7 +141,7 @@ export default function LiveDetails(props) {
             className="w-48 px-3 py-1 flex place-items-center ring-1 ring-gray-200 rounded-md shadow-sm bg-white focus:outline-none"
           >
             <span className="flex-grow text-left text-lg">
-              {addDuration.label}
+              {addDuration.duration}
             </span>
             <span className="text-sm float-right">
               <FontAwesomeIcon icon={faChevronDown} color="#111111" />
@@ -164,10 +164,10 @@ export default function LiveDetails(props) {
                 className="w-48 px-3 py-1 bg-gray-600 hover:bg-gray-700 text-gray-100 focus:outline-none"
               >
                 <span className="float-left text-xl font-light">
-                  {option.label}
+                  {option.duration}
                 </span>
                 <span className="float-right text-xl font-medium">
-                  {option.cost}
+                  {option.cost === 0 ? "Free" : "$" + option.cost}
                 </span>
               </button>
             ))}

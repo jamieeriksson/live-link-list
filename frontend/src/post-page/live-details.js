@@ -145,14 +145,14 @@ export default function LiveDetails(props) {
         </div>
       </div>
 
-      <div className="mt-8 flex justify-center place-items-center">
+      {/* <div className="mt-8 flex justify-center place-items-center">
         <span className="mr-4 uppercase tracking-wide">Feature Live</span>
         <input
           type="checkbox"
           value={featured}
           onChange={(e) => setFeatured(e.target.checked)}
         />
-      </div>
+      </div> */}
     </div>
   );
 }

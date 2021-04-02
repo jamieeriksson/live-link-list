@@ -14,6 +14,9 @@ export default function LinkInput(props) {
   const urlInput = props.urlInput;
   const setUrlInput = props.setUrlInput;
   const handleUrlChange = props.handleUrlChange;
+  const username = props.username;
+  const setUsername = props.setUsername;
+  const user = props.user;
 
   const handlePlatformSelect = (platform) => {
     setSelectedPlatform(platform);
@@ -64,6 +67,21 @@ export default function LinkInput(props) {
       <p className="max-w-xl w-full mt-1 mr-6 text-right text-sm font-body text-red-500">
         {props.errors.urlInput}
       </p>
+
+      <div className="mt-8 max-w-sm w-full flex">
+        <span className="mr-3 text-xl uppercase">Username</span>
+        <div className="flex-grow inline px-2 py-1 rounded-md ring-1 ring-gray-200 shadow-sm bg-white">
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+            placeholder="optional"
+            className="w-full bg-white focus:outline-none"
+          />
+        </div>
+      </div>
     </div>
   );
 }
