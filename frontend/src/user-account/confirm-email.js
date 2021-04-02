@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { UserContext } from "../utilities/userContext";
+import { getUserAccountData, UserContext } from "../utilities/userContext";
 import axios from "axios";
 import queryString from "query-string";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,9 +22,16 @@ export default function ConfirmEmail() {
   }, []);
 
   useEffect(() => {
-    if (user.user.email && query.token) {
+    if (
+      user.user &&
+      user.user.email &&
+      !user.user.email_confirmed &&
+      query.token &&
+      Object.keys(errors).length === 0
+    ) {
       handleConfirm();
-      // user.setUser({...userData});
+    } else {
+      setLoading(false);
     }
   }, [user, query]);
 
@@ -95,6 +102,7 @@ export default function ConfirmEmail() {
         }
       );
       console.log(response);
+      user.setUser({ ...user.user, email_confirmed: true, logged_in: true });
     } catch (error) {
       if (error.response.data) {
         let errorObj = {};
