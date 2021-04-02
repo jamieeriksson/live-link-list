@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import getUserAccessToken from "../../utilities/user-access-tokens.js";
 import ChangePasswordModal from "./change-password.js";
+import ChangeEmailModal from "./change-email-modal.js";
 import DeleteAccountModal from "./delete-account-modal.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
@@ -21,6 +22,7 @@ export default function EditAccountInfo(props) {
   const [facebook, setFacebook] = useState(userData.facebook_username);
   const [twitch, setTwitch] = useState(userData.twitch_username);
   const [passwordChangeIsOpen, setPasswordChangeIsOpen] = useState(false);
+  const [emailChangeIsOpen, setEmailChangeIsOpen] = useState(false);
   const [deleteAccountIsOpen, setDeleteAccountIsOpen] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -92,13 +94,6 @@ export default function EditAccountInfo(props) {
       };
     }
 
-    if (!email) {
-      errors = {
-        email: "Enter an email.",
-        ...errors,
-      };
-    }
-
     if (Object.keys(errors).length === 0) {
       const accessToken = await getUserAccessToken();
       await updateUser(accessToken);
@@ -141,20 +136,7 @@ export default function EditAccountInfo(props) {
           {errors.lastName}
         </p>
       </div>
-      <div className="mb-3">
-        <p className="md:inline-block w-40 mr-1 md:mr-6 font-semibold">
-          Email:<span className="ml-0.5 text-primary-red text-base">*</span>
-        </p>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="py-0.5 px-3 shadow-inner border border-gray-200 rounded-md focus:outline-none"
-        />
-        <p className="mt-1 text-right text-sm font-body text-red-500">
-          {errors.email}
-        </p>
-      </div>
+
       <div className="mb-3">
         <p className="md:inline-block w-40 mr-1 md:mr-6 font-semibold">
           Phone Number:
@@ -228,7 +210,27 @@ export default function EditAccountInfo(props) {
         />
       </div>
 
-      <div className="mt-5">
+      <div className="mt-8">
+        <p className="md:inline-block w-40 mr-1 md:mr-6 font-semibold">
+          Email:
+        </p>
+        <p
+          onClick={() => setEmailChangeIsOpen(true)}
+          className="cursor-pointer inline-block text-primary-blue hover:underline"
+        >
+          Change email
+        </p>
+      </div>
+      <ChangeEmailModal
+        email={email}
+        setEmail={setEmail}
+        emailChangeIsOpen={emailChangeIsOpen}
+        setEmailChangeIsOpen={setEmailChangeIsOpen}
+        setUserData={setUserData}
+        userData={userData}
+      />
+
+      <div className="mt-3">
         <p className="md:inline-block w-40 mr-1 md:mr-6 font-semibold">
           Password:
         </p>
@@ -240,7 +242,7 @@ export default function EditAccountInfo(props) {
         </p>
       </div>
       <ChangePasswordModal
-        email={userData.email}
+        email={email}
         passwordChangeIsOpen={passwordChangeIsOpen}
         setPasswordChangeIsOpen={setPasswordChangeIsOpen}
       />
