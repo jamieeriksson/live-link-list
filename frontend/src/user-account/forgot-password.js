@@ -77,7 +77,7 @@ export default function ForgotPassword() {
     }
   };
 
-  if (user.user) {
+  if (user.user && user.user["logged_in"]) {
     return (
       <div
         className={`max-w-screen w-full min-h-screen md:mt-5 px-1 pb-20 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-red-100 via-red-100 to-gray-50`}

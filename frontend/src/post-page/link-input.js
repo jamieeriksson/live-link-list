@@ -24,7 +24,7 @@ export default function LinkInput(props) {
   }, []);
 
   useEffect(() => {
-    if (user.user) {
+    if (user.user && user.user["logged_in"]) {
       console.log(user.user[`${selectedPlatform.name.toLowerCase()}_username`]);
       setUsername(user.user[`${selectedPlatform.name.toLowerCase()}_username`]);
     }
@@ -36,7 +36,7 @@ export default function LinkInput(props) {
     setSelectedPlatform(platform);
     setIsPlatformSelectOpen(!isPlatformSelectOpen);
     setUrlInput("");
-    if (user.user) {
+    if (user.user && user.user["logged_in"]) {
       console.log(user.user[`${platform.name.toLowerCase()}_username`]);
       setUsername(user.user[`${platform.name.toLowerCase()}_username`]);
     }

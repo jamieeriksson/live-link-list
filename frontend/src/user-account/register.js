@@ -77,6 +77,35 @@ export default function RegisterPage() {
     }
   };
 
+  const sendConfirmEmail = async () => {
+    let urlHost = "";
+
+    if (process.env.NODE_ENV === "development") {
+      urlHost = "http://localhost:8000/";
+    }
+
+    if (process.env.NODE_ENV === "production") {
+      urlHost = "";
+    }
+
+    const url = new URL("/send-confirm-email", urlHost);
+
+    try {
+      const response = await axios.post(url, {
+        email: email,
+      });
+    } catch (error) {
+      console.log(error.response.data);
+      console.log(error.response.data["detail"]);
+      console.log(error.response.data.detail);
+      console.log(error);
+      console.log(error.message);
+      console.log(error.request);
+      console.log(error.config);
+      console.log(error.stack);
+    }
+  };
+
   const loginUser = async () => {
     let urlHost = "";
 
@@ -105,8 +134,9 @@ export default function RegisterPage() {
       localStorage.setItem("user", response.data["user"].id);
       localStorage.setItem("expiration", expiration);
 
-      // const userData = await getUserAccountData();
-      // user.setUser({ ...userData });
+      const userData = await getUserAccountData();
+      userData["logged_in"] = true;
+      user.setUser({ ...userData });
 
       history.push("/");
     } catch (error) {
@@ -162,6 +192,7 @@ export default function RegisterPage() {
 
     if (Object.keys(newErrors).length === 0) {
       await createUser();
+      await sendConfirmEmail();
       loginUser();
     } else {
       window.scrollTo(0, 0);
@@ -196,7 +227,7 @@ export default function RegisterPage() {
     }
   };
 
-  if (user.user) {
+  if (user.user && user.user["logged_in"]) {
     return (
       <div
         className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-1 pb-20 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-red-100 via-red-100 to-gray-50`}

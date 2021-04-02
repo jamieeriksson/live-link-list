@@ -23,6 +23,7 @@ export const getUserAccountData = async () => {
     );
     return response.data;
   } catch (error) {
+    localStorage.clear();
     console.log(error);
     console.log(error.message);
     console.log(error.request);
@@ -32,7 +33,21 @@ export const getUserAccountData = async () => {
 };
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(localStorage.getItem("user"));
+  const [user, setUser] = useState({ logged_in: false });
+  const user_id = localStorage.getItem("user");
+
+  const setUserData = async () => {
+    if (user_id) {
+      const user_data = await getUserAccountData();
+      if (user_data) {
+        setUser({ ...user_data, logged_in: true });
+      } else {
+        setUser({ logged_in: false });
+      }
+    } else {
+      setUser({ logged_in: false });
+    }
+  };
 
   useEffect(() => {
     const today = new Date(Date.now());
@@ -40,20 +55,21 @@ export const UserProvider = ({ children }) => {
 
     if (today >= expiration) {
       localStorage.clear();
-      setUser();
+      setUser({ logged_in: false });
     } else {
-      setUser(localStorage.getItem("user"));
+      setUserData();
     }
 
     return () => {};
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem("user")) {
-      setUser({ ...getUserAccountData() });
-    }
+    setUserData();
+    window.addEventListener("storage", setUserData);
 
-    return () => {};
+    return () => {
+      window.removeEventListener("storage", setUserData);
+    };
   }, []);
 
   return (

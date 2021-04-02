@@ -32,6 +32,7 @@ class User(AbstractBaseUser, BaseModel):
     youtube_username = models.TextField(blank=True, null=True)
     facebook_username = models.TextField(blank=True, null=True)
     twitch_username = models.TextField(blank=True, null=True)
+    email_confirmed = models.BooleanField(default=False)
 
     objects = UserManager()
 

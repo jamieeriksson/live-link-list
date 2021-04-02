@@ -50,6 +50,8 @@ export default function NavBar() {
       localStorage.clear();
     } catch (error) {
       console.log(error);
+      user.setUser();
+      localStorage.clear();
     }
 
     setMenuIsOpen(false);
@@ -73,7 +75,7 @@ export default function NavBar() {
             <FontAwesomeIcon icon={faCaretDown} color="#444444" />
           </div>
         </div>
-        {user.user ? (
+        {user.user && user.user["logged_in"] ? (
           <div
             className={`${
               menuIsOpen ? "flex" : "hidden md:flex"
@@ -122,7 +124,6 @@ export default function NavBar() {
             </Link>
           </div>
         )}
-        {/* </div> */}
       </div>
       <div className="flex-grow"></div>
       <div className="flex uppercase font-body text-gray-500 text-lg">

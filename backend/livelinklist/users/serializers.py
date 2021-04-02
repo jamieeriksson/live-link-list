@@ -9,7 +9,7 @@ from livelinklist.users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=False)
+    password = serializers.CharField(write_only=True)
     lives = LiveSerializer(many=True, read_only=True)
 
     class Meta:
@@ -31,6 +31,7 @@ class UserSerializer(serializers.ModelSerializer):
             "facebook_username",
             "twitch_username",
             "lives",
+            "email_confirmed",
         ]
         read_only_fields = ["is_staff", "credits"]
 
@@ -53,11 +54,19 @@ class UserTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         data["refresh"] = str(refresh)
         data["access"] = str(refresh.access_token)
-        data["user"] = {
-            "id": self.user.id,
-            "email": self.user.email,
-            "name": f"{self.user.first_name} {self.user.last_name}",
-        }
+        if not self.user.email_confirmed:
+            data["user"] = {
+                "id": self.user.id,
+                "email": self.user.email,
+                "name": f"{self.user.first_name} {self.user.last_name}",
+                "email_confirmed": self.user.email_confirmed,
+            }
+        else:
+            data["user"] = {
+                "id": self.user.id,
+                "email": self.user.email,
+                "name": f"{self.user.first_name} {self.user.last_name}",
+            }
 
         return data
 
@@ -77,3 +86,15 @@ class ConfirmedResetPasswordSerializer(serializers.Serializer):
 
     def validate_password(self, value):
         password_validation.validate_password(value)
+
+
+class ConfirmEmailPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    token = serializers.CharField()
+
+    def validate_password(self, value):
+        password_validation.validate_password(value)
+
+
+class ConfirmEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()

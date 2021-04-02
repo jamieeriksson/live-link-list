@@ -21,6 +21,8 @@ from livelinklist.users.models import User
 from livelinklist.users.permissions import UserPermission
 from livelinklist.users.serializers import (
     ConfirmedResetPasswordSerializer,
+    ConfirmEmailPasswordSerializer,
+    ConfirmEmailSerializer,
     LogOutSerializer,
     ResetPasswordSerializer,
     UserSerializer,
@@ -174,3 +176,67 @@ class ConfirmedResetPasswordView(views.APIView):
         user.save()
 
         return Response(user.get_auth_tokens(), status=status.HTTP_200_OK)
+
+
+class SendConfirmEmailView(views.APIView):
+    serializer_class = ConfirmEmailSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        serializer = ConfirmEmailSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            user = User.objects.get(email=request.data["email"])
+
+        except User.DoesNotExist:
+            return Response(
+                {"detail": ["No user found with this email."]},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        django_rq.enqueue(
+            send_email,
+            to=[user.email],
+            template_id="d-77f831b59c4b425db5527f8fb5ed9f7a",
+            dynamic_template_data={
+                "base_url": request.META.get("HTTP_ORIGIN", "https://livelinklist.com"),
+                "email": user.email,
+                "token": PasswordResetTokenGenerator().make_token(user),
+            },
+        )
+
+        return Response(status=status.HTTP_200_OK)
+
+
+class ConfirmEmailView(views.APIView):
+    serializer_class = ConfirmedResetPasswordSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = ConfirmEmailPasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            user = User.objects.get(email=request.data["email"])
+        except User.DoesNotExist:
+            return Response(
+                {"detail": ["No user found with this email."]},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        if not PasswordResetTokenGenerator().check_token(user, request.data["token"]):
+            raise ValidationError(
+                {
+                    "token": [
+                        "Invalid token. This usually means the link"
+                        + " has expired, or it has already been used to confirm this"
+                        + " account."
+                    ]
+                }
+            )
+
+        user.email_confirmed = True
+        user.save()
+
+        return Response(status=status.HTTP_200_OK)

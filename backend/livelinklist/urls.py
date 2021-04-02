@@ -4,10 +4,12 @@ from rest_framework.routers import DefaultRouter
 from livelinklist.lives.views import HashtagViewSet, LiveViewSet, PlatformViewSet
 from livelinklist.users.views import (
     ConfirmedResetPasswordView,
+    ConfirmEmailView,
     LogInView,
     LogOutView,
     RefreshTokenView,
     ResetPasswordView,
+    SendConfirmEmailView,
     UserViewSet,
 )
 
@@ -21,6 +23,8 @@ urlpatterns = [
     path("log-in", LogInView.as_view()),
     path("refresh-token", RefreshTokenView.as_view()),
     path("log-out", LogOutView.as_view()),
+    path("send-confirm-email", SendConfirmEmailView.as_view()),
+    path("confirm-email", ConfirmEmailView.as_view()),
     path("password-reset", ResetPasswordView.as_view()),
     path("password-reset-confirmed", ConfirmedResetPasswordView.as_view()),
     path("", include(router.urls)),

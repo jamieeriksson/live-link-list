@@ -12,6 +12,8 @@ import RegisterPage from "./user-account/register.js";
 import UserAccountPage from "./user-account/account.js";
 import UserLivesPage from "./user-account/user-lives/user-lives.js";
 import useDataApi from "./utilities/data-api.js";
+import IsEmailConfirmed from "./user-account/is-email-confirmed.js";
+import ConfirmEmail from "./user-account/confirm-email.js";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -31,9 +33,11 @@ export default function App() {
       <Router>
         <ScrollToTop />
         <Nav />
+        <IsEmailConfirmed />
         <Route path="/" exact component={PostingPage} />
         <Route path="/browse" component={BrowsePage} />
         <Route path="/login" component={LoginPage} />
+        <Route path="/confirm-email" component={ConfirmEmail} />
         <Route path="/forgot-password" component={ForgotPassword} />
         <Route
           path="/password-reset-confirmed"

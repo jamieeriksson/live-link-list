@@ -54,13 +54,10 @@ export const PlatformProvider = ({ children }) => {
     let platforms = [...platformOptions];
 
     if (state.status === "success") {
-      console.log(state.data);
       for (const platform of state.data) {
         for (const option of platforms) {
           if (option.name === platform.name) {
             option.id = platform.id;
-            console.log(option);
-            // newPlatforms.push(option);
           }
         }
       }

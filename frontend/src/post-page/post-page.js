@@ -162,7 +162,8 @@ export default function PostingPage() {
     }
 
     if (Object.keys(errors).length === 0) {
-      if (user.user) {
+      // if (user.user['logged_in']) {
+      if (user.user && user.user["logged_in"]) {
         const accessToken = await getUserAccessToken();
         await postLive(accessToken);
       } else {

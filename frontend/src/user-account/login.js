@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import axios from "axios";
-import { useHistory } from "react-router";
-import { UserContext } from "../utilities/userContext";
+import { useHistory, useLocation } from "react-router";
+import { getUserAccountData, UserContext } from "../utilities/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
@@ -14,6 +14,7 @@ export default function LoginPage() {
   let user = useContext(UserContext);
 
   const history = useHistory();
+  const location = useLocation();
 
   const loginUser = async () => {
     let urlHost = "";
@@ -43,7 +44,15 @@ export default function LoginPage() {
       localStorage.setItem("user", response.data["user"].id);
       localStorage.setItem("expiration", expiration);
 
-      window.location.href = "/";
+      const userData = await getUserAccountData();
+      userData["logged_in"] = true;
+      user.setUser({ ...userData });
+
+      console.log(location.pathname);
+
+      if (location.pathname === "/login") {
+        window.location.href = "/";
+      }
     } catch (error) {
       setErrors({
         login:
@@ -118,7 +127,7 @@ export default function LoginPage() {
     }
   };
 
-  if (user.user) {
+  if (user.user && user.user["logged_in"]) {
     return (
       <div
         className={`max-w-screen w-full min-h-screen md:mt-5 px-4 pb-20 flex flex-col justify-center place-items-center font-body bg-gradient-to-t from-red-100 via-red-100 to-gray-50`}

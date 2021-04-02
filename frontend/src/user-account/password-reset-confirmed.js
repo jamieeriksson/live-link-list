@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { UserContext } from "../utilities/userContext";
+import { getUserAccountData, UserContext } from "../utilities/userContext";
 import axios from "axios";
 import queryString from "query-string";
 
@@ -90,6 +90,10 @@ export default function PasswordResetConfirmed() {
       localStorage.setItem("access_token", response.data["access"]);
       localStorage.setItem("user", response.data["user"].id);
       localStorage.setItem("expiration", expiration);
+
+      const userData = await getUserAccountData();
+      userData["logged_in"] = true;
+      user.setUser({ ...userData });
 
       setResetComplete(true);
     } catch (error) {
