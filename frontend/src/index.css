@@ -19,3 +19,15 @@
     text-shadow: none;
   }
 }
+
+@layer utilities {
+  .blur-sm {
+    backdrop-filter: blur(1px);
+  }
+  .blur-md {
+    backdrop-filter: blur(3px);
+  }
+  .blur-lg {
+    backdrop-filter: blur(7px);
+  }
+}

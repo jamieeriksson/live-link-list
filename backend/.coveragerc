@@ -1,0 +1,5 @@
+[run]
+omit = */test*.py, */management/commands/*, livelinklist/asgi.py, livelinklist/wsgi.py
+
+[report]
+skip_covered = true
