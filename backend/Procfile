@@ -1,0 +1,2 @@
+web: gunicorn livelinklist.wsgi:application
+worker: poetry run python manage.py rqworker default
