@@ -5,7 +5,7 @@ description = ""
 authors = ["Jamie Eriksson <jamieeriksson@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9.0"
+python = "3.9.0"
 Django = "^3.1.7"
 djangorestframework = "^3.12.2"
 python-dotenv = "^0.15.0"
