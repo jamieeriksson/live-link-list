@@ -1,0 +1,19 @@
+{
+  "name": "Live Link List",
+  "website": "https://livelinklist.com/",
+  "repository": "https://github.com/jamieeriksson/live-link-list",
+  "addons": [
+    "papertrail",
+    {
+      "plan": "heroku-postgresql",
+      "options": {
+        "version": "13.2"
+      }
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/stomita/heroku-buildpack-phantomjs"
+    }
+  ]
+}
