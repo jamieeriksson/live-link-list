@@ -3,6 +3,8 @@ import os
 import re
 
 import dj_database_url
+import django_rq
+import fakeredis
 
 try:
     from dotenv import load_dotenv
@@ -176,6 +178,14 @@ EMAIL_USE_SSL = False
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 
 # Django-RQ
+
+# Prevent Django-RQ from attempting to use Redis when DEBUG is True
+if DEBUG:
+    django_rq.queues.get_redis_connection = (
+        lambda _, strict: fakeredis.FakeStrictRedis()
+        if strict
+        else fakeredis.FakeRedis()
+    )
 
 redis_url = (
     os.getenv("REDIS_TLS_URL") or os.getenv("REDIS_URL") or "redis://:@localhost:6379"
