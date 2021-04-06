@@ -147,6 +147,7 @@ SIMPLE_JWT = {
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://livelinklist\.com$",
+    r"^https://www.livelinklist\.com$",
     r"^https://(deploy-preview-[\d]+--)?livelinklist\.netlify\.app$",
     r"^http://localhost:3000$",
 ]
