@@ -1,5 +1,6 @@
 import datetime as dt
 import os
+import re
 
 import dj_database_url
 
@@ -174,33 +175,28 @@ EMAIL_USE_SSL = False
 
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 
-# Django RQ
+# Django-RQ
+
+redis_url = (
+    os.getenv("REDIS_TLS_URL") or os.getenv("REDIS_URL") or "redis://:@localhost:6379"
+)
+
+redis_data = {}
+(
+    redis_data["SCHEME"],
+    redis_data["PASSWORD"],
+    redis_data["HOST"],
+    redis_data["PORT"],
+) = re.split("://:|@|:", redis_url)
 
 RQ_QUEUES = {
     "default": {
-        "HOST": "localhost",
-        "PORT": 6379,
-        "DB": 0,
-        "PASSWORD": "",
-        "DEFAULT_TIMEOUT": 360,
-    },
-    # "with-sentinel": {
-    #     "SENTINELS": [("localhost", 26736), ("localhost", 26737)],
-    #     "MASTER_NAME": "redismaster",
-    #     "DB": 0,
-    #     "PASSWORD": "secret",
-    #     "SOCKET_TIMEOUT": None,
-    #     "CONNECTION_KWARGS": {"socket_connect_timeout": 0.3},
-    # },
-    "high": {
-        "URL": os.getenv(
-            "REDIS_URL", "redis://localhost:6379/0"
-        ),  # If you're on Heroku
-        "DEFAULT_TIMEOUT": 500,
-    },
-    "low": {
-        "HOST": "localhost",
-        "PORT": 6379,
-        "DB": 0,
+        "HOST": redis_data["HOST"],
+        "PORT": redis_data["PORT"],
+        "PASSWORD": redis_data["PASSWORD"],
+        "SSL": redis_data["SCHEME"] == "rediss",
+        "SSL_CERT_REQS": None,
+        "DEFAULT_TIMEOUT": 300,
+        "ASYNC": not DEBUG,
     },
 }
