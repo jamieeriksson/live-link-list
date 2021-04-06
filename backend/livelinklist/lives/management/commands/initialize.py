@@ -23,7 +23,7 @@ class Command(BaseCommand):
     help = "Initializes database with platforms"
 
     def handle(self, *args, **kwargs):
-        print("Seeding database...")
+        print("Initializing database...")
 
         initialize_platforms()
 
