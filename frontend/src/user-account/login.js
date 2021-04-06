@@ -17,15 +17,7 @@ export default function LoginPage() {
   const location = useLocation();
 
   const loginUser = async () => {
-    let urlHost = "";
-
-    if (process.env.NODE_ENV === "development") {
-      urlHost = "http://localhost:8000/";
-    }
-
-    if (process.env.NODE_ENV === "production") {
-      urlHost = process.env.REACT_APP_PROD_URL;
-    }
+    const urlHost = process.env.REACT_APP_PROD_URL;
 
     const url = new URL("/log-in", urlHost);
 
@@ -102,15 +94,7 @@ export default function LoginPage() {
   const handleLogout = async (e) => {
     e.preventDefault();
 
-    let urlHost = "";
-
-    if (process.env.NODE_ENV === "development") {
-      urlHost = "http://localhost:8000/";
-    }
-
-    if (process.env.NODE_ENV === "production") {
-      urlHost = process.env.REACT_APP_PROD_URL;
-    }
+    const urlHost = process.env.REACT_APP_PROD_URL;
 
     const url = new URL("/log-out", urlHost);
 

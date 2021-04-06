@@ -1,14 +1,6 @@
 import axios from "axios";
 
-let urlHost = "";
-
-if (process.env.NODE_ENV === "development") {
-  urlHost = "http://localhost:8000/";
-}
-
-if (process.env.NODE_ENV === "production") {
-  urlHost = process.env.REACT_APP_PROD_URL;
-}
+const urlHost = process.env.REACT_APP_PROD_URL;
 
 const axiosInstance = axios.create({
   // baseURL: "http://127.0.0.1:8000/",

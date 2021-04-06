@@ -16,15 +16,7 @@ export default function ChangeEmailModal(props) {
   const [emailSent, setEmailSent] = useState(false);
 
   const sendConfirmEmail = async () => {
-    let urlHost = "";
-
-    if (process.env.NODE_ENV === "development") {
-      urlHost = "http://localhost:8000/";
-    }
-
-    if (process.env.NODE_ENV === "production") {
-      urlHost = process.env.REACT_APP_PROD_URL;
-    }
+    const urlHost = process.env.REACT_APP_PROD_URL;
 
     const url = new URL("/send-confirm-email", urlHost);
 
@@ -46,15 +38,7 @@ export default function ChangeEmailModal(props) {
   };
 
   const editUserEmail = async (accessToken) => {
-    let urlHost = "";
-
-    if (process.env.NODE_ENV === "development") {
-      urlHost = "http://localhost:8000/";
-    }
-
-    if (process.env.NODE_ENV === "production") {
-      urlHost = process.env.REACT_APP_PROD_URL;
-    }
+    const urlHost = process.env.REACT_APP_PROD_URL;
 
     const url = new URL(`/users/${localStorage.getItem("user")}`, urlHost);
 

@@ -8,15 +8,7 @@ export default function IsEmailConfirmed() {
   let user = useContext(UserContext);
 
   const sendConfirmEmail = async () => {
-    let urlHost = "";
-
-    if (process.env.NODE_ENV === "development") {
-      urlHost = "http://localhost:8000/";
-    }
-
-    if (process.env.NODE_ENV === "production") {
-      urlHost = process.env.REACT_APP_PROD_URL;
-    }
+    const urlHost = process.env.REACT_APP_PROD_URL;
 
     const url = new URL("/send-confirm-email", urlHost);
 

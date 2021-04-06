@@ -27,15 +27,7 @@ export default function EditAccountInfo(props) {
   const [errors, setErrors] = useState({});
 
   const updateUser = async (accessToken) => {
-    let urlHost = "";
-
-    if (process.env.NODE_ENV === "development") {
-      urlHost = "http://localhost:8000/";
-    }
-
-    if (process.env.NODE_ENV === "production") {
-      urlHost = process.env.REACT_APP_PROD_URL;
-    }
+    const urlHost = process.env.REACT_APP_PROD_URL;
 
     const updateUserUrl = new URL(
       `/users/${localStorage.getItem("user")}`,

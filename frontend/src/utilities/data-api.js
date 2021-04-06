@@ -29,14 +29,7 @@ const dataFetchReducer = (state, action) => {
 };
 
 export default function useDataApi(urlPath, body) {
-  let urlHost = "";
-  if (process.env.NODE_ENV === "development") {
-    urlHost = "http://localhost:8000/";
-  }
-
-  if (process.env.NODE_ENV === "production") {
-    urlHost = process.env.REACT_APP_PROD_URL;
-  }
+  const urlHost = process.env.REACT_APP_PROD_URL;
 
   const url = new URL(urlPath, urlHost);
 
