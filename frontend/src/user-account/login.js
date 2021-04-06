@@ -24,7 +24,7 @@ export default function LoginPage() {
     }
 
     if (process.env.NODE_ENV === "production") {
-      urlHost = "";
+      urlHost = process.env.REACT_APP_PROD_URL;
     }
 
     const url = new URL("/log-in", urlHost);
@@ -109,7 +109,7 @@ export default function LoginPage() {
     }
 
     if (process.env.NODE_ENV === "production") {
-      urlHost = "";
+      urlHost = process.env.REACT_APP_PROD_URL;
     }
 
     const url = new URL("/log-out", urlHost);

@@ -29,7 +29,7 @@ export default function RegisterPage() {
     }
 
     if (process.env.NODE_ENV === "production") {
-      urlHost = "";
+      urlHost = process.env.REACT_APP_PROD_URL;
     }
 
     const createUserUrl = new URL("/users", urlHost);
@@ -85,7 +85,7 @@ export default function RegisterPage() {
     }
 
     if (process.env.NODE_ENV === "production") {
-      urlHost = "";
+      urlHost = process.env.REACT_APP_PROD_URL;
     }
 
     const url = new URL("/send-confirm-email", urlHost);
@@ -114,7 +114,7 @@ export default function RegisterPage() {
     }
 
     if (process.env.NODE_ENV === "production") {
-      urlHost = "";
+      urlHost = process.env.REACT_APP_PROD_URL;
     }
 
     const loginUrl = new URL("/log-in", urlHost);
@@ -209,7 +209,7 @@ export default function RegisterPage() {
     }
 
     if (process.env.NODE_ENV === "production") {
-      urlHost = "";
+      urlHost = process.env.REACT_APP_PROD_URL;
     }
 
     const url = new URL("/log-out", urlHost);

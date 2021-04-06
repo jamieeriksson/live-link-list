@@ -34,7 +34,7 @@ export default function EditAccountInfo(props) {
     }
 
     if (process.env.NODE_ENV === "production") {
-      urlHost = "";
+      urlHost = process.env.REACT_APP_PROD_URL;
     }
 
     const updateUserUrl = new URL(

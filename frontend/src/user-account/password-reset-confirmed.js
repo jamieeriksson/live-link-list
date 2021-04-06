@@ -29,7 +29,7 @@ export default function PasswordResetConfirmed() {
     }
 
     if (process.env.NODE_ENV === "production") {
-      urlHost = "";
+      urlHost = process.env.REACT_APP_PROD_URL;
     }
 
     const url = new URL("/password-reset-confirmed", urlHost);
@@ -71,7 +71,7 @@ export default function PasswordResetConfirmed() {
     }
 
     if (process.env.NODE_ENV === "production") {
-      urlHost = "";
+      urlHost = process.env.REACT_APP_PROD_URL;
     }
 
     const url = new URL("/log-in", urlHost);

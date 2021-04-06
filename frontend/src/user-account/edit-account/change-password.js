@@ -16,7 +16,7 @@ export default function ChangePasswordModal(props) {
     }
 
     if (process.env.NODE_ENV === "production") {
-      urlHost = "";
+      urlHost = process.env.REACT_APP_PROD_URL;
     }
 
     const url = new URL("/password-reset", urlHost);

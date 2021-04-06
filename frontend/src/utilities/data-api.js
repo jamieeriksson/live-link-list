@@ -35,7 +35,7 @@ export default function useDataApi(urlPath, body) {
   }
 
   if (process.env.NODE_ENV === "production") {
-    urlHost = "";
+    urlHost = process.env.REACT_APP_PROD_URL;
   }
 
   const url = new URL(urlPath, urlHost);
