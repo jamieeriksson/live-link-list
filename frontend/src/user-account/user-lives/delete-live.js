@@ -8,20 +8,21 @@ export default function DeleteLiveModal(props) {
   const isConfirmDeleteOpen = props.isConfirmDeleteOpen;
 
   const deleteLive = async (accessToken) => {
+    const urlHost = process.env.REACT_APP_PROD_URL;
+
+    const url = new URL(`/lives/${live.id}`, urlHost);
+
     try {
-      const response = await axios.delete(
-        `http://localhost:8000/lives/${live.id}`,
-        {
-          headers: {
-            AUTHORIZATION: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-            accept: "application/json",
-            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "*",
-          },
-        }
-      );
+      const response = await axios.delete(url, {
+        headers: {
+          AUTHORIZATION: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+          accept: "application/json",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "*",
+        },
+      });
     } catch (error) {
       console.log(error);
       console.log(error.message);

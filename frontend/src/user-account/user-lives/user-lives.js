@@ -48,21 +48,21 @@ export default function UserLivesPage() {
     if (user.user && user.user["logged_in"]) {
       const accessToken = await getUserAccessToken();
 
+      const urlHost = process.env.REACT_APP_PROD_URL;
+
+      const url = new URL(`/users/${localStorage.getItem("user")}`, urlHost);
+
       try {
-        const response = await axios.get(
-          `http://localhost:8000/users/${localStorage.getItem("user")}`,
-          {
-            headers: {
-              AUTHORIZATION: `Bearer ${accessToken}`,
-              "Content-Type": "application/json",
-              accept: "application/json",
-              "Access-Control-Allow-Methods":
-                "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Headers": "*",
-            },
-          }
-        );
+        const response = await axios.get(url, {
+          headers: {
+            AUTHORIZATION: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*",
+          },
+        });
         setUserData({ ...response.data });
       } catch (error) {
         console.log(error);

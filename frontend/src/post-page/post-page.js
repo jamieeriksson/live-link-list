@@ -108,6 +108,10 @@ export default function PostingPage() {
     setLiveUrl(`${selectedPlatform.urlStart} + ${urlInput}`);
     const postHashtags = [];
 
+    const urlHost = process.env.REACT_APP_PROD_URL;
+
+    const url = new URL(`/lives`, urlHost);
+
     for (const hashtag of hashtagsList) {
       postHashtags.push(hashtag.slice(1));
     }
@@ -123,7 +127,7 @@ export default function PostingPage() {
     };
 
     try {
-      const response = await axios.post("http://localhost:8000/lives", body, {
+      const response = await axios.post(url, body, {
         headers: {
           AUTHORIZATION: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
