@@ -194,7 +194,7 @@ RQ_QUEUES = {
     # },
     "high": {
         "URL": os.getenv(
-            "REDISTOGO_URL", "redis://localhost:6379/0"
+            "REDIS_URL", "redis://localhost:6379/0"
         ),  # If you're on Heroku
         "DEFAULT_TIMEOUT": 500,
     },
@@ -204,5 +204,3 @@ RQ_QUEUES = {
         "DB": 0,
     },
 }
-
-# RQ_EXCEPTION_HANDLERS = ['path.to.my.handler'] # If you need custom exception handlers
