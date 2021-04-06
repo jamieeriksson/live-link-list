@@ -15,7 +15,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = os.getenv("DJANGO_DEBUG") == "TRUE"
-ALLOWED_HOSTS = ["livelinklistapi.com", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["live-link-list.herokuapp.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
