@@ -1,8 +1,8 @@
 from django.contrib.auth import password_validation
 from django.db.models.fields import EmailField
+from drf_extra_fields.fields import LowercaseEmailField
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from sendgrid.helpers.mail.email import Email
 
 from livelinklist.lives.serializers import LiveSerializer
 from livelinklist.users.models import User
@@ -11,6 +11,7 @@ from livelinklist.users.models import User
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     lives = LiveSerializer(many=True, read_only=True)
+    email = LowercaseEmailField()
 
     class Meta:
         model = User
@@ -35,15 +36,15 @@ class UserSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["is_staff", "credits"]
 
-    def validate_email(self, email):
-        """
-        Normalize the address by lowercasing the domain part of the email
-        address.
-        """
-        email = email or ""
-        email_name, domain_part = email.strip().rsplit("@", 1)
-        email = "@".join([email_name, domain_part.lower()])
-        return email
+    # def validate_email(self, email):
+    #     """
+    #     Normalize the address by lowercasing the domain part of the email
+    #     address.
+    #     """
+    #     email = email or ""
+    #     email_name, domain_part = email.strip().rsplit("@", 1)
+    #     email = "@".join([email_name, domain_part.lower()])
+    #     return email
 
 
 class UserTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -76,11 +77,11 @@ class LogOutSerializer(serializers.Serializer):
 
 
 class ResetPasswordSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    email = LowercaseEmailField()
 
 
 class ConfirmedResetPasswordSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    email = LowercaseEmailField()
     token = serializers.CharField()
     password = serializers.CharField()
 
@@ -89,7 +90,7 @@ class ConfirmedResetPasswordSerializer(serializers.Serializer):
 
 
 class ConfirmEmailPasswordSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    email = LowercaseEmailField()
     token = serializers.CharField()
 
     def validate_password(self, value):
@@ -97,4 +98,4 @@ class ConfirmEmailPasswordSerializer(serializers.Serializer):
 
 
 class ConfirmEmailSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    email = LowercaseEmailField()

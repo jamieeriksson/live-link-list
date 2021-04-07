@@ -230,6 +230,21 @@ python-jose = ["python-jose (==3.0.0)"]
 test = ["cryptography", "pytest-cov", "pytest-django", "pytest-xdist", "pytest", "tox"]
 
 [[package]]
+name = "drf-extra-fields"
+version = "3.1.1"
+description = "Additional fields for Django Rest Framework."
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+Django = ">=2.2"
+djangorestframework = ">=3.9.2"
+
+[package.extras]
+base64imagefield = ["Pillow (>=6.2.1)"]
+
+[[package]]
 name = "factory-boy"
 version = "3.2.0"
 description = "A versatile test fixtures replacement based on thoughtbot's factory_bot for Ruby."
@@ -626,7 +641,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.9.0"
-content-hash = "beff74f02512a749f59330bf01084c95c7aaeeda8110da4c129a3d9bce84a023"
+content-hash = "c8ee060bbc4746477f1c4441d6072986ff4089e057008e1313422eaa7e13fc1a"
 
 [metadata.files]
 appdirs = [
@@ -753,6 +768,10 @@ djangorestframework = [
 djangorestframework-simplejwt = [
     {file = "djangorestframework_simplejwt-4.6.0-py3-none-any.whl", hash = "sha256:bd587700b6ab34a6c6b12d426cce4fa580d57ef1952ad4ba3b79707784619ed3"},
     {file = "djangorestframework_simplejwt-4.6.0.tar.gz", hash = "sha256:7adc913ba0d2ed7f46e0b9bf6e86f9bd9248f1c4201722b732b8213e0ea66f9f"},
+]
+drf-extra-fields = [
+    {file = "drf-extra-fields-3.1.1.tar.gz", hash = "sha256:68091a78f1be821e98061a61e599ccc14c2b355e8b8b41741b05d7bc391a15d0"},
+    {file = "drf_extra_fields-3.1.1-py3-none-any.whl", hash = "sha256:6643c1d81cdce0d8c87412b210db0393ddf2b1e13ea17fbd1cfcf45ba44a92ce"},
 ]
 factory-boy = [
     {file = "factory_boy-3.2.0-py2.py3-none-any.whl", hash = "sha256:1d3db4b44b8c8c54cdd8b83ae4bdb9aeb121e464400035f1f03ae0e1eade56a4"},
