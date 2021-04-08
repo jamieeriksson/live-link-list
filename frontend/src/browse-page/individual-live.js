@@ -253,6 +253,8 @@ export default function Live(props) {
         </div>
       </div>
     );
+  } else if (isLiveExpired) {
+    return "";
   } else {
     return (
       <div key={live.id} className="flex mx-3 w-64">
