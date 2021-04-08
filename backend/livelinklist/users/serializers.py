@@ -2,7 +2,10 @@ from django.contrib.auth import password_validation
 from django.db.models.fields import EmailField
 from drf_extra_fields.fields import LowercaseEmailField
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import (
+    PasswordField,
+    TokenObtainPairSerializer,
+)
 
 from livelinklist.lives.serializers import LiveSerializer
 from livelinklist.users.models import User
@@ -48,6 +51,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields[self.username_field] = LowercaseEmailField()
+        self.fields["password"] = PasswordField()
+
     def validate(self, attrs):
         data = super().validate(attrs)
 
