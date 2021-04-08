@@ -9,8 +9,8 @@ export default async function getUserAccessToken() {
     localStorage.setItem("refresh_token", response.data.refresh);
     return response.data.access;
   } catch (error) {
-    if ("data" in error && error.data.detail === "Token is blacklisted")
-      localStorage.clear();
+    // if ("data" in error && error.data.detail === "Token is blacklisted")
+    //   localStorage.clear();
     console.log(error);
     console.log(error.message);
     console.log(error.request);

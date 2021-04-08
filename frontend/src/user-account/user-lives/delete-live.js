@@ -23,6 +23,9 @@ export default function DeleteLiveModal(props) {
           "Access-Control-Allow-Headers": "*",
         },
       });
+
+      setIsConfirmDeleteOpen(false);
+      props.getUserAccountData();
     } catch (error) {
       console.log(error);
       console.log(error.message);
@@ -37,8 +40,7 @@ export default function DeleteLiveModal(props) {
 
     const accessToken = await getUserAccessToken();
     await deleteLive(accessToken);
-
-    window.location.reload();
+    // window.location.href = "/user-lives";
   };
 
   return (

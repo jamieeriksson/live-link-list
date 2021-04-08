@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.db.models import DateTimeField, F
 from django.db.models.expressions import ExpressionWrapper
@@ -25,7 +25,7 @@ class LiveViewSet(viewsets.ModelViewSet):
     filterset_class = LiveFilter
 
     def get_queryset(self):
-        today = timezone.now()
+        yesterday = timezone.now() - timedelta(days=1)
 
         return (
             Live.objects.annotate(
@@ -34,7 +34,7 @@ class LiveViewSet(viewsets.ModelViewSet):
                 )
             )
             .prefetch_related("hashtags")
-            .filter(expires_at__gt=today)
+            .filter(expires_at__gt=yesterday)
             .order_by("expires_at")
         )
 

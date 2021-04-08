@@ -172,7 +172,7 @@ export default function EditLiveModalContainer(props) {
       link: selectedPlatform.urlStart + urlInput,
       username: username,
       description: description,
-      duration: addDuration.duration,
+      duration: addDuration.postDuration,
       is_featured: featured,
       platform_id: selectedPlatform.id,
       hashtags: postHashtags,
@@ -193,6 +193,8 @@ export default function EditLiveModalContainer(props) {
           "Access-Control-Allow-Headers": "*",
         },
       });
+      props.getUserAccountData();
+      setEditModalIsOpen(false);
     } catch (error) {
       console.log(error);
       console.log(error.message);
@@ -225,8 +227,7 @@ export default function EditLiveModalContainer(props) {
     if (Object.keys(errors).length === 0) {
       const accessToken = await getUserAccessToken();
       await updateLive(accessToken);
-
-      window.location.reload();
+      // window.location.href = "/user-lives";
     } else {
       setErrors({ ...errors });
       window.scrollTo(0, 0);

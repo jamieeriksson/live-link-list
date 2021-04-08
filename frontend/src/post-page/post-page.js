@@ -175,7 +175,7 @@ export default function PostingPage() {
         await postLive();
       }
 
-      window.location.reload();
+      window.location.href = "/browse";
     } else {
       setErrors({ ...errors });
       window.scrollTo(0, 0);

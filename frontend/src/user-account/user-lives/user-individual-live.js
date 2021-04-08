@@ -72,7 +72,9 @@ function Live(props) {
   const platformOptions = useContext(PlatformContext);
 
   const [livePlatform, setLivePlatform] = useState("");
-  const [isLiveExpired, setIsLiveExpired] = useState(false);
+  const [isLiveExpired, setIsLiveExpired] = useState(
+    +new Date(live.expires_at) - +Date.now() < 0
+  );
   const [hashtags, setHashtags] = useState([]);
   const [isHashtagsOpen, setIsHashtagsOpen] = useState(false);
 
@@ -86,13 +88,14 @@ function Live(props) {
       for (const platform of platformOptions) {
         live.platform_id === platform.id && setLivePlatform(platform);
       }
-      setIsLiveExpired(live.is_expired);
       setHashtags([...live.hashtags]);
     }
     return () => {};
   }, [live]);
 
-  if (live) {
+  if (live && isLiveExpired) {
+    return null;
+  } else if (live) {
     return (
       <div className="w-48 md:w-72">
         <div key={live.id} className="flex h-20 place-items-center">
@@ -291,11 +294,13 @@ export default function EditLive(props) {
         <FontAwesomeIcon icon={faTimesCircle} />
       </button>
       <EditLiveModalContainer
+        getUserAccountData={props.getUserAccountData}
         live={props.live}
         editModalIsOpen={editModalIsOpen}
         setEditModalIsOpen={setEditModalIsOpen}
       />
       <DeleteLiveModal
+        getUserAccountData={props.getUserAccountData}
         live={props.live}
         isConfirmDeleteOpen={isConfirmDeleteOpen}
         setIsConfirmDeleteOpen={setIsConfirmDeleteOpen}

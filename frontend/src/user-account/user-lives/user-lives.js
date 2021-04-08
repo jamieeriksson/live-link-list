@@ -15,7 +15,7 @@ function UserLives(props) {
     return (
       <div>
         {userData.lives.map((live) => (
-          <EditLive live={live} />
+          <EditLive getUserAccountData={props.getUserAccountData} live={live} />
         ))}
       </div>
     );
@@ -132,7 +132,10 @@ export default function UserLivesPage() {
           Your Lives
         </h1>
         {userData ? (
-          <UserLives userData={userData} />
+          <UserLives
+            getUserAccountData={getUserAccountData}
+            userData={userData}
+          />
         ) : (
           <FontAwesomeIcon icon={faSpinner} size="2x" spin />
         )}
