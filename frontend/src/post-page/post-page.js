@@ -131,16 +131,20 @@ export default function PostingPage() {
     };
 
     try {
-      const response = await axios.post(url, body, {
-        headers: {
-          AUTHORIZATION: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "*",
-        },
-      });
+      if (accessToken) {
+        const response = await axios.post(url, body, {
+          headers: {
+            AUTHORIZATION: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*",
+          },
+        });
+      } else {
+        const response = await axios.post(url, body);
+      }
 
       setSelectedPlatform(platformOptions[0]);
       setUsername("");
