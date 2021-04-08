@@ -72,7 +72,9 @@ export default function Live(props) {
   const platformOptions = useContext(PlatformContext);
 
   const [livePlatform, setLivePlatform] = useState("");
-  const [isLiveExpired, setIsLiveExpired] = useState(false);
+  const [isLiveExpired, setIsLiveExpired] = useState(
+    +new Date(live.expires_at) - +Date.now() < 0
+  );
   const [hashtags, setHashtags] = useState([]);
   const [isHashtagsOpen, setIsHashtagsOpen] = useState(false);
 
@@ -86,13 +88,14 @@ export default function Live(props) {
       for (const platform of platformOptions) {
         live.platform_id === platform.id && setLivePlatform(platform);
       }
-      setIsLiveExpired(live.is_expired);
       setHashtags([...live.hashtags]);
     }
     return () => {};
   }, [live]);
 
-  if (live) {
+  if (live && isLiveExpired) {
+    return null;
+  } else if (live) {
     return (
       <div className="w-72">
         <div key={live.id} className="flex h-20 place-items-center">
@@ -253,8 +256,6 @@ export default function Live(props) {
         </div>
       </div>
     );
-  } else if (isLiveExpired) {
-    return "";
   } else {
     return (
       <div key={live.id} className="flex mx-3 w-64">
