@@ -68,13 +68,12 @@ function Timer(props) {
 function Live(props) {
   const live = props.live;
   const setQuery = props.setQuery;
+  const isLiveExpired = props.isLiveExpired;
+  const setIsLiveExpired = props.setIsLiveExpired;
 
   const platformOptions = useContext(PlatformContext);
 
   const [livePlatform, setLivePlatform] = useState("");
-  const [isLiveExpired, setIsLiveExpired] = useState(
-    +new Date(live.expires_at) - +Date.now() < 0
-  );
   const [hashtags, setHashtags] = useState([]);
   const [isHashtagsOpen, setIsHashtagsOpen] = useState(false);
 
@@ -93,9 +92,7 @@ function Live(props) {
     return () => {};
   }, [live]);
 
-  if (live && isLiveExpired) {
-    return null;
-  } else if (live) {
+  if (live) {
     return (
       <div className="w-48 md:w-72">
         <div key={live.id} className="flex h-20 place-items-center">
@@ -271,40 +268,51 @@ function Live(props) {
 export default function EditLive(props) {
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
-
-  return (
-    <div key={props.live.id} className="relative flex place-items-start">
-      <Live live={props.live} />
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          setEditModalIsOpen(true);
-        }}
-        className="ml-7 text-lg text-gray-500 hover:text-primary-blue focus:outline-none"
-      >
-        <FontAwesomeIcon icon={faEdit} />
-      </button>
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          setIsConfirmDeleteOpen(true);
-        }}
-        className="ml-2 text-lg text-gray-500 hover:text-primary-red focus:outline-none"
-      >
-        <FontAwesomeIcon icon={faTimesCircle} />
-      </button>
-      <EditLiveModalContainer
-        getUserAccountData={props.getUserAccountData}
-        live={props.live}
-        editModalIsOpen={editModalIsOpen}
-        setEditModalIsOpen={setEditModalIsOpen}
-      />
-      <DeleteLiveModal
-        getUserAccountData={props.getUserAccountData}
-        live={props.live}
-        isConfirmDeleteOpen={isConfirmDeleteOpen}
-        setIsConfirmDeleteOpen={setIsConfirmDeleteOpen}
-      />
-    </div>
+  const [isLiveExpired, setIsLiveExpired] = useState(
+    +new Date(props.live.expires_at) - +Date.now() < 0
   );
+
+  if (isLiveExpired) {
+    return null;
+  } else {
+    return (
+      <div key={props.live.id} className="relative flex place-items-start">
+        <Live
+          isLiveExpired={isLiveExpired}
+          setIsLiveExpired={setIsLiveExpired}
+          live={props.live}
+        />
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setEditModalIsOpen(true);
+          }}
+          className="ml-7 text-lg text-gray-500 hover:text-primary-blue focus:outline-none"
+        >
+          <FontAwesomeIcon icon={faEdit} />
+        </button>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            setIsConfirmDeleteOpen(true);
+          }}
+          className="ml-2 text-lg text-gray-500 hover:text-primary-red focus:outline-none"
+        >
+          <FontAwesomeIcon icon={faTimesCircle} />
+        </button>
+        <EditLiveModalContainer
+          getUserAccountData={props.getUserAccountData}
+          live={props.live}
+          editModalIsOpen={editModalIsOpen}
+          setEditModalIsOpen={setEditModalIsOpen}
+        />
+        <DeleteLiveModal
+          getUserAccountData={props.getUserAccountData}
+          live={props.live}
+          isConfirmDeleteOpen={isConfirmDeleteOpen}
+          setIsConfirmDeleteOpen={setIsConfirmDeleteOpen}
+        />
+      </div>
+    );
+  }
 }
