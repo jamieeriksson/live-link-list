@@ -273,13 +273,18 @@ export default function BrowsePage() {
     let featuredLives = [];
 
     if (state.data) {
-      setLives([...state.data]);
+      let lives = [];
 
       for (const live of state.data) {
         live.is_featured && featuredLives.push(live);
+
+        if (+new Date(live.expires_at) - +Date.now() > 0) {
+          lives.push(live);
+        }
       }
 
       setFeaturedLives([...featuredLives]);
+      setLives([...lives]);
     }
     return () => {};
   }, [state, setLives]);
