@@ -13,6 +13,9 @@ import LinkInput from "./link-input.js";
 import LiveDetails from "./live-details.js";
 import CheckoutModal from "./checkout-modal.js";
 import { PlatformContext } from "../utilities/platformContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 
 const durationOptions = [
   {
@@ -58,6 +61,7 @@ export default function PostingPage() {
   const [amountOwed, setAmountOwed] = useState(0);
   const [errors, setErrors] = useState({});
   const [checkoutModalIsOpen, setCheckoutModalIsOpen] = useState(false);
+  const [isLiveSuccess, setIsLiveSuccess] = useState(false);
   const descMaxLength = 100;
   const featuredCost = 25;
 
@@ -137,6 +141,21 @@ export default function PostingPage() {
           "Access-Control-Allow-Headers": "*",
         },
       });
+
+      setSelectedPlatform(platformOptions[0]);
+      setUsername("");
+      setFeatured(false);
+      setUrlInput("");
+      setLiveUrl("");
+      setHashtags("");
+      setHashtagsList([]);
+      setDescription("");
+      setLinkDuration(durationOptions[0]);
+      // setAmountOwed(0);
+      setErrors({});
+      // setCheckoutModalIsOpen(false);
+      setIsLiveSuccess(true);
+      window.scrollTo(0, 0);
     } catch (error) {
       console.log(error);
       console.log(error.message);
@@ -174,8 +193,6 @@ export default function PostingPage() {
       } else {
         await postLive();
       }
-
-      window.location.href = "/browse";
     } else {
       setErrors({ ...errors });
       window.scrollTo(0, 0);
@@ -192,6 +209,20 @@ export default function PostingPage() {
     <div
       className={`max-w-screen w-full min-h-screen h-full md:mt-5 px-2 pb-20 flex flex-col place-items-center font-body bg-gradient-to-t from-${selectedPlatform.color}-300 to-gray-50`}
     >
+      {isLiveSuccess ? (
+        <div className="relative mb-3 py-3 px-8 border border-green-200 bg-green-100 rounded-lg flex justify-center place-items-center">
+          <span className="mr-2 text-green-500">
+            <FontAwesomeIcon icon={faCheckCircle} />
+          </span>
+          <span>Your live was successfully posted!</span>
+          <span
+            onClick={() => setIsLiveSuccess(false)}
+            className="mt-1 mr-2 absolute top-0 right-0 text-xs text-gray-500 ml-2 hover:text-gray-900 cursor-pointer"
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </span>
+        </div>
+      ) : null}
       <form
         className={`max-w-3xl w-full mx-3 my-3 pb-9 flex flex-col justify-center place-items-center border-transparent rounded-lg md:rounded-2xl bg-gray-100`}
       >
