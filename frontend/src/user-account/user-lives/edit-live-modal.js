@@ -37,8 +37,11 @@ function EditLiveModal(props) {
           selectedPlatform={props.selectedPlatform}
           setSelectedPlatform={props.setSelectedPlatform}
           urlInput={props.urlInput}
+          urlInputDesktop={props.urlInputDesktop}
           setUrlInput={props.setUrlInput}
+          setUrlInputDesktop={props.setUrlInputDesktop}
           handleUrlChange={props.handleUrlChange}
+          handleUrlChangeDesktop={props.handleUrlChangeDesktop}
           username={props.username}
           setUsername={props.setUsername}
           errors={props.errors}
@@ -100,6 +103,9 @@ export default function EditLiveModalContainer(props) {
   const [urlInput, setUrlInput] = useState(
     live.link.slice(selectedPlatform.urlStart.length)
   );
+  const [urlInputDesktop, setUrlInputDesktop] = useState(
+    live.link.slice(selectedPlatform.urlStartDesktop.length)
+  );
   const [liveUrl, setLiveUrl] = useState("");
   const [hashtags, setHashtags] = useState("");
   const [hashtagsList, setHashtagsList] = useState(
@@ -129,6 +135,21 @@ export default function EditLiveModalContainer(props) {
       setUrlInput(input.slice(urlPlatform.urlStart.length));
     } else {
       setUrlInput(input);
+    }
+  };
+
+  const handleUrlChangeDesktop = (url, platform) => {
+    let urlPlatform = selectedPlatform;
+
+    if (platform !== null) {
+      urlPlatform = platform;
+    }
+    const input = url;
+
+    if (input.includes(urlPlatform.urlStartDesktop)) {
+      setUrlInputDesktop(input.slice(urlPlatform.urlStart.length));
+    } else {
+      setUrlInputDesktop(input);
     }
   };
 
@@ -168,15 +189,29 @@ export default function EditLiveModalContainer(props) {
       postHashtags.push(hashtag.slice(1));
     }
 
-    const body = {
-      link: selectedPlatform.urlStart + urlInput,
-      username: username,
-      description: description,
-      duration: addDuration.postDuration,
-      is_featured: featured,
-      platform_id: selectedPlatform.id,
-      hashtags: postHashtags,
-    };
+    let body = {};
+
+    if (urlInputDesktop) {
+      body = {
+        link: selectedPlatform.urlStartDesktop + urlInputDesktop,
+        username: username,
+        description: description,
+        duration: addDuration.postDuration,
+        is_featured: featured,
+        platform_id: selectedPlatform.id,
+        hashtags: postHashtags,
+      };
+    } else {
+      body = {
+        link: selectedPlatform.urlStart + urlInput,
+        username: username,
+        description: description,
+        duration: addDuration.postDuration,
+        is_featured: featured,
+        platform_id: selectedPlatform.id,
+        hashtags: postHashtags,
+      };
+    }
 
     const urlHost = process.env.REACT_APP_PROD_URL;
 
@@ -210,11 +245,27 @@ export default function EditLiveModalContainer(props) {
     setErrors({});
     let errors = {};
 
-    if (!urlInput) {
-      errors = {
-        urlInput: "You must enter a link",
-        ...errors,
-      };
+    if ("urlStartDesktop" in selectedPlatform) {
+      if (!urlInput && !urlInputDesktop) {
+        errors = {
+          urlInputDesktop: "You must enter a link",
+          ...errors,
+        };
+      }
+
+      if (urlInput && urlInputDesktop) {
+        errors = {
+          urlInputDesktop: "You cannot enter two links",
+          ...errors,
+        };
+      }
+    } else {
+      if (!urlInput) {
+        errors = {
+          urlInput: "You must enter a link",
+          ...errors,
+        };
+      }
     }
 
     if (description.length > descMaxLength) {
@@ -242,10 +293,13 @@ export default function EditLiveModalContainer(props) {
       selectedPlatform={selectedPlatform}
       setSelectedPlatform={setSelectedPlatform}
       urlInput={urlInput}
+      urlInputDesktop={urlInputDesktop}
       setUrlInput={setUrlInput}
+      setUrlInputDesktop={setUrlInputDesktop}
+      handleUrlChange={handleUrlChange}
+      handleUrlChangeDesktop={handleUrlChangeDesktop}
       username={username}
       setUsername={setUsername}
-      handleUrlChange={handleUrlChange}
       hashtags={hashtags}
       hashtagsList={hashtagsList}
       setHashtagsList={setHashtagsList}

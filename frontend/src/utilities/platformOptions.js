@@ -14,7 +14,9 @@ export const platformOptions = [
     name: "TikTok",
     icon: faTiktok,
     urlStart: "https://vm.tiktok.com/",
+    urlStartDesktop: "https://www.tiktok.com/",
     placeholder: "xxxxxxxxx",
+    placeholderDesktop: "@username/live",
     color: "indigo",
   },
   {
@@ -29,7 +31,7 @@ export const platformOptions = [
     id: "c2ab523a-02c9-44da-a203-cf2e3e5b94ef",
     name: "Youtube",
     icon: faYoutube,
-    urlStart: "https://www.youtube.com/watch?v=",
+    urlStart: "https://youtu.be/",
     placeholder: "5qap5aO4i9A",
     color: "red",
   },

@@ -11,6 +11,7 @@ class Platform(BaseModel):
     name = models.TextField(unique=True)
     platform_url = models.URLField()
     live_url = models.URLField()
+    live_url_extra = models.URLField(blank=True, null=True)
 
 
 class Hashtag(BaseModel):

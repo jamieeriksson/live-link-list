@@ -53,6 +53,7 @@ export default function PostingPage() {
   const [username, setUsername] = useState("");
   const [featured, setFeatured] = useState(false);
   const [urlInput, setUrlInput] = useState("");
+  const [urlInputDesktop, setUrlInputDesktop] = useState("");
   const [liveUrl, setLiveUrl] = useState("");
   const [hashtags, setHashtags] = useState("");
   const [hashtagsList, setHashtagsList] = useState([]);
@@ -77,6 +78,21 @@ export default function PostingPage() {
       setUrlInput(input.slice(urlPlatform.urlStart.length));
     } else {
       setUrlInput(input);
+    }
+  };
+
+  const handleUrlChangeDesktop = (url, platform) => {
+    let urlPlatform = selectedPlatform;
+
+    if (platform !== null) {
+      urlPlatform = platform;
+    }
+    const input = url;
+
+    if (input.includes(urlPlatform.urlStartDesktop)) {
+      setUrlInputDesktop(input.slice(urlPlatform.urlStartDesktop.length));
+    } else {
+      setUrlInputDesktop(input);
     }
   };
 
@@ -120,15 +136,29 @@ export default function PostingPage() {
       postHashtags.push(hashtag.slice(1));
     }
 
-    const body = {
-      link: selectedPlatform.urlStart + urlInput,
-      username: username,
-      description: description,
-      duration: linkDuration.postDuration,
-      is_featured: featured,
-      platform_id: selectedPlatform.id,
-      hashtags: postHashtags,
-    };
+    let body = {};
+
+    if (urlInputDesktop) {
+      body = {
+        link: selectedPlatform.urlStartDesktop + urlInputDesktop,
+        username: username,
+        description: description,
+        duration: linkDuration.postDuration,
+        is_featured: featured,
+        platform_id: selectedPlatform.id,
+        hashtags: postHashtags,
+      };
+    } else {
+      body = {
+        link: selectedPlatform.urlStart + urlInput,
+        username: username,
+        description: description,
+        duration: linkDuration.postDuration,
+        is_featured: featured,
+        platform_id: selectedPlatform.id,
+        hashtags: postHashtags,
+      };
+    }
 
     try {
       if (accessToken) {
@@ -150,6 +180,7 @@ export default function PostingPage() {
       setUsername("");
       setFeatured(false);
       setUrlInput("");
+      setUrlInputDesktop("");
       setLiveUrl("");
       setHashtags("");
       setHashtagsList([]);
@@ -175,11 +206,27 @@ export default function PostingPage() {
     setErrors({});
     let errors = {};
 
-    if (!urlInput) {
-      errors = {
-        urlInput: "You must enter a link",
-        ...errors,
-      };
+    if ("urlStartDesktop" in selectedPlatform) {
+      if (!urlInput && !urlInputDesktop) {
+        errors = {
+          urlInputDesktop: "You must enter a link",
+          ...errors,
+        };
+      }
+
+      if (urlInput && urlInputDesktop) {
+        errors = {
+          urlInputDesktop: "You cannot enter two links",
+          ...errors,
+        };
+      }
+    } else {
+      if (!urlInput) {
+        errors = {
+          urlInput: "You must enter a link",
+          ...errors,
+        };
+      }
     }
 
     if (description.length > descMaxLength) {
@@ -237,8 +284,11 @@ export default function PostingPage() {
           selectedPlatform={selectedPlatform}
           setSelectedPlatform={setSelectedPlatform}
           urlInput={urlInput}
+          urlInputDesktop={urlInputDesktop}
           setUrlInput={setUrlInput}
+          setUrlInputDesktop={setUrlInputDesktop}
           handleUrlChange={handleUrlChange}
+          handleUrlChangeDesktop={handleUrlChangeDesktop}
           username={username}
           setUsername={setUsername}
           user={user}

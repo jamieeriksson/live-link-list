@@ -16,7 +16,9 @@ export const PlatformProvider = ({ children }) => {
       name: "TikTok",
       icon: faTiktok,
       urlStart: "https://vm.tiktok.com/",
+      urlStartDesktop: "https://www.tiktok.com/",
       placeholder: "xxxxxxxxx",
+      placeholderDesktop: "@username/live",
       color: "indigo",
     },
     {
@@ -29,7 +31,7 @@ export const PlatformProvider = ({ children }) => {
     {
       name: "Youtube",
       icon: faYoutube,
-      urlStart: "https://www.youtube.com/watch?v=",
+      urlStart: "https://youtu.be/",
       placeholder: "5qap5aO4i9A",
       color: "red",
     },

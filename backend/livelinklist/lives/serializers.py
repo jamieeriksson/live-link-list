@@ -17,6 +17,7 @@ class PlatformSerializer(serializers.ModelSerializer):
             "name",
             "platform_url",
             "live_url",
+            "live_url_extra",
         ]
 
 
@@ -107,10 +108,19 @@ class LiveSerializer(serializers.ModelSerializer):
         else:
             return
 
-        if platform.live_url not in data["link"]:
-            raise ValidationError(
-                "Link must be a proper live url for {}".format(platform.name)
-            )
+        if platform.live_url_extra:
+            if (
+                platform.live_url not in data["link"]
+                and platform.live_url_extra not in data["link"]
+            ):
+                raise ValidationError(
+                    "Link must be a proper live url for {}".format(platform.name)
+                )
+        else:
+            if platform.live_url not in data["link"]:
+                raise ValidationError(
+                    "Link must be a proper live url for {}".format(platform.name)
+                )
 
         return value
 

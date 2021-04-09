@@ -15,6 +15,7 @@ def initialize_platforms():
         {
             "name": "TikTok",
             "live_url": "https://vm.tiktok.com/",
+            "live_url_extra": "https://www.tiktok.com/",
             "platform_url": "https://www.tiktok.com/",
         },
         {
@@ -24,7 +25,7 @@ def initialize_platforms():
         },
         {
             "name": "Youtube",
-            "live_url": "https://www.youtube.com/watch?v=",
+            "live_url": "https://youtu.be/",
             "platform_url": "https://www.youtube.com/",
         },
         {
@@ -40,11 +41,19 @@ def initialize_platforms():
     ]
 
     for platform in platforms:
-        PlatformFactory(
-            name=platform["name"],
-            platform_url=platform["platform_url"],
-            live_url=platform["live_url"],
-        )
+        if "live_url_extra" in platform:
+            PlatformFactory(
+                name=platform["name"],
+                platform_url=platform["platform_url"],
+                live_url=platform["live_url"],
+                live_url_extra=platform["live_url_extra"],
+            )
+        else:
+            PlatformFactory(
+                name=platform["name"],
+                platform_url=platform["platform_url"],
+                live_url=platform["live_url"],
+            )
 
 
 def get_random_usernames():
