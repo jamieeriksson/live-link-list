@@ -229,6 +229,17 @@ export default function PostingPage() {
       }
     }
 
+    for (const hashtag of hashtagsList) {
+      console.log(hashtag);
+      console.log(hashtag.slice(1));
+      if (hashtag.slice(1) === "") {
+        errors = {
+          hashtags: "You cannot have a blank hashtag",
+          ...errors,
+        };
+      }
+    }
+
     if (description.length > descMaxLength) {
       errors = {
         description: `Must be less than ${descMaxLength} characters`,

@@ -73,6 +73,9 @@ export default function LiveDetails(props) {
         >
           Clear Hashtags
         </button>
+        <p className="mt-1 text-right text-sm font-body text-red-500">
+          {props.errors.hashtags}
+        </p>
       </div>
 
       <div className="w-full mt-8 flex flex-col">

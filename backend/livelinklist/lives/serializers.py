@@ -27,21 +27,28 @@ class HashtagSerializer(serializers.ModelSerializer):
         fields = ["name"]
 
     def to_internal_value(self, data):
+        print(f"data {data}")
         if Hashtag.objects.filter(name=data).exists():
+            print("hashtag exists")
             return Hashtag.objects.get(name=data)
 
+        print("doesn't already exist")
         errors = OrderedDict()
         fields = self._writable_fields
         data_fields = []
         for field in fields:
             data_fields.append(field)
+        print(data_fields)
+
         try:
             validated_value = data_fields[0].run_validation(data)
+            print(f"validated value: {validated_value}")
             Hashtag.objects.create(name=validated_value)
         except ValidationError as exc:
             errors[data_fields[0].field_name] = exc.detail
             return
 
+        print(validated_value)
         return Hashtag.objects.get(name=validated_value)
 
 
