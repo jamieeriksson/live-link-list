@@ -40,6 +40,7 @@ class HashtagSerializer(serializers.ModelSerializer):
             Hashtag.objects.create(name=validated_value)
         except ValidationError as exc:
             errors[data_fields[0].field_name] = exc.detail
+            return
 
         return Hashtag.objects.get(name=validated_value)
 
