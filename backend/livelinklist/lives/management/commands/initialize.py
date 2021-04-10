@@ -25,6 +25,10 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         print("Initializing database...")
 
+        Live.objects.all().delete()
+        Platform.objects.all().delete()
+        Hashtag.objects.all().delete()
+
         initialize_platforms()
 
         print("Database initialized successfully")
