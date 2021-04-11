@@ -101,10 +101,14 @@ export default function EditLiveModalContainer(props) {
   const [username, setUsername] = useState("");
   const [featured, setFeatured] = useState(live.is_featured);
   const [urlInput, setUrlInput] = useState(
-    live.link.slice(selectedPlatform.urlStart.length)
+    live.link.includes(selectedPlatform.urlStart)
+      ? live.link.slice(selectedPlatform.urlStart.length)
+      : null
   );
   const [urlInputDesktop, setUrlInputDesktop] = useState(
-    live.link.slice(selectedPlatform.urlStartDesktop.length)
+    live.link.includes(selectedPlatform.urlStartDesktop)
+      ? live.link.slice(selectedPlatform.urlStartDesktop.length)
+      : null
   );
   const [liveUrl, setLiveUrl] = useState("");
   const [hashtags, setHashtags] = useState("");
