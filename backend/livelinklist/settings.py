@@ -106,7 +106,7 @@ LOGGING = {
     "disable_existing_loggers": False,
     "handlers": {
         "console": {
-            "level": "INFO",
+            "level": "DEBUG",
             "class": "logging.StreamHandler",
         },
     },
@@ -116,7 +116,7 @@ LOGGING = {
             "propagate": True,
         },
         "django.db.backends": {
-            "level": "INFO",
+            "level": "DEBUG",
             "handlers": ["console"],
             "propagate": True,
         },
